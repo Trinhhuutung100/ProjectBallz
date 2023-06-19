@@ -44,6 +44,7 @@ export class BallController{
         Ticker.shared.add(this.update.bind(this));
         
     }
+    // Add listener
     init(){
         window.addEventListener("mousedown", this.mouseHandler.bind(this));
         window.addEventListener("mousemove", this.mouseHandler.bind(this));
@@ -52,6 +53,7 @@ export class BallController{
     update(){
         this.moveBall();
     }
+    // move balls and keep in screen
     moveBall(){
         if(this.readyAttack){
             this.ready = false;
@@ -80,29 +82,36 @@ export class BallController{
             });
         }
     }
+    // handle mouse 
     mouseHandler(e){
+        // khi nhan chuot
         if(e.type == "mousedown"){
             console.log("mousedown");
             this.mousePress = true;
             this.oldPosition.x = e.clientX;
             this.oldPosition.y = e.clientY;
         }
+        //khi tha chuot
         if(e.type == "mouseup"){
             console.log("mouseup");
             if(this.ready){                
                 this.balls.forEach(ball => {
-                    ball.dx = this.dx;
-                    ball.dy = this.dy;
+                    ball.dx = this.dx; //van toc phuong x cua bong
+                    ball.dy = this.dy; // van toc phuong y cua bong
                 })
                 this.readyAttack = true;
             }
             this.mousePress = false;
         }
+        // khi nhan chuot va di chuot
         if(e.type == "mousemove"){
             if(!this.readyAttack){
                 if(this.mousePress){
+                    // (x,y) la vector keo chuot, dinh huong cho bong
                     var x = this.oldPosition.x - e.clientX;
                     var y = this.oldPosition.y - e.clientY;
+
+                    // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
                     if(x!=0&&y!=0){                        
                         this.dx = this.speed*x/Math.sqrt((x*x+y*y));
                         this.dy = this.speed*y/Math.sqrt((x*x+y*y));
@@ -116,6 +125,7 @@ export class BallController{
                         this.dx = this.speed;
                         this.dy = 0;
                     }
+                    // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                     if( y < -50 ) {
                         this.ready = true;
                         console.log("ready");
