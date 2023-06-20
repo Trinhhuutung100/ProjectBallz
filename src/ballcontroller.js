@@ -1,4 +1,4 @@
-import {Ticker } from "pixi.js"
+import {Ticker, detectAvif } from "pixi.js"
 
 const ballRadius = 10;
 
@@ -12,6 +12,11 @@ export class BallController{
         this.readyAttack = false;
         this.dx = 0;
         this.dy = 0;
+        this.distance = [];
+        for(var i = 0; i< this.balls.length; i++){
+            this.distance[i] = 0;
+        }
+        this.allGround = true;
         this.oldPosition = {x:0, y: 0};
         Ticker.shared.add(this.update.bind(this));
         
@@ -23,51 +28,77 @@ export class BallController{
         window.addEventListener("mouseup", this.mouseHandler.bind(this));
     }
     update(){
+        this.checkAllGround();
         this.moveBall();
+        this.border();
     }
     // move balls and keep in screen
     moveBall(){
         if(this.readyAttack){
             this.ready = false;
-            this.balls.forEach(ball => {
-                //move
-                ball.ball.x +=ball.dx;
-                ball.ball.y +=ball.dy;
-                //console.log(ball.dx + " " + ball.dy + " " + (Math.sqrt(ball.dx^2+ball.dy^2)));
-                //make border
-                if(ball.ball.x + ball.dx> innerWidth - ballRadius ) {
-                    ball.ball.x = innerWidth - ballRadius;
-                    ball.dx = -ball.dx;
-                };
-                if(ball.ball.x + ball.dx < ballRadius ) {
-                    ball.ball.x = ballRadius;
-                    ball.dx = -ball.dx;
-                };
-                if(ball.ball.y + ball.dy > innerHeight - ballRadius) {
-                    ball.ball.y = innerHeight - ballRadius;
-                    ball.dx = 0;
-                    ball.dy = 0;
-                    this.readyAttack = false;
-                }
-                if(ball.ball.y + ball.dy < ballRadius) {
-                    ball.ball.y = ballRadius;
-                    ball.dy = -ball.dy;
-                }
-            });
+            for(var i = 0; i< this.balls.length; i++){
+                //console.log(i+" "+this.distance[i]);
+                if(this.distance[i]==i*5) this.balls[i].readyGo=true;
+                else this.distance[i]++;
+                console.log(i + " readyGo "+this.balls[i].readyGo);
+                if(this.balls[i].readyGo){
+                    this.balls[i].ball.x +=this.balls[i].dx;
+                    this.balls[i].ball.y +=this.balls[i].dy;
+                } 
+            }
+            if(this.allGround){
+                console.log("All ground "+this.allGround);
+                for(var i = 0; i< this.balls.length; i++){
+                    this.distance[i] = 0;
+                    this.balls[i].readyGo = false;
+                }                
+                this.readyAttack = false;
+            }
+        }
+    }
+    checkAllGround(){
+        for(var i = 0; i< this.balls.length; i++){
+            this.allGround = true;
+            if(this.balls[i].dx == 0 || this.balls[i].dy == 0){
+                continue;
+            }
+            this.allGround = false;
+        }
+        
+    }
+    border(){
+        for(var i = 0; i< this.balls.length; i++){            
+            //make border
+            if(this.balls[i].ball.x > innerWidth - ballRadius ) {
+                this.balls[i].ball.x = innerWidth - ballRadius;
+                this.balls[i].dx = -this.balls[i].dx;
+            };
+            if(this.balls[i].ball.x < ballRadius ) {
+                this.balls[i].ball.x = ballRadius;
+                this.balls[i].dx = -this.balls[i].dx;
+            };
+            if(this.balls[i].ball.y > innerHeight - ballRadius) {
+                this.balls[i].ball.y = innerHeight - ballRadius;
+                this.balls[i].dx = 0;
+                this.balls[i].dy = 0;              
+            }
+            if(this.balls[i].ball.y < ballRadius) {
+                this.balls[i].ball.y = ballRadius;
+                this.balls[i].dy = -this.balls[i].dy;
+            }            
         }
     }
     // handle mouse 
     mouseHandler(e){
         // khi nhan chuot
         if(e.type == "mousedown"){
-            console.log("mousedown");
             this.mousePress = true;
+            // vi tri tu luc bat dau di chuot
             this.oldPosition.x = e.clientX;
             this.oldPosition.y = e.clientY;
         }
         //khi tha chuot
         if(e.type == "mouseup"){
-            console.log("mouseup");
             if(this.ready){                
                 this.balls.forEach(ball => {
                     ball.dx = this.dx; //van toc phuong x cua bong
@@ -89,7 +120,7 @@ export class BallController{
                     if(x!=0&&y!=0){                        
                         this.dx = this.speed*x/Math.sqrt((x*x+y*y));
                         this.dy = this.speed*y/Math.sqrt((x*x+y*y));
-                        console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
+                        //console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
                     }
                     if(x==0){
                         this.dx = 0;
@@ -102,11 +133,11 @@ export class BallController{
                     // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                     if( y < -50 ) {
                         this.ready = true;
-                        console.log("ready");
+                        //console.log("ready");
                     }
                     else {
                         this.ready = false;
-                        console.log("not ready");
+                        //console.log("not ready");
                     }
                 } 
             }                 

@@ -2,7 +2,6 @@ import { Application } from "pixi.js"
 import { ActiveBall } from "./activeball";
 import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
-import { Ball } from "./ball";
 
 export class Game{
     static init(){

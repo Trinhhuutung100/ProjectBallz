@@ -8,6 +8,7 @@ export class Ball extends Container{
         this.ball.y = y;
         this.ball.dx = 0;
         this.ball.dy = 0;
+        this.readyGo = false;
         this.addChild(this.ball);
     }
 
