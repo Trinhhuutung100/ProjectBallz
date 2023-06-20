@@ -13,13 +13,14 @@ export class Game{
         document.body.appendChild(app.view);
         this.balls = [];
         for(var i = 0; i<10; i++){
-            var ball = new ActiveBall();
+            var ball = new PreBall();
             this.balls.push(ball);
         }
         this.balls.forEach(ball => {
             app.stage.addChild(ball);
         })
         this.ballController = new BallController(this.balls);
+        app.stage.addChild(this.ballController);
     }
 } 
 

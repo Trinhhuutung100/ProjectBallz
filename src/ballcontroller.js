@@ -1,12 +1,13 @@
-import {Ticker, detectAvif } from "pixi.js"
+import {Container, Sprite, Ticker } from "pixi.js"
 
 const ballRadius = 10;
 
-export class BallController{
+export class BallController extends Container{
     constructor(balls){
+        super();
         this.balls = balls;
         this.init();
-        this.speed = 10;
+        this.speed = 20;
         this.mousePress = false;
         this.ready = false;
         this.readyAttack = false;
@@ -18,6 +19,16 @@ export class BallController{
         }
         this.allGround = true;
         this.oldPosition = {x:0, y: 0};
+        this.needle = Sprite.from("assets/images/needle.png");
+        this.needle.anchor.set(0.5, 1.5);
+        this.needle.scale.set(0.5, 0.5);
+        this.needle.x = innerWidth/2;
+        this.needle.y = innerHeight-ballRadius;
+        this.echo = Sprite.from("assets/images/echo.png");
+        this.echo.anchor.set(0.5, 1.2);
+        this.echo.scale.set(0.5, 0.6);
+        this.echo.x = innerWidth/2;
+        this.echo.y = innerHeight-ballRadius;
         Ticker.shared.add(this.update.bind(this));
         
     }
@@ -40,7 +51,7 @@ export class BallController{
                 //console.log(i+" "+this.distance[i]);
                 if(this.distance[i]==i*5) this.balls[i].readyGo=true;
                 else this.distance[i]++;
-                console.log(i + " readyGo "+this.balls[i].readyGo);
+                //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
                     this.balls[i].ball.x +=this.balls[i].dx;
                     this.balls[i].ball.y +=this.balls[i].dy;
@@ -51,7 +62,11 @@ export class BallController{
                 for(var i = 0; i< this.balls.length; i++){
                     this.distance[i] = 0;
                     this.balls[i].readyGo = false;
-                }                
+                }        
+                this.needle.x = this.balls[0].ball.x;
+                this.needle.y = this.balls[0].ball.y;       
+                this.echo.x = this.balls[0].ball.x;
+                this.echo.y = this.balls[0].ball.y;            
                 this.readyAttack = false;
             }
         }
@@ -104,6 +119,7 @@ export class BallController{
                     ball.dx = this.dx; //van toc phuong x cua bong
                     ball.dy = this.dy; // van toc phuong y cua bong
                 })
+                this.removeChild(this.needle, this.echo);      
                 this.readyAttack = true;
             }
             this.mousePress = false;
@@ -115,6 +131,10 @@ export class BallController{
                     // (x,y) la vector keo chuot, dinh huong cho bong
                     var x = this.oldPosition.x - e.clientX;
                     var y = this.oldPosition.y - e.clientY;
+                    this.needle.rotation = -Math.atan(x/y);
+                    this.echo.rotation = -Math.atan(x/y);
+                    if(Math.abs(y) < 120 && Math.abs(y) > 20)
+                    this.echo.scale.set(Math.abs(y)/150, Math.abs(y)/150);
 
                     // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
                     if(x!=0&&y!=0){                        
@@ -131,11 +151,13 @@ export class BallController{
                         this.dy = 0;
                     }
                     // di chuot xuong duoi mot doan nhat dinh moi duoc ban
-                    if( y < -50 ) {
+                    if( y < -20 ) {
+                        this.addChild(this.needle, this.echo);
                         this.ready = true;
                         //console.log("ready");
                     }
                     else {
+                        this.removeChild(this.needle, this.echo);
                         this.ready = false;
                         //console.log("not ready");
                     }
