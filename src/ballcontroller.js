@@ -1,3 +1,4 @@
+import TWEEN from "@tweenjs/tween.js";
 import {Container, Sprite, Ticker } from "pixi.js"
 
 const ballRadius = 10;
@@ -14,6 +15,7 @@ export class BallController extends Container{
         this.dx = 0;
         this.dy = 0;
         this.distance = [];
+        this.currentTime = 0;
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
         }
@@ -29,6 +31,8 @@ export class BallController extends Container{
         this.echo.scale.set(0.5, 0.6);
         this.echo.x = innerWidth/2;
         this.echo.y = innerHeight-ballRadius;
+        this.groundPositionX = innerWidth/2;
+        this.firstGroundedBall = false;
         Ticker.shared.add(this.update.bind(this));
         
     }
@@ -38,12 +42,15 @@ export class BallController extends Container{
         window.addEventListener("mousemove", this.mouseHandler.bind(this));
         window.addEventListener("mouseup", this.mouseHandler.bind(this));
     }
-    update(){
+    update(dt){
+        this.currentTime += dt;
+        TWEEN.update(this.currentTime);
+
         this.checkAllGround();
         this.moveBall();
         this.border();
     }
-    // move balls and keep in screen
+    // move balls and stare
     moveBall(){
         if(this.readyAttack){
             this.ready = false;
@@ -61,12 +68,25 @@ export class BallController extends Container{
                 console.log("All ground "+this.allGround);
                 for(var i = 0; i< this.balls.length; i++){
                     this.distance[i] = 0;
-                    this.balls[i].readyGo = false;
+                    this.balls[i].readyGo = false; 
+                    let startPos = {x: this.balls[i].ball.x};
+                    var targerPos = {x: this.groundPositionX};
+                    var tween = new TWEEN.Tween(startPos, false)
+                    .to(targerPos, 1000)
+                    .easing(TWEEN.Easing.Quadratic.InOut)
+                    .onStart(()=>{
+                        console.log("start");
+                    })
+                    .onUpdate(()=> {
+                        this.balls[i].ball.x = startPos.x;
+                        console.log("update");
+                    });
+                    tween.start(this.currentTime);
                 }        
                 this.needle.x = this.balls[0].ball.x;
                 this.needle.y = this.balls[0].ball.y;       
                 this.echo.x = this.balls[0].ball.x;
-                this.echo.y = this.balls[0].ball.y;            
+                this.echo.y = this.balls[0].ball.y;       
                 this.readyAttack = false;
             }
         }
@@ -79,8 +99,7 @@ export class BallController extends Container{
                 continue;
             }
             this.allGround = false;
-        }
-        
+        }        
     }
     border(){
         for(var i = 0; i< this.balls.length; i++){            
@@ -96,7 +115,13 @@ export class BallController extends Container{
             if(this.balls[i].ball.y > innerHeight - ballRadius) {
                 this.balls[i].ball.y = innerHeight - ballRadius;
                 this.balls[i].dx = 0;
-                this.balls[i].dy = 0;              
+                this.balls[i].dy = 0; 
+                console.log(" Ground position x " + this.balls[i].ball.x);    
+                if(!this.firstGroundedBall)  {
+                    this.firstGroundedBall = true;
+                    this.groundPositionX = this.balls[i].ball.x;
+                    console.log("First ball position x " + this.groundPositionX);
+                }       
             }
             if(this.balls[i].ball.y < ballRadius) {
                 this.balls[i].ball.y = ballRadius;
