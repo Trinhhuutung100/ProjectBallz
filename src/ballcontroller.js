@@ -15,7 +15,8 @@ export class BallController extends Container{
         this.dx = 0;
         this.dy = 0;
         this.distance = [];
-        this.currentTime = 0;
+        this._dt = 0;
+        this._current = 0;
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
         }
@@ -43,9 +44,9 @@ export class BallController extends Container{
         window.addEventListener("mouseup", this.mouseHandler.bind(this));
     }
     update(dt){
-        this.currentTime += dt;
-        TWEEN.update(this.currentTime);
-
+        this._dt = Ticker.shared.deltaMS;
+        this._current += this._dt;
+        TWEEN.update(this._current);
         this.checkAllGround();
         this.moveBall();
         this.border();
@@ -66,22 +67,16 @@ export class BallController extends Container{
             }
             if(this.allGround){
                 console.log("All ground "+this.allGround);
-                for(var i = 0; i< this.balls.length; i++){
+                for(var i = 0; i < this.balls.length; i++){
+                    let ball = this.balls[i];
                     this.distance[i] = 0;
-                    this.balls[i].readyGo = false; 
-                    let startPos = {x: this.balls[i].ball.x};
-                    var targerPos = {x: this.groundPositionX};
-                    var tween = new TWEEN.Tween(startPos, false)
-                    .to(targerPos, 1000)
-                    .easing(TWEEN.Easing.Quadratic.InOut)
-                    .onStart(()=>{
-                        console.log("start");
-                    })
-                    .onUpdate(()=> {
-                        this.balls[i].ball.x = startPos.x;
-                        console.log("update");
+                    ball.readyGo = false;
+                    var tween = new TWEEN.Tween({ x: ball.ball.x})
+                    .to({x: this.groundPositionX }, 1000)
+                    .onUpdate((obj) => {
+                        ball.ball.x = obj.x;
                     });
-                    tween.start(this.currentTime);
+                    tween.start(this._current);
                 }        
                 this.needle.x = this.balls[0].ball.x;
                 this.needle.y = this.balls[0].ball.y;       
