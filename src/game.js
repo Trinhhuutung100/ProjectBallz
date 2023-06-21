@@ -5,13 +5,13 @@ import { BallController } from "./ballcontroller";
 import { Square } from "./square";
 import { CollisionHandler } from "./collisionhandler";
 import { update } from "@tweenjs/tween.js";
-const edge = innerWidth/20;
+import { Abjust } from "./abjust";
 
 export class Game{
     static init(){
         const app =  new Application({
-            width: innerWidth,
-            height: innerHeight,
+            width: Abjust.screenWidth,
+            height: Abjust.screenHeight,
             background: 0x123456
         })
         document.body.appendChild(app.view);
@@ -27,7 +27,7 @@ export class Game{
         app.stage.addChild(this.ballController);
         this.squares = [];
         for(var i = 0; i<1; i++){
-            var square = new Square(5*edge, 10*edge, 5);
+            var square = new Square(5*Abjust.edge, 10*Abjust.edge, 5);
             this.squares.push(square);
         }
         this.squares.forEach(square => {

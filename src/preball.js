@@ -1,6 +1,7 @@
 import { Sprite, Ticker} from "pixi.js"
 import { Ball } from "./ball";
-const ballRadius = 10;
+import { Abjust } from "./abjust";
+const ballRadius = Abjust.ballRadius;
 export class PreBall extends Ball{
     constructor(x=innerWidth/2, y=innerHeight-ballRadius){
         super(x, y);       

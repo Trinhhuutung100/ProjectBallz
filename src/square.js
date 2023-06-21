@@ -1,6 +1,7 @@
 import { Container, Sprite, Text, TextStyle, Ticker} from "pixi.js"
+import { Abjust } from "./abjust";
 
-const edge = innerWidth/20;
+const edge = Abjust.edge;
 export class Square extends Container{
     constructor(x, y, index){
         super();
@@ -14,7 +15,7 @@ export class Square extends Container{
         this.addChild(this.square);
         this.index = index;
         this.textStyle = new TextStyle({
-            fontSize:30,
+            fontSize: Abjust.fontSize,
             fill: "black",
             fontFamily: "Arial", 
         })        

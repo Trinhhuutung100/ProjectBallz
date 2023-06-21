@@ -1,14 +1,15 @@
 import TWEEN from "@tweenjs/tween.js";
 import {Container, Sprite, Ticker } from "pixi.js"
+import { Abjust } from "./abjust";
 
-const ballRadius = 10;
+const ballRadius = Abjust.ballRadius;
 
 export class BallController extends Container{
     constructor(balls){
         super();
         this.balls = balls;
         this.init();
-        this.speed = 20;
+        this.speed = Abjust.ballSpeed;
         this.mousePress = false;
         this.ready = false;
         this.readyAttack = false;
@@ -56,7 +57,7 @@ export class BallController extends Container{
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
                 //console.log(i+" "+this.distance[i]);
-                if(this.distance[i]==i*5) this.balls[i].readyGo=true;
+                if(this.distance[i]==i*Abjust.distanceBetweenBalls) this.balls[i].readyGo=true;
                 else this.distance[i]++;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
@@ -71,7 +72,7 @@ export class BallController extends Container{
                     this.distance[i] = 0;
                     ball.readyGo = false;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
-                    .to({x: this.groundPositionX }, 500)
+                    .to({x: this.groundPositionX }, Abjust.tweenTime)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
                         this.mousePress = false;
@@ -158,8 +159,8 @@ export class BallController extends Container{
                     var y = this.oldPosition.y - e.clientY;
                     this.needle.rotation = -Math.atan(x/y);
                     this.echo.rotation = -Math.atan(x/y);
-                    if(Math.abs(y) < 120 && Math.abs(y) > 20)
-                    this.echo.scale.set(Math.abs(y)/150, Math.abs(y)/150);
+                    if(Math.abs(y) < Abjust.echoMaxNumerator && Math.abs(y) > Abjust.echoMinNumerator)
+                    this.echo.scale.set(Math.abs(y)/Abjust.echoDenominator, Math.abs(y)/Abjust.echoDenominator);
 
                     // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
                     if(x!=0&&y!=0){                        
@@ -176,7 +177,7 @@ export class BallController extends Container{
                         this.dy = 0;
                     }
                     // di chuot xuong duoi mot doan nhat dinh moi duoc ban
-                    if( y < -30 ) {
+                    if( y < -Abjust.echoMinNumerator ) {
                         this.addChild(this.needle, this.echo);
                         this.ready = true;
                         //console.log("ready");

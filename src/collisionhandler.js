@@ -1,6 +1,7 @@
 import { Ticker } from "pixi.js";
-const ballRadius = 10;
-const edge = innerWidth/20;
+import { Abjust } from "./abjust";
+const ballRadius = Abjust.ballRadius;
+const edge = Abjust.edge;
 
 export class CollisionHandler{
     constructor(balls, squares){
