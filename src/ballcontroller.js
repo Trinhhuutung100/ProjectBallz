@@ -71,6 +71,7 @@ export class BallController extends Container{
             }
         }
     }
+    //check if all the balls are on ground
     checkAllGround(){
         for(var i = 0; i< this.balls.length; i++){
             this.allGround = true;
