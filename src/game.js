@@ -4,6 +4,7 @@ import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
 import { Square } from "./square";
 import { CollisionHandler } from "./collisionhandler";
+import { update } from "@tweenjs/tween.js";
 const edge = innerWidth/20;
 
 export class Game{
@@ -30,9 +31,14 @@ export class Game{
             this.squares.push(square);
         }
         this.squares.forEach(square => {
-            app.stage.addChild(square);
+            app.stage.addChildAt(square);
         })
         this.collision = new CollisionHandler(this.balls, this.squares);
+        app.ticker.add(Game.update.bind(this));
+    }
+    static update(){
+        this.collision.update();
+        this.ballController.update();
     }
 } 
 

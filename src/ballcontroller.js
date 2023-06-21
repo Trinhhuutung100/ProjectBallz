@@ -34,7 +34,6 @@ export class BallController extends Container{
         this.echo.y = innerHeight-ballRadius;
         this.groundPositionX = innerWidth/2;
         this.firstGroundedBall = false;
-        Ticker.shared.add(this.update.bind(this));
         
     }
     // Add listener
@@ -72,9 +71,13 @@ export class BallController extends Container{
                     this.distance[i] = 0;
                     ball.readyGo = false;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
-                    .to({x: this.groundPositionX }, 1000)
+                    .to({x: this.groundPositionX }, 500)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
+                        this.mousePress = false;
+                        this.dx = 0;
+                        this.dy = 0;
+                        this.removeChild(this.needle, this.echo);
                     });
                     tween.start(this._current);
                 }        
@@ -142,6 +145,7 @@ export class BallController extends Container{
                 })
                 this.removeChild(this.needle, this.echo);      
                 this.readyAttack = true;
+                this.firstGroundedBall = false;
             }
             this.mousePress = false;
         }
@@ -172,7 +176,7 @@ export class BallController extends Container{
                         this.dy = 0;
                     }
                     // di chuot xuong duoi mot doan nhat dinh moi duoc ban
-                    if( y < -20 ) {
+                    if( y < -30 ) {
                         this.addChild(this.needle, this.echo);
                         this.ready = true;
                         //console.log("ready");

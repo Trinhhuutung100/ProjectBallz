@@ -6,7 +6,6 @@ export class CollisionHandler{
     constructor(balls, squares){
         this.balls = balls;
         this.squares = squares;
-        Ticker.shared.add(this.update.bind(this));
     }
     update(){
         this.squareCollision();

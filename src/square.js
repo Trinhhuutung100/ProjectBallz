@@ -6,6 +6,7 @@ export class Square extends Container{
         super();
         this.square = Sprite.from("assets/images/square.png");
         this.square.anchor.set(0.5, 0.5);
+        this.square.tint =  0xFF0000;
         this.square.width = 2*edge;
         this.square.height = 2*edge;
         this.square.x = x;
@@ -16,14 +17,12 @@ export class Square extends Container{
             fontSize:30,
             fill: "black",
             fontFamily: "Arial", 
-        })
-        Ticker.shared.add(this.update.bind(this));       
-    }
-    update(){
-        this.setText();
+        })        
+        this.setText();     
     }
     decreaseIndex(){
         if(this.index > 0) this.index--;
+        this.setText();
     }
     setText(){
         this.removeChild(this.text);
