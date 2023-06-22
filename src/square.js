@@ -1,13 +1,13 @@
 import { Container, Sprite, Text, TextStyle, Ticker} from "pixi.js"
 import { Abjust } from "./abjust";
 
-const edge = Abjust.edge;
+const edge = Abjust.squareEdge;
 export class Square extends Container{
     constructor(x, y, index){
         super();
         this.square = Sprite.from("assets/images/square.png");
+        this.square.tint = "green";
         this.square.anchor.set(0.5, 0.5);
-        this.square.tint = 0xFF0000;
         this.square.width = 2*edge;
         this.square.height = 2*edge;
         this.square.x = x;

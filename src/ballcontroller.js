@@ -66,7 +66,7 @@ export class BallController extends Container{
                 } 
             }
             if(this.allGround){
-                console.log("All ground "+this.allGround);
+                //console.log("All ground "+this.allGround);
                 for(var i = 0; i < this.balls.length; i++){
                     let ball = this.balls[i];
                     this.distance[i] = 0;
@@ -115,11 +115,11 @@ export class BallController extends Container{
                 this.balls[i].ball.y = innerHeight - ballRadius;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
-                console.log(" Ground position x " + this.balls[i].ball.x);    
+                //console.log(" Ground position x " + this.balls[i].ball.x);    
                 if(!this.firstGroundedBall)  {
                     this.firstGroundedBall = true;
                     this.groundPositionX = this.balls[i].ball.x;
-                    console.log("First ball position x " + this.groundPositionX);
+                    //console.log("First ball position x " + this.groundPositionX);
                 }       
             }
             if(this.balls[i].ball.y < ballRadius) {
