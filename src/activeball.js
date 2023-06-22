@@ -1,7 +1,7 @@
-import { Abjust } from "./abjust";
+import { GameConstants } from "./gameconstants";
 import { Ball } from "./ball";
 export class ActiveBall extends Ball{
-    constructor(x=Abjust.defaultX, y=Abjust.defaultY){
+    constructor(x=GameConstants.defaultX, y=GameConstants.defaultY){
         super(x,y);
     }
 

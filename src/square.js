@@ -1,7 +1,7 @@
 import { Container, Sprite, Text, TextStyle, Ticker} from "pixi.js"
-import { Abjust } from "./abjust";
+import { GameConstants } from "./gameconstants";
 
-const edge = Abjust.squareEdge;
+const edge = GameConstants.squareEdge;
 export class Square extends Container{
     constructor(x, y, index){
         super();
@@ -15,7 +15,7 @@ export class Square extends Container{
         this.addChild(this.square);
         this.index = index;
         this.textStyle = new TextStyle({
-            fontSize: Abjust.fontSize,
+            fontSize: GameConstants.fontSize,
             fill: "black",
             fontFamily: "Arial", 
         })        
