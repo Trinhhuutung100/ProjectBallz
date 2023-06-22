@@ -4,7 +4,6 @@ import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
 import { Square } from "./square";
 import { CollisionHandler } from "./collisionhandler";
-import { update } from "@tweenjs/tween.js";
 import { Abjust } from "./abjust";
 
 export class Game{
@@ -27,7 +26,7 @@ export class Game{
         app.stage.addChild(this.ballController);
         this.squares = [];
         for(var i = 0; i<1; i++){
-            var square = new Square(5*Abjust.edge, 10*Abjust.edge, 5);
+            var square = new Square(5*Abjust.edge, 15*Abjust.edge, 5);
             this.squares.push(square);
         }
         this.squares.forEach(square => {

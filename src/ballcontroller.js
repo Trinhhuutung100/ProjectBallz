@@ -24,16 +24,16 @@ export class BallController extends Container{
         this.allGround = true;
         this.oldPosition = {x:0, y: 0};
         this.needle = Sprite.from("assets/images/needle.png");
-        this.needle.anchor.set(0.5, 1.5);
-        this.needle.scale.set(0.5, 0.5);
-        this.needle.x = innerWidth/2;
-        this.needle.y = innerHeight-ballRadius;
+        this.needle.anchor.set(Abjust.needleAnchor.x, Abjust.needleAnchor.y);
+        this.needle.scale.set(Abjust.needleScale.x, Abjust.needleScale.y);
+        this.needle.x = Abjust.defaultX;
+        this.needle.y = Abjust.defaultY;
         this.echo = Sprite.from("assets/images/echo.png");
-        this.echo.anchor.set(0.5, 1.2);
-        this.echo.scale.set(0.5, 0.6);
-        this.echo.x = innerWidth/2;
-        this.echo.y = innerHeight-ballRadius;
-        this.groundPositionX = innerWidth/2;
+        this.echo.anchor.set(Abjust.echoAnchor.x, Abjust.echoAnchor.y);
+        this.echo.x = Abjust.defaultX;
+        this.echo.y = Abjust.defaultY;
+        this.groundPositionX = Abjust.defaultX;
+        this.groundPositionY = Abjust.defaultY;
         this.firstGroundedBall = false;
         
     }
@@ -72,7 +72,7 @@ export class BallController extends Container{
                     this.distance[i] = 0;
                     ball.readyGo = false;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
-                    .to({x: this.groundPositionX }, Abjust.tweenTime)
+                    .to({x: this.groundPositionX }, Abjust.ballTweenTime)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
                         this.mousePress = false;
@@ -82,22 +82,22 @@ export class BallController extends Container{
                     });
                     tween.start(this._current);
                 }        
-                this.needle.x = this.balls[0].ball.x;
-                this.needle.y = this.balls[0].ball.y;       
-                this.echo.x = this.balls[0].ball.x;
-                this.echo.y = this.balls[0].ball.y;       
+                this.needle.x = this.groundPositionX;
+                this.needle.y = this.groundPositionY;       
+                this.echo.x = this.groundPositionX;
+                this.echo.y = this.groundPositionY;       
                 this.readyAttack = false;
             }
         }
     }
     //check if all the balls are on ground
     checkAllGround(){
+        this.allGround = true;
         for(var i = 0; i< this.balls.length; i++){
-            this.allGround = true;
-            if(this.balls[i].dx == 0 || this.balls[i].dy == 0){
-                continue;
+            if(this.balls[i].dx != 0 || this.balls[i].dy != 0){
+                this.allGround = false;
+                break;
             }
-            this.allGround = false;
         }        
     }
     border(){
