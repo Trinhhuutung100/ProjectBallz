@@ -903,17 +903,17 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     window.addEventListener("mousemove", this.mouseHandler.bind(this));
     window.addEventListener("mouseup", this.mouseHandler.bind(this));
   }
-  update(balls) {
+  update(dt, balls) {
     this.balls = balls;
     this._dt = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Ticker.shared.deltaMS;
     this._current += this._dt;
     _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].update(this._current);
     this.checkAllGround();
-    this.moveBall();
+    this.moveBall(dt);
     this.border();
   }
   // move balls and stare
-  moveBall() {
+  moveBall(dt) {
     if (this.readyAttack) {
       this.ready = false;
       for (var i = 0; i < this.balls.length; i++) {
@@ -922,8 +922,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         else
           this.distance[i]++;
         if (this.balls[i].readyGo) {
-          this.balls[i].ball.x += this.balls[i].dx;
-          this.balls[i].ball.y += this.balls[i].dy;
+          this.balls[i].ball.x += this.balls[i].dx * dt;
+          this.balls[i].ball.y += this.balls[i].dy * dt;
         }
       }
       if (this.allGround) {
@@ -37705,9 +37705,9 @@ class Game {
     this.collision = new _collisionhandler__WEBPACK_IMPORTED_MODULE_5__.CollisionHandler(this.balls, this.squares, this.coins, this.preBalls);
     app.ticker.add(Game.update.bind(this));
   }
-  static update() {
+  static update(dt) {
     this.collision.update();
-    this.ballController.update(this.balls);
+    this.ballController.update(dt, this.balls);
   }
 }
 window.onload = function() {
