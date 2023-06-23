@@ -63,8 +63,8 @@ export class BallController extends Container{
                 else this.distance[i]++;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
-                    this.balls[i].ball.x +=this.balls[i].dx*this._dt;
-                    this.balls[i].ball.y +=this.balls[i].dy*this._dt;
+                    this.balls[i].ball.x +=this.balls[i].dx;
+                    this.balls[i].ball.y +=this.balls[i].dy;
                 } 
             }
             if(this.allGround){
