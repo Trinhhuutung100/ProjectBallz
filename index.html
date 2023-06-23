@@ -899,9 +899,9 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   }
   // Add listener
   init() {
-    window.addEventListener("mousedown", this.mouseHandler.bind(this));
-    window.addEventListener("mousemove", this.mouseHandler.bind(this));
-    window.addEventListener("mouseup", this.mouseHandler.bind(this));
+    window.addEventListener("pointerdown", this.mouseHandler.bind(this));
+    window.addEventListener("pointermove", this.mouseHandler.bind(this));
+    window.addEventListener("pointerup", this.mouseHandler.bind(this));
   }
   update(dt, balls) {
     this.balls = balls;
@@ -992,12 +992,12 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   }
   // handle mouse 
   mouseHandler(e) {
-    if (e.type == "mousedown") {
+    if (e.type == "pointerdown") {
       this.mousePress = true;
       this.oldPosition.x = e.clientX;
       this.oldPosition.y = e.clientY;
     }
-    if (e.type == "mouseup") {
+    if (e.type == "pointerup") {
       if (this.ready) {
         this.balls.forEach((ball) => {
           ball.dx = this.dx;
@@ -1009,7 +1009,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       }
       this.mousePress = false;
     }
-    if (e.type == "mousemove") {
+    if (e.type == "pointermove") {
       if (!this.readyAttack) {
         if (this.mousePress) {
           var x = this.oldPosition.x - e.clientX;
