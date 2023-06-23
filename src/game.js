@@ -58,7 +58,7 @@ export class Game{
     }
     static update(){
         this.collision.update();
-        this.ballController.update();
+        this.ballController.update(this.balls);
     }
 } 
 

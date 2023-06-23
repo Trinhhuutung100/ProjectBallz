@@ -1,3 +1,4 @@
+import { ActiveBall } from "./activeball";
 import { GameConstants } from "./gameconstants";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
@@ -99,11 +100,22 @@ export class CollisionHandler{
                 var ball = this.balls[b].ball;
                 var preBall = this.preBalls[p].ball;
                 if(this.vectorDistance(ball, preBall)<ballRadius+coinRadius){
-                    this.preBalls[p].destroy();
+                    this.preBalls[p].ringDestroy = true;
+                    this.preBalls[p].ball.tint = "green";
+                    var preBall = this.preBalls[p];                    
+                    this.preBalls.splice(p, 1);
+                    this.balls.push(preBall);
+                    this.balls[this.balls.length-1].dx = 0; 
+                    this.balls[this.balls.length-1].dy = 20;    
+                    this.balls[this.balls.length-1].readyGo = true;  
                 }
             }
         }
     }
+    // addBall(balls, x, y){
+    //     var ball = new ActiveBall(x, y);
+    //     balls.push(ball);
+    // }
     vectorDistance(objA, objB){
         return Math.sqrt((objA.x- objB.x)*(objA.x- objB.x)+(objA.y- objB.y)*(objA.y- objB.y));
     }

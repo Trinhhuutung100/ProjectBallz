@@ -12,6 +12,7 @@ export class Ball extends Container{
         this.ball.dx = 0;
         this.ball.dy = 0;
         this.readyGo = false;
+        this.isBall = true;
         this.addChild(this.ball);
     }
 

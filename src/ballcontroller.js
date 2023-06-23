@@ -43,7 +43,9 @@ export class BallController extends Container{
         window.addEventListener("mousemove", this.mouseHandler.bind(this));
         window.addEventListener("mouseup", this.mouseHandler.bind(this));
     }
-    update(){
+    update(balls){
+        this.balls = balls;
+        //console.log(this.balls);
         this._dt = Ticker.shared.deltaMS;
         this._current += this._dt;
         TWEEN.update(this._current);
@@ -71,6 +73,8 @@ export class BallController extends Container{
                     let ball = this.balls[i];
                     this.distance[i] = 0;
                     ball.readyGo = false;
+                    ball.isBall = true;
+                    ball.ball.tint = "white";
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
                     .to({x: this.groundPositionX }, GameConstants.ballTweenTime)
                     .onUpdate((obj) => {
@@ -117,8 +121,10 @@ export class BallController extends Container{
                 this.balls[i].dy = 0; 
                 //console.log(" Ground position x " + this.balls[i].ball.x);    
                 if(!this.firstGroundedBall)  {
-                    this.firstGroundedBall = true;
-                    this.groundPositionX = this.balls[i].ball.x;
+                    if(this.balls[i].isBall){
+                        this.firstGroundedBall = true;
+                        this.groundPositionX = this.balls[i].ball.x;
+                    }
                     //console.log("First ball position x " + this.groundPositionX);
                 }       
             }
