@@ -26,9 +26,10 @@ export const GameConstants = {
     //Ball move
     ballSpeed : 10,
     distanceBetweenBalls : 10,
+    fallSpeed : 10,
     //Tween animation
     ballTweenTime : 500,
-    ringTweenTime : 100,
+    ringTweenTime : 10,
     //Default position x = screen/2,y = screen - ballradius
     defaultX : innerWidth/2,
     defaultY : innerHeight - 10,

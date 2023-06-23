@@ -1,4 +1,5 @@
 import { ActiveBall } from "./activeball";
+import { Game } from "./game";
 import { GameConstants } from "./gameconstants";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
@@ -12,10 +13,10 @@ export class CollisionHandler{
         this.coins = coins;
         this.preBalls = preBalls;
     }
-    update(){
+    update(dt){
         this.squareCollision();
         this.coinCollision();
-        this.preBallCollision();
+        this.preBallCollision(dt);
     }
     squareCollision(){
         for(var b = 0; b< this.balls.length; b++){
@@ -98,7 +99,7 @@ export class CollisionHandler{
             }
         }
     }
-    preBallCollision(){
+    preBallCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
             if(this.balls[b].isBall){
                 for(var p = 0; p< this.preBalls.length; p++){
@@ -111,7 +112,7 @@ export class CollisionHandler{
                         this.preBalls.splice(p, 1);
                         this.balls.push(preBall);
                         this.balls[this.balls.length-1].dx = 0; 
-                        this.balls[this.balls.length-1].dy = 20;    
+                        this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
                         this.balls[this.balls.length-1].readyGo = true;  
                     }
                 }

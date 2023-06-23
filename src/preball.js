@@ -17,7 +17,7 @@ export class PreBall extends Ball{
     }
     ringAnimation(){        
         var tween = new TWEEN.Tween({ scale: this.ring.scale.x});
-            tween.to({scale: GameConstants.maxRingScale }, GameConstants.ringTweenTime)
+            tween.to({scale: GameConstants.maxRingScale }, GameConstants.ringTweenTime*Ticker.shared.deltaMS)
             .repeat(Infinity)
             .yoyo(true)
             .onUpdate((obj) => {

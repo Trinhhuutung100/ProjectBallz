@@ -43,18 +43,18 @@ export class BallController extends Container{
         window.addEventListener("mousemove", this.mouseHandler.bind(this));
         window.addEventListener("mouseup", this.mouseHandler.bind(this));
     }
-    update(balls){
+    update(dt, balls){
         this.balls = balls;
         //console.log(this.balls);
         this._dt = Ticker.shared.deltaMS;
         this._current += this._dt;
         TWEEN.update(this._current);
         this.checkAllGround();
-        this.moveBall();
+        this.moveBall(dt);
         this.border();
     }
     // move balls and stare
-    moveBall(){
+    moveBall(dt){
         if(this.readyAttack){
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
@@ -63,8 +63,8 @@ export class BallController extends Container{
                 else this.distance[i]++;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
-                    this.balls[i].ball.x +=this.balls[i].dx;
-                    this.balls[i].ball.y +=this.balls[i].dy;
+                    this.balls[i].ball.x +=this.balls[i].dx*dt;
+                    this.balls[i].ball.y +=this.balls[i].dy*dt;
                 } 
             }
             if(this.allGround){
@@ -75,7 +75,7 @@ export class BallController extends Container{
                     ball.readyGo = false;
                     ball.isBall = true;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
-                    .to({x: this.groundPositionX }, GameConstants.ballTweenTime)
+                    .to({x: this.groundPositionX }, GameConstants.ballTweenTime*dt)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
                         this.mousePress = false;

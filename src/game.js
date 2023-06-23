@@ -56,9 +56,9 @@ export class Game{
         this.collision = new CollisionHandler(this.balls, this.squares, this.coins, this.preBalls);
         app.ticker.add(Game.update.bind(this));
     }
-    static update(){
-        this.collision.update();
-        this.ballController.update(this.balls);
+    static update(dt){
+        this.collision.update(dt);
+        this.ballController.update(dt, this.balls);
     }
 } 
 
