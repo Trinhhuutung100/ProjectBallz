@@ -54,7 +54,7 @@ export class BallController extends Container{
         this.border();
     }
     // move balls and stare
-    moveBall(dt){
+    moveBall(){
         if(this.readyAttack){
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
@@ -63,8 +63,8 @@ export class BallController extends Container{
                 else this.distance[i]++;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
-                    this.balls[i].ball.x +=this.balls[i].dx*dt;
-                    this.balls[i].ball.y +=this.balls[i].dy*dt;
+                    this.balls[i].ball.x +=this.balls[i].dx*this._dt;
+                    this.balls[i].ball.y +=this.balls[i].dy*this._dt;
                 } 
             }
             if(this.allGround){
