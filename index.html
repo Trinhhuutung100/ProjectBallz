@@ -913,7 +913,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.border();
   }
   // move balls and stare
-  moveBall(dt) {
+  moveBall() {
     if (this.readyAttack) {
       this.ready = false;
       for (var i = 0; i < this.balls.length; i++) {
@@ -922,8 +922,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         else
           this.distance[i]++;
         if (this.balls[i].readyGo) {
-          this.balls[i].ball.x += this.balls[i].dx * dt;
-          this.balls[i].ball.y += this.balls[i].dy * dt;
+          this.balls[i].ball.x += this.balls[i].dx * this._dt;
+          this.balls[i].ball.y += this.balls[i].dy * this._dt;
         }
       }
       if (this.allGround) {
