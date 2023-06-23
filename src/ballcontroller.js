@@ -39,9 +39,9 @@ export class BallController extends Container{
     }
     // Add listener
     init(){
-        window.addEventListener("mousedown", this.mouseHandler.bind(this));
-        window.addEventListener("mousemove", this.mouseHandler.bind(this));
-        window.addEventListener("mouseup", this.mouseHandler.bind(this));
+        window.addEventListener("pointerdown", this.mouseHandler.bind(this));
+        window.addEventListener("pointermove", this.mouseHandler.bind(this));
+        window.addEventListener("pointerup", this.mouseHandler.bind(this));
     }
     update(dt, balls){
         this.balls = balls;
@@ -139,14 +139,14 @@ export class BallController extends Container{
     // handle mouse 
     mouseHandler(e){
         // khi nhan chuot
-        if(e.type == "mousedown"){
+        if(e.type == "pointerdown"){
             this.mousePress = true;
             // vi tri tu luc bat dau di chuot
             this.oldPosition.x = e.clientX;
             this.oldPosition.y = e.clientY;
         }
         //khi tha chuot
-        if(e.type == "mouseup"){
+        if(e.type == "pointerup"){
             if(this.ready){                
                 this.balls.forEach(ball => {
                     ball.dx = this.dx; //van toc phuong x cua bong
@@ -159,7 +159,7 @@ export class BallController extends Container{
             this.mousePress = false;
         }
         // khi nhan chuot va di chuot
-        if(e.type == "mousemove"){
+        if(e.type == "pointermove"){
             if(!this.readyAttack){
                 if(this.mousePress){
                     // (x,y) la vector keo chuot, dinh huong cho bong
