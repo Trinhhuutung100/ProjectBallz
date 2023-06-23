@@ -27,7 +27,7 @@ export class Game{
         //Add squares
         this.squares = [];
         for(var i = 0; i<10; i++){
-            var square = new Square(GameConstants.edge + 2*i*GameConstants.edge, GameConstants.edge, 2);
+            var square = new Square(GameConstants.edge + 2*i*GameConstants.edge, 5*GameConstants.edge, 5*i+1);
             this.squares.push(square);
         }
         this.squares.forEach(square => {
@@ -45,7 +45,7 @@ export class Game{
         //Add preball
         this.preBalls = [];
         for(var i = 0; i<10; i++){
-            var preBall = new PreBall(GameConstants.edge + 2*i*GameConstants.edge, 5*GameConstants.edge);
+            var preBall = new PreBall(GameConstants.edge + 2*i*GameConstants.edge, GameConstants.edge);
             this.preBalls.push(preBall);
         }
         this.preBalls.forEach(preBall => {

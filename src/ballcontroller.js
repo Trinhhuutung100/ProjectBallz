@@ -74,7 +74,6 @@ export class BallController extends Container{
                     this.distance[i] = 0;
                     ball.readyGo = false;
                     ball.isBall = true;
-                    ball.ball.tint = "white";
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
                     .to({x: this.groundPositionX }, GameConstants.ballTweenTime)
                     .onUpdate((obj) => {
@@ -83,7 +82,10 @@ export class BallController extends Container{
                         this.dx = 0;
                         this.dy = 0;
                         this.removeChild(this.needle, this.echo);
-                    });
+                    })
+                    .onComplete(() => {
+                        ball.ball.tint = "white";
+                    })
                     tween.start(this._current);
                 }        
                 this.needle.x = this.groundPositionX;
