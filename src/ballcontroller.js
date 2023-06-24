@@ -109,16 +109,16 @@ export class BallController extends Container{
     border(){
         for(var i = 0; i< this.balls.length; i++){            
             //make border
-            if(this.balls[i].ball.x > innerWidth - ballRadius ) {
-                this.balls[i].ball.x = innerWidth - ballRadius;
+            if(this.balls[i].ball.x > GameConstants.screenWidth - ballRadius ) {
+                this.balls[i].ball.x = GameConstants.screenWidth - ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
             if(this.balls[i].ball.x < ballRadius ) {
                 this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.y > innerHeight - ballRadius) {
-                this.balls[i].ball.y = innerHeight - ballRadius;
+            if(this.balls[i].ball.y > GameConstants.screenHeight - ballRadius) {
+                this.balls[i].ball.y = GameConstants.screenHeight - ballRadius;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
                 //console.log(" Ground position x " + this.balls[i].ball.x);    

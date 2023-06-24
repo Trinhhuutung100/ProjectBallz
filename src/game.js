@@ -17,7 +17,7 @@ export class Game{
         document.body.appendChild(app.view);
         //Add balls
         this.balls = [];
-        for(var i = 0; i<10; i++){
+        for(var i = 0; i<1; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
         }
