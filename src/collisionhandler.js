@@ -1,3 +1,5 @@
+import { ActiveBall } from "./activeball";
+import { Game } from "./game";
 import { GameConstants } from "./gameconstants";
 import { Sound} from "@pixi/sound";
 const ballRadius = GameConstants.ballRadius;

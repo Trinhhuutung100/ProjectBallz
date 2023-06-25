@@ -11,7 +11,7 @@ export class Game{
     static init(){
         const app =  new Application({
             width: GameConstants.screenWidth,
-            height: GameConstants.screenHeight + 100,
+            height: GameConstants.screenHeight,
             background: 0x123456
         })
         document.body.appendChild(app.view);
