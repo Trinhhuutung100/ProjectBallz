@@ -1,6 +1,7 @@
 import { ActiveBall } from "./activeball";
 import { Game } from "./game";
 import { GameConstants } from "./gameconstants";
+import { Sound } from "@pixi/sound";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 const coinRadius = GameConstants.coinRadius;
@@ -12,6 +13,8 @@ export class CollisionHandler{
         this.squares = squares;
         this.coins = coins;
         this.preBalls = preBalls;
+        this.ballSound = Sound.from("assets/sounds/Ball.wav");
+        this.coinSound = Sound.from("assets/sounds/Coin.wav");
     }
     update(dt){
         this.squareCollision();
@@ -44,9 +47,10 @@ export class CollisionHandler{
                         continue;
                     }
                     if(leftBottomDistance<ballRadius){
+                        this.ballSound.play(); 
                         if(ball.dx>0) ball.dx = -ball.dx;
                         if(ball.dy<0) ball.dy = -ball.dy;
-                        this.squares[s].decreaseIndex(); 
+                        this.squares[s].decreaseIndex();
                         continue;
                     }
                     if(rightBottomDistance<ballRadius){
@@ -56,12 +60,14 @@ export class CollisionHandler{
                         continue;
                     }
                     if(leftTopDistance<ballRadius){
+                        this.ballSound.play();
                         if(ball.dx>0) ball.dx = -ball.dx;
                         if(ball.dy>0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 
                         continue;
                     }
                     if(rightTopDistance<ballRadius){
+                        this.ballSound.play();
                         if(ball.dx<0) ball.dx = -ball.dx;
                         if(ball.dy>0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 
@@ -69,18 +75,16 @@ export class CollisionHandler{
                     }
                     if( Math.abs(distX) < ballRadius + edge 
                     && Math.abs(ballY - squareY) < edge) {  
+                        this.ballSound.play();
                         ball.dx = -ball.dx;   
-                        this.squares[s].decreaseIndex(); 
-                        // if(ballX > squareX) ball.ball.x = squareX + ballRadius + edge ;
-                        // else ball.ball.x = square.x - ballRadius - edge ;
+                        this.squares[s].decreaseIndex();
                         continue;                       
                     }
                     if( Math.abs(distY) < ballRadius + edge 
-                    && Math.abs(ballX - squareX) < edge) {   
+                    && Math.abs(ballX - squareX) < edge) {       
+                        this.ballSound.play();      
                         ball.dy = -ball.dy;  
-                        this.squares[s].decreaseIndex();      
-                        // if(ballY > squareY)  ball.ball.y = square.y + ballRadius + edge ;
-                        // else ball.ball.y = square.y - ballRadius - edge ;                
+                        this.squares[s].decreaseIndex();          
                     }
                 }
             }
@@ -94,6 +98,8 @@ export class CollisionHandler{
                     var coin = this.coins[c].coin;
                     if(this.vectorDistance(ball, coin)<ballRadius+coinRadius){
                         this.coins[c].destroy();
+                        this.coins.splice(c, 1);
+                        this.coinSound.play();
                     }
                 }
             }
@@ -114,6 +120,7 @@ export class CollisionHandler{
                         this.balls[this.balls.length-1].dx = 0; 
                         this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
                         this.balls[this.balls.length-1].readyGo = true;  
+                        this.ballSound.play();
                     }
                 }
             }
