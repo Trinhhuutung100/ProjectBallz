@@ -1246,7 +1246,7 @@ __webpack_require__.r(__webpack_exports__);
 const screenHeight = innerHeight;
 const screenWidth = innerWidth;
 const padding = 2.5;
-const column = 20;
+const column = 10;
 const edge = screenWidth / 2 / column;
 const ballRadius = 10;
 const GameConstants = {
@@ -41109,7 +41109,7 @@ class Game {
   static init() {
     const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
       width: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth,
-      height: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight,
+      height: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight + 100,
       background: 1193046
     });
     document.body.appendChild(app.view);
@@ -41122,7 +41122,7 @@ class Game {
       app.stage.addChild(ball2);
     });
     this.squares = [];
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 10; i++) {
       var square = new _square__WEBPACK_IMPORTED_MODULE_4__.Square(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 5 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 10 * i + 1);
       this.squares.push(square);
     }
@@ -41130,7 +41130,7 @@ class Game {
       app.stage.addChildAt(square2);
     });
     this.coins = [];
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 10; i++) {
       var coin = new _coin__WEBPACK_IMPORTED_MODULE_7__.Coin(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 3 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge);
       this.coins.push(coin);
     }
@@ -41138,7 +41138,7 @@ class Game {
       app.stage.addChild(coin2);
     });
     this.preBalls = [];
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 10; i++) {
       var preBall = new _preball__WEBPACK_IMPORTED_MODULE_2__.PreBall(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge);
       this.preBalls.push(preBall);
     }
