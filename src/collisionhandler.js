@@ -1,7 +1,6 @@
 import { ActiveBall } from "./activeball";
 import { Game } from "./game";
 import { GameConstants } from "./gameconstants";
-import { Sound} from "@pixi/sound";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 const coinRadius = GameConstants.coinRadius;
@@ -13,8 +12,6 @@ export class CollisionHandler{
         this.squares = squares;
         this.coins = coins;
         this.preBalls = preBalls;
-        this.ballSound = Sound.from("assets/sounds/Ball.wav");
-        this.coinSound = Sound.from("assets/sounds/Coin.wav");
     }
     update(dt){
         this.squareCollision();
@@ -46,48 +43,44 @@ export class CollisionHandler{
                         this.squares[s].destroy();
                         continue;
                     }
-                    
-                    this.ballSound.volume = 1;
                     if(leftBottomDistance<ballRadius){
-                        this.ballSound.play();
                         if(ball.dx>0) ball.dx = -ball.dx;
                         if(ball.dy<0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 
                         continue;
                     }
                     if(rightBottomDistance<ballRadius){
-                        this.ballSound.play();
                         if(ball.dx<0) ball.dx = -ball.dx;
                         if(ball.dy<0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 
                         continue;
                     }
                     if(leftTopDistance<ballRadius){
-                        this.ballSound.play();
                         if(ball.dx>0) ball.dx = -ball.dx;
                         if(ball.dy>0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 
                         continue;
                     }
                     if(rightTopDistance<ballRadius){
-                        this.ballSound.play();
                         if(ball.dx<0) ball.dx = -ball.dx;
                         if(ball.dy>0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 
                         continue;
                     }
                     if( Math.abs(distX) < ballRadius + edge 
-                    && Math.abs(ballY - squareY) < edge) { 
-                        this.ballSound.play(); 
+                    && Math.abs(ballY - squareY) < edge) {  
                         ball.dx = -ball.dx;   
                         this.squares[s].decreaseIndex(); 
+                        // if(ballX > squareX) ball.ball.x = squareX + ballRadius + edge ;
+                        // else ball.ball.x = square.x - ballRadius - edge ;
                         continue;                       
                     }
                     if( Math.abs(distY) < ballRadius + edge 
-                    && Math.abs(ballX - squareX) < edge) { 
-                        this.ballSound.play();  
+                    && Math.abs(ballX - squareX) < edge) {   
                         ball.dy = -ball.dy;  
-                        this.squares[s].decreaseIndex();                    
+                        this.squares[s].decreaseIndex();      
+                        // if(ballY > squareY)  ball.ball.y = square.y + ballRadius + edge ;
+                        // else ball.ball.y = square.y - ballRadius - edge ;                
                     }
                 }
             }
@@ -99,11 +92,8 @@ export class CollisionHandler{
                 for(var c = 0; c< this.coins.length; c++){
                     var ball = this.balls[b].ball;
                     var coin = this.coins[c].coin;
-                    this.coinSound.volume = 0.1;
                     if(this.vectorDistance(ball, coin)<ballRadius+coinRadius){
-                        this.coinSound.play();
-                        this.coins[c].destroy();                  
-                        this.coins.splice(c, 1);
+                        this.coins[c].destroy();
                     }
                 }
             }
@@ -115,9 +105,7 @@ export class CollisionHandler{
                 for(var p = 0; p< this.preBalls.length; p++){
                     var ball = this.balls[b].ball;
                     var preBall = this.preBalls[p].ball;
-                    this.ballSound.volume = 0.1;
                     if(this.vectorDistance(ball, preBall)<ballRadius+coinRadius){
-                        this.ballSound.play();
                         this.preBalls[p].ringDestroy = true;
                         this.preBalls[p].ball.tint = "green";
                         var preBall = this.preBalls[p];                    
