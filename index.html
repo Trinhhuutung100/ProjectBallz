@@ -1243,10 +1243,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameConstants: () => (/* binding */ GameConstants)
 /* harmony export */ });
-const screenHeight = 400;
-const screenWidth = 300;
+const screenHeight = innerHeight;
+const screenWidth = innerWidth;
 const padding = 2.5;
-const column = 7;
+const column = 20;
 const edge = screenWidth / 2 / column;
 const ballRadius = 10;
 const GameConstants = {
@@ -41114,7 +41114,7 @@ class Game {
     });
     document.body.appendChild(app.view);
     this.balls = [];
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 10; i++) {
       var ball = new _activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
       this.balls.push(ball);
     }
@@ -41122,15 +41122,15 @@ class Game {
       app.stage.addChild(ball2);
     });
     this.squares = [];
-    for (var i = 0; i < 10; i++) {
-      var square = new _square__WEBPACK_IMPORTED_MODULE_4__.Square(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 5 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 5 * i + 1);
+    for (var i = 0; i < 20; i++) {
+      var square = new _square__WEBPACK_IMPORTED_MODULE_4__.Square(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 5 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 10 * i + 1);
       this.squares.push(square);
     }
     this.squares.forEach((square2) => {
       app.stage.addChildAt(square2);
     });
     this.coins = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       var coin = new _coin__WEBPACK_IMPORTED_MODULE_7__.Coin(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 3 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge);
       this.coins.push(coin);
     }
@@ -41138,7 +41138,7 @@ class Game {
       app.stage.addChild(coin2);
     });
     this.preBalls = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       var preBall = new _preball__WEBPACK_IMPORTED_MODULE_2__.PreBall(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge);
       this.preBalls.push(preBall);
     }
