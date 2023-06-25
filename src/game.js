@@ -17,7 +17,7 @@ export class Game{
         document.body.appendChild(app.view);
         //Add balls
         this.balls = [];
-        for(var i = 0; i<1; i++){
+        for(var i = 0; i<10; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
         }
@@ -26,8 +26,8 @@ export class Game{
         })
         //Add squares
         this.squares = [];
-        for(var i = 0; i<10; i++){
-            var square = new Square(GameConstants.edge + 2*i*GameConstants.edge, 5*GameConstants.edge, 5*i+1);
+        for(var i = 0; i<20; i++){
+            var square = new Square(GameConstants.edge + 2*i*GameConstants.edge, 5*GameConstants.edge, 10*i+1);
             this.squares.push(square);
         }
         this.squares.forEach(square => {
@@ -35,7 +35,7 @@ export class Game{
         })
         //Add coins
         this.coins = [];
-        for(var i = 0; i<10; i++){
+        for(var i = 0; i<20; i++){
             var coin = new Coin(GameConstants.edge + 2*i*GameConstants.edge, 3*GameConstants.edge);
             this.coins.push(coin);
         }
@@ -44,7 +44,7 @@ export class Game{
         })
         //Add preball
         this.preBalls = [];
-        for(var i = 0; i<10; i++){
+        for(var i = 0; i<20; i++){
             var preBall = new PreBall(GameConstants.edge + 2*i*GameConstants.edge, GameConstants.edge);
             this.preBalls.push(preBall);
         }
