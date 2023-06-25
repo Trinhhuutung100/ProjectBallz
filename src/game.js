@@ -11,7 +11,7 @@ export class Game{
     static init(){
         const app =  new Application({
             width: GameConstants.screenWidth,
-            height: GameConstants.screenHeight,
+            height: GameConstants.screenHeight + 100,
             background: 0x123456
         })
         document.body.appendChild(app.view);
@@ -26,7 +26,7 @@ export class Game{
         })
         //Add squares
         this.squares = [];
-        for(var i = 0; i<20; i++){
+        for(var i = 0; i<10; i++){
             var square = new Square(GameConstants.edge + 2*i*GameConstants.edge, 5*GameConstants.edge, 10*i+1);
             this.squares.push(square);
         }
@@ -35,7 +35,7 @@ export class Game{
         })
         //Add coins
         this.coins = [];
-        for(var i = 0; i<20; i++){
+        for(var i = 0; i<10; i++){
             var coin = new Coin(GameConstants.edge + 2*i*GameConstants.edge, 3*GameConstants.edge);
             this.coins.push(coin);
         }
@@ -44,7 +44,7 @@ export class Game{
         })
         //Add preball
         this.preBalls = [];
-        for(var i = 0; i<20; i++){
+        for(var i = 0; i<10; i++){
             var preBall = new PreBall(GameConstants.edge + 2*i*GameConstants.edge, GameConstants.edge);
             this.preBalls.push(preBall);
         }
