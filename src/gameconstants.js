@@ -1,7 +1,7 @@
-const screenHeight = innerHeight;
-const screenWidth = innerWidth;
+const screenHeight = 400;
+const screenWidth = 300;
 const padding = 2.5;
-const column = 10;
+const column = 7;
 const edge = screenWidth/2/column;
 const ballRadius = 10 ;
 export const GameConstants = {
