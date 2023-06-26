@@ -1,6 +1,6 @@
 const screenHeight = innerHeight;
 const screenWidth = innerWidth;
-const padding = 10;
+const padding = 5;
 const column = 10;
 //const edge = screenWidth/2/column;
 const ballRadius = 10 ;

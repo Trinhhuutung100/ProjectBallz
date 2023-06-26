@@ -26,17 +26,17 @@ export class CollisionHandler{
             if(this.balls[b].isBall){
                 for(var s = 0; s< this.squares.length; s++){
                     var ball = this.balls[b];
-                    var square = this.squares[s].square;
+                    var square = this.squares[s].square.getBounds();
                     var ballX = ball.ball.x;
                     var ballY = ball.ball.y;
-                    var squareX = square.x;
-                    var squareY = square.y;
+                    var squareX = square.x + edge;
+                    var squareY = square.y + edge;
                     var distX = ballX + ball.dx - squareX;
                     var distY = ballY + ball.dy - squareY;
-                    var leftBottom = {x: square.x - edge, y: square.y + edge};
-                    var leftTop = {x: square.x - edge, y: square.y - edge};
-                    var rightBottom = {x: square.x + edge, y: square.y + edge};
-                    var rightTop = {x: square.x - edge, y: square.y - edge};
+                    var leftBottom = {x: square.left, y: square.bottom};
+                    var leftTop = {x: square.left, y: square.top};
+                    var rightBottom = {x: square.right, y: square.bottom};
+                    var rightTop = {x: square.right, y: square.top};
     
                     var leftBottomDistance = this.vectorDistance(ball.ball, leftBottom);
                     var leftTopDistance = this.vectorDistance(ball.ball, leftTop);
@@ -95,7 +95,7 @@ export class CollisionHandler{
             if(this.balls[b].isBall){
                 for(var c = 0; c< this.coins.length; c++){
                     var ball = this.balls[b].ball;
-                    var coin = this.coins[c].coin;
+                    var coin = {x: this.coins[c].coin.getBounds().x + coinRadius, y: this.coins[c].coin.getBounds().y + coinRadius};
                     if(this.vectorDistance(ball, coin)<ballRadius+coinRadius){
                         this.coins[c].destroy();
                         this.coins.splice(c, 1);
@@ -110,7 +110,7 @@ export class CollisionHandler{
             if(this.balls[b].isBall){
                 for(var p = 0; p< this.preBalls.length; p++){
                     var ball = this.balls[b].ball;
-                    var preBall = this.preBalls[p].ball;
+                    var preBall = {x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius};
                     if(this.vectorDistance(ball, preBall)<ballRadius+coinRadius){
                         this.preBalls[p].ringDestroy = true;
                         this.preBalls[p].ball.tint = "green";
@@ -120,6 +120,7 @@ export class CollisionHandler{
                         this.balls[this.balls.length-1].dx = 0; 
                         this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
                         this.balls[this.balls.length-1].readyGo = true;  
+                        
                         this.ballSound.play();
                     }
                 }

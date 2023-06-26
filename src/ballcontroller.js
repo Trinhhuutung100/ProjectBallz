@@ -5,9 +5,10 @@ import { GameConstants } from "./gameconstants";
 const ballRadius = GameConstants.ballRadius;
 
 export class BallController extends Container{
-    constructor(balls){
+    constructor(balls, map){
         super();
         this.balls = balls;
+        this.map = map;
         this.init();
         this.speed = GameConstants.ballSpeed;
         this.mousePress = false;
@@ -43,8 +44,9 @@ export class BallController extends Container{
         window.addEventListener("pointermove", this.mouseHandler.bind(this));
         window.addEventListener("pointerup", this.mouseHandler.bind(this));
     }
-    update(dt, balls){
+    update(dt, balls, map){
         this.balls = balls;
+        this.map = map; 
         //console.log(this.balls);
         this._dt = Ticker.shared.deltaMS;
         this._current += this._dt;
@@ -85,9 +87,13 @@ export class BallController extends Container{
                     })
                     .onComplete(() => {
                         ball.ball.tint = "white";
+                        
                     })
                     tween.start(this._current);
-                }        
+                }   
+                if(this.readyAttack){
+                    this.map.createNewLine();
+                }     
                 this.needle.x = this.groundPositionX;
                 this.needle.y = this.groundPositionY;       
                 this.echo.x = this.groundPositionX;

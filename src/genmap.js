@@ -1,7 +1,7 @@
-import { Container } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
 import { GameConstants } from "./gameconstants";
 import { Square } from "./square";
-import TWEEN from "@tweenjs/tween.js";
+import TWEEN, { Tween } from "@tweenjs/tween.js";
 import { Coin } from "./coin";
 import { PreBall } from "./preball";
 
@@ -11,14 +11,17 @@ export class GenMap extends Container{
         this.line = 1;
         this.squares = [];
         this.coins = [];
-        this.preBalls = [];     
-        this.creatNewLine();    
+        this.preBalls = [];    
+        this.createNewLine();    
     }
-    creatNewLine(){
+    createNewLine(){
         for(var i = 0; i<GameConstants.column; i++){
             var positionX = (i+1)*GameConstants.padding + (2*i+1)*GameConstants.squareEdge;
             var positionY = GameConstants.padding + GameConstants.squareEdge;
             var randomObj = Math.floor(Math.random()*100);
+            // var square = new Square(positionX, positionY, 40);
+            // this.squares.push(square);
+            // this.addChildAt(square);
             if( randomObj >= 0 && randomObj <= 20) {
                 continue;
             }
@@ -51,12 +54,76 @@ export class GenMap extends Container{
         this.pushDown();
     }
     pushDown(){
-        var y = this.y + GameConstants.padding + 2*GameConstants.squareEdge;
-        var tween = new TWEEN.Tween({y: this.y})
-        .to({y: y}, 1000)
+        var sy = 0;
+        var dy = GameConstants.padding + 2*GameConstants.squareEdge;
+        console.log(dy);
+        var tween = new TWEEN.Tween({y: sy})
+        .to({y: dy}, Ticker.shared.deltaMS*(GameConstants.padding + 2*GameConstants.squareEdge-1))
         .onUpdate((obj) => {
-            this.y = obj.y;
+            for(var i = 0; i < this.squares.length; i++){
+                this.squares[i].square.y += obj.y*2/dy;
+                this.squares[i].text.y += obj.y*2/dy;
+            }
+            for(var i = 0; i < this.coins.length; i++){
+                this.coins[i].coin.y += obj.y*2/dy;
+            }
+            for(var i = 0; i < this.preBalls.length; i++){
+                this.preBalls[i].ball.y += obj.y*2/dy;
+                this.preBalls[i].ring.y += obj.y*2/dy;
+            }
+            sy += obj.y*2/dy;
+            console.log(sy + " " + obj.y);
+        })
+        .onComplete(() => {
+            console.log(sy - dy);
         })
         .start();
+        // var sy = 0;
+        // var dy = GameConstants.padding + 2*GameConstants.squareEdge;
+        // console.log(dy);
+        // var tween = new TWEEN.Tween({y: sy})
+        // .to({y: dy}, Ticker.shared.deltaMS*(GameConstants.padding + 2*GameConstants.squareEdge-1))
+        // .onUpdate((obj) => {
+        //     for(var i = 0; i < this.squares.length; i++){
+        //         this.squares[i].square.y += obj.y*2/dy;
+        //         this.squares[i].text.y += obj.y*2/dy;
+        //     }
+        //     for(var i = 0; i < this.coins.length; i++){
+        //         this.coins[i].coin.y += obj.y*2/dy;
+        //     }
+        //     for(var i = 0; i < this.preBalls.length; i++){
+        //         this.preBalls[i].ball.y += obj.y*2/dy;
+        //         this.preBalls[i].ring.y += obj.y*2/dy;
+        //     }
+        //     sy += obj.y*2/dy;
+        //     console.log(sy + " " + obj.y);
+        // })
+        // .onComplete(() => {
+        //     console.log(sy - dy);
+        // })
+        // .start();
+        // for(var i = 0; i < this.squares.length; i++){
+        //     var sy = this.squares[i].y;
+        //     var dy = sy + GameConstants.padding + 2*GameConstants.squareEdge;
+        //     var square  = this.squares[i];
+        //     var tween = new Tween({y: sy})
+        //     .to({y: dy}, 500)
+        //     .onUpdate((obj) => {
+        //         square.square.y = obj.y;
+        //         square.text.y = obj.y;
+        //     })
+        //     .start();
+        // }
+        // for(var i = 0; i < this.squares.length; i++){
+        //     this.squares[i].square.y +=GameConstants.padding + 2*GameConstants.squareEdge;
+        //     this.squares[i].text.y +=GameConstants.padding + 2*GameConstants.squareEdge;
+        // }
+        // for(var i = 0; i < this.coins.length; i++){
+        //     this.coins[i].coin.y +=GameConstants.padding + 2*GameConstants.squareEdge;
+        // }
+        // for(var i = 0; i < this.preBalls.length; i++){
+        //     this.preBalls[i].ball.y +=GameConstants.padding + 2*GameConstants.squareEdge;
+        //     this.preBalls[i].ring.y +=GameConstants.padding + 2*GameConstants.squareEdge;
+        // }
     }
 }

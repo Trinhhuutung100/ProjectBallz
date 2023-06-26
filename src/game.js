@@ -24,17 +24,17 @@ export class Game{
         }
         this.balls.forEach(ball => {
             app.stage.addChild(ball);
-        })
+        });
         this.map = new GenMap();
         app.stage.addChild(this.map);
-        this.ballController = new BallController(this.balls);
+        this.ballController = new BallController(this.balls, this.map);
         app.stage.addChild(this.ballController);
         this.collision = new CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
         app.ticker.add(Game.update.bind(this));
     }
     static update(dt){
         this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
-        this.ballController.update(dt, this.balls);
+        this.ballController.update(dt, this.balls, this.map);
     }
 } 
 
