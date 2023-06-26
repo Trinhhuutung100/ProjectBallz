@@ -31,8 +31,8 @@ export class CollisionHandler{
                     var square = this.squares[s].square;
                     var ballX = ball.ball.x;
                     var ballY = ball.ball.y;
-                    var squareX = square.x;
-                    var squareY = square.y;
+                    var squareX = square.getBounds().x + edge;
+                    var squareY = square.getBounds().y + edge;
                     var distX = ballX + ball.dx - squareX;
                     var distY = ballY + ball.dy - squareY;
                     var leftBottom = {x: square.x - edge, y: square.y + edge};

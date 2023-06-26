@@ -51,18 +51,12 @@ export class GenMap extends Container{
         this.pushDown();
     }
     pushDown(){
-        this.children.forEach(block =>{
-            console.log(block.y);
-            var y = block.y + GameConstants.padding + 2*GameConstants.squareEdge;
-            var tween = new TWEEN.Tween({y: block.y})
-            .to({y: y}, 1000)
-            .onUpdate((obj) => {
-                block.y = obj.y;
-            })
-            .onComplete(() =>{
-                console.log(block.y);
-            })
-            .start();
+        var y = this.y + GameConstants.padding + 2*GameConstants.squareEdge;
+        var tween = new TWEEN.Tween({y: this.y})
+        .to({y: y}, 1000)
+        .onUpdate((obj) => {
+            this.y = obj.y;
         })
+        .start();
     }
 }

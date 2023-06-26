@@ -15,5 +15,4 @@ export class Ball extends Container{
         this.isBall = true;
         this.addChild(this.ball);
     }
-
 }
