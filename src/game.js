@@ -33,7 +33,7 @@ export class Game{
         app.ticker.add(Game.update.bind(this));
     }
     static update(dt){
-        this.collision.update(dt);
+        this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
         this.ballController.update(dt, this.balls);
     }
 } 
