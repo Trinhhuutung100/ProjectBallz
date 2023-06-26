@@ -6,6 +6,7 @@ import { Square } from "./square";
 import { CollisionHandler } from "./collisionhandler";
 import { GameConstants } from "./gameconstants";
 import { Coin } from "./coin";
+import { GenMap } from "./genmap";
 
 export class Game{
     static init(){
@@ -24,36 +25,11 @@ export class Game{
         this.balls.forEach(ball => {
             app.stage.addChild(ball);
         })
-        //Add squares
-        this.squares = [];
-        for(var i = 0; i<10; i++){
-            var square = new Square(GameConstants.edge + 2*i*GameConstants.edge, 5*GameConstants.edge, 10*i+1);
-            this.squares.push(square);
-        }
-        this.squares.forEach(square => {
-            app.stage.addChildAt(square);
-        })
-        //Add coins
-        this.coins = [];
-        for(var i = 0; i<10; i++){
-            var coin = new Coin(GameConstants.edge + 2*i*GameConstants.edge, 3*GameConstants.edge);
-            this.coins.push(coin);
-        }
-        this.coins.forEach(coin => {
-            app.stage.addChild(coin);
-        })
-        //Add preball
-        this.preBalls = [];
-        for(var i = 0; i<10; i++){
-            var preBall = new PreBall(GameConstants.edge + 2*i*GameConstants.edge, GameConstants.edge);
-            this.preBalls.push(preBall);
-        }
-        this.preBalls.forEach(preBall => {
-            app.stage.addChild(preBall);
-        })
+        this.map = new GenMap();
+        app.stage.addChild(this.map);
         this.ballController = new BallController(this.balls);
         app.stage.addChild(this.ballController);
-        this.collision = new CollisionHandler(this.balls, this.squares, this.coins, this.preBalls);
+        this.collision = new CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
         app.ticker.add(Game.update.bind(this));
     }
     static update(dt){

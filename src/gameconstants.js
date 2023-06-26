@@ -1,8 +1,8 @@
 const screenHeight = innerHeight;
 const screenWidth = innerWidth;
-const padding = 2.5;
+const padding = 10;
 const column = 10;
-const edge = screenWidth/2/column;
+//const edge = screenWidth/2/column;
 const ballRadius = 10 ;
 export const GameConstants = {
     //Screen
@@ -15,9 +15,9 @@ export const GameConstants = {
     //Padding between square
     padding : padding,
     //Hafl edge of a block
-    edge : edge,
+    //edge : edge,
     //Square edge = edge - padding
-    squareEdge : edge - padding,
+    squareEdge : (screenWidth - (column+1)*padding)/2/column,
     //Anchor
     needleAnchor : {x: 0.5, y: 1.5},
     echoAnchor : {x: 0.5, y: 1.2},
