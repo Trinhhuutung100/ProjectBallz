@@ -804,7 +804,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class ActiveBall extends _ball__WEBPACK_IMPORTED_MODULE_1__.Ball {
-  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultY + _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.ballRadius) {
+  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultBallX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultBottomBall) {
     super(x, y);
   }
 }
@@ -887,15 +887,16 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.oldPosition = { x: 0, y: 0 };
     this.needle = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/needle.png");
     this.needle.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleAnchor.x, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleAnchor.y);
-    this.needle.scale.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleScale.x, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleScale.y);
-    this.needle.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultX;
-    this.needle.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY;
+    this.needle.width = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleWidth;
+    this.needle.height = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleHeight;
+    this.needle.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
+    this.needle.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
     this.echo = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/echo.png");
     this.echo.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.y);
-    this.echo.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultX;
-    this.echo.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY;
-    this.groundPositionX = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultX;
-    this.groundPositionY = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY;
+    this.echo.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
+    this.echo.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
+    this.groundPositionX = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
+    this.groundPositionY = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
     this.firstGroundedBall = false;
     this.isCreating = false;
   }
@@ -974,8 +975,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY - ballRadius) {
-        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY - ballRadius;
+      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall) {
+        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
         this.balls[i].dx = 0;
         this.balls[i].dy = 0;
         if (!this.firstGroundedBall) {
@@ -985,8 +986,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           }
         }
       }
-      if (this.balls[i].ball.y < ballRadius + _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop) {
-        this.balls[i].ball.y = ballRadius + _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop;
+      if (this.balls[i].ball.y < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall) {
+        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
         this.balls[i].dy = -this.balls[i].dy;
       }
     }
@@ -1111,6 +1112,7 @@ class CollisionHandler {
     this.preBalls = preBalls;
     this.ballSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.Sound.from("assets/sounds/Ball.wav");
     this.coinSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.Sound.from("assets/sounds/Coin.wav");
+    console.log(edge);
   }
   update(dt) {
     this.squareCollision();
@@ -1283,7 +1285,7 @@ class Game {
     var backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
     backYard.tint = 0;
     backYard.width = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
-    backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultY - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
+    backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     backYard.x = 0.5;
     backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     app.stage.addChild(backYard);
@@ -1331,23 +1333,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameConstants: () => (/* binding */ GameConstants)
 /* harmony export */ });
-const padding = 5;
 const column = 7;
-const line = 13;
+const line = 14;
 const screenHeight = innerHeight;
-const screenWidth = (screenHeight - line * padding) / line * column + (column + 1) * padding;
-const squareEdge = (screenWidth - (column + 1) * padding) / 2 / column;
+const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line * column;
+const squareEdge = screenWidth / 16;
+const padding = squareEdge / 4;
 const ballRadius = squareEdge / 3;
-const defaultY = screenHeight - 2 * padding - 4 * squareEdge;
-const defaultTop = 2 * padding + 4 * squareEdge;
+const defaultBottom = screenHeight / 2 + 5 * padding + 8 * squareEdge;
+const defaultTop = screenHeight / 2 - 5 * padding - 10 * squareEdge;
+const defaultBottomBall = defaultBottom - ballRadius;
+const defaultTopBall = defaultTop + ballRadius;
+const defaultTopMap = defaultTop + squareEdge;
 const GameConstants = {
   //Screen
   screenWidth,
   screenHeight,
   //Default position x = screen/2,y = screen - ballradius
-  defaultX: screenWidth / 2,
-  defaultY,
+  defaultBallX: screenWidth / 2,
+  defaultBottom,
   defaultTop,
+  defaultBottomBall,
+  defaultTopBall,
+  defaultTopMap,
   column,
   line,
   //Padding between square
@@ -1360,16 +1368,17 @@ const GameConstants = {
   needleAnchor: { x: 0.5, y: 1.5 },
   echoAnchor: { x: 0.5, y: 1.2 },
   //Scale
-  needleScale: { x: 0.5, y: 0.5 },
-  echoDenominator: 150,
-  echoMaxNumerator: 120,
-  echoMinNumerator: 20,
+  needleWidth: squareEdge / 2.5,
+  needleHeight: squareEdge * 1.5,
+  echoDenominator: 7.5 * squareEdge,
+  echoMaxNumerator: 4 * squareEdge,
+  echoMinNumerator: squareEdge,
   //Text font
-  fontSize: 30,
+  fontSize: Math.floor(squareEdge),
   ballRadius,
-  coinRadius: 15,
-  minRing: 25,
-  maxRing: 30,
+  coinRadius: squareEdge / 2,
+  minRing: squareEdge,
+  maxRing: squareEdge * 1.5,
   //Ball move
   ballSpeed: 10,
   distanceBetweenBalls: 10,
@@ -1428,7 +1437,7 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     var arr = line.data;
     for (var i = 0; i < arr.length; i++) {
       var positionX = (i + 1) * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + (2 * i + 1) * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
-      var positionY = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+      var positionY = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTopMap;
       var value = arr[i];
       switch (value) {
         case 0:
@@ -1499,7 +1508,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
-  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultY + _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ballRadius) {
+  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultBallX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultBottomBall) {
     super(x, y);
     this.ring = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ring.png");
     this.ring.anchor.set(0.5, 0.5);
