@@ -861,6 +861,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./game */ "./src/game.js");
+
 
 
 
@@ -878,8 +880,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.dx = 0;
     this.dy = 0;
     this.distance = [];
-    this._dt = 0;
-    this._current = 0;
     for (var i = 0; i < this.balls.length; i++) {
       this.distance[i] = 0;
     }
@@ -908,9 +908,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   update(dt, balls, map) {
     this.balls = balls;
     this.map = map;
-    this._dt = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Ticker.shared.deltaMS;
-    this._current += this._dt;
-    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].update(this._current);
     this.checkAllGround();
     this.moveBall(dt);
     this.border();
@@ -942,7 +939,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
             ball.ball.tint = "white";
             this.isCreating = false;
           });
-          tween.start(this._current);
+          tween.start(_game__WEBPACK_IMPORTED_MODULE_3__.Game._current);
         }
         if (this.readyAttack) {
           this.map.createNewLine();
@@ -1259,6 +1256,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
 /* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./coin */ "./src/coin.js");
 /* harmony import */ var _genmap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./genmap */ "./src/genmap.js");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+
 
 
 
@@ -1302,8 +1301,13 @@ class Game {
     app.stage.addChild(this.ballController);
     this.collision = new _collisionhandler__WEBPACK_IMPORTED_MODULE_5__.CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
     app.ticker.add(Game.update.bind(this));
+    this._dt = 0;
+    this._current = 0;
   }
   static update(dt) {
+    this._dt = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS;
+    this._current += this._dt;
+    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_9__["default"].update(this._current);
     this.map.update(dt);
     this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
     this.ballController.update(dt, this.balls, this.map);
@@ -1356,8 +1360,6 @@ const GameConstants = {
   needleAnchor: { x: 0.5, y: 1.5 },
   echoAnchor: { x: 0.5, y: 1.2 },
   //Scale
-  minRingScale: 0.011,
-  maxRingScale: 0.0135,
   needleScale: { x: 0.5, y: 0.5 },
   echoDenominator: 150,
   echoMaxNumerator: 120,
@@ -1366,13 +1368,15 @@ const GameConstants = {
   fontSize: 30,
   ballRadius,
   coinRadius: 15,
+  minRing: 25,
+  maxRing: 30,
   //Ball move
   ballSpeed: 10,
   distanceBetweenBalls: 10,
   fallSpeed: 10,
   //Tween animation
   ballTweenTime: 500,
-  ringTweenTime: 5
+  ringTweenTime: 10
 };
 
 
@@ -1487,6 +1491,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
 /* harmony import */ var _ball__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ball */ "./src/ball.js");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./game */ "./src/game.js");
+
+
 
 
 
@@ -1496,7 +1503,8 @@ class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
     super(x, y);
     this.ring = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ring.png");
     this.ring.anchor.set(0.5, 0.5);
-    this.ring.scale.set(_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRingScale);
+    this.ring.width = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing;
+    this.ring.height = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing;
     this.ring.x = x;
     this.ring.y = y;
     this.isBall = false;
@@ -1505,15 +1513,16 @@ class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
     this.ringAnimation();
   }
   ringAnimation() {
-    var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].Tween({ scale: this.ring.scale.x });
-    tween.to({ scale: _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.maxRingScale }, _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ringTweenTime * pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS).repeat(Infinity).yoyo(true).onUpdate((obj) => {
-      this.ring.scale.set(obj.scale);
+    var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].Tween({ size: _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing });
+    tween.to({ size: _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.maxRing }, _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ringTweenTime * pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS).repeat(Infinity).yoyo(true).onUpdate((obj) => {
+      this.ring.width = obj.size;
+      this.ring.height = obj.size;
       this.followBall();
       if (this.ringDestroy) {
         _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].remove(tween);
         this.ring.destroy();
       }
-    }).start();
+    }).start(_game__WEBPACK_IMPORTED_MODULE_4__.Game._current);
   }
   followBall() {
     this.ring.x = this.ball.x;
