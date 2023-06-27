@@ -866,9 +866,10 @@ __webpack_require__.r(__webpack_exports__);
 
 const ballRadius = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballRadius;
 class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
-  constructor(balls) {
+  constructor(balls, map) {
     super();
     this.balls = balls;
+    this.map = map;
     this.init();
     this.speed = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballSpeed;
     this.mousePress = false;
@@ -896,6 +897,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.groundPositionX = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultX;
     this.groundPositionY = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY;
     this.firstGroundedBall = false;
+    this.isCreating = false;
   }
   // Add listener
   init() {
@@ -903,8 +905,9 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     window.addEventListener("pointermove", this.mouseHandler.bind(this));
     window.addEventListener("pointerup", this.mouseHandler.bind(this));
   }
-  update(dt, balls) {
+  update(dt, balls, map) {
     this.balls = balls;
+    this.map = map;
     this._dt = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Ticker.shared.deltaMS;
     this._current += this._dt;
     _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].update(this._current);
@@ -934,14 +937,15 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           ball.isBall = true;
           var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ x: ball.ball.x }).to({ x: this.groundPositionX }, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * dt).onUpdate((obj) => {
             ball.ball.x = obj.x;
-            this.mousePress = false;
-            this.dx = 0;
-            this.dy = 0;
-            this.removeChild(this.needle, this.echo);
+            this.isCreating = true;
           }).onComplete(() => {
             ball.ball.tint = "white";
+            this.isCreating = false;
           });
           tween.start(this._current);
+        }
+        if (this.readyAttack) {
+          this.map.createNewLine();
         }
         this.needle.x = this.groundPositionX;
         this.needle.y = this.groundPositionY;
@@ -973,8 +977,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenHeight - ballRadius) {
-        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenHeight - ballRadius;
+      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY) {
+        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY;
         this.balls[i].dx = 0;
         this.balls[i].dy = 0;
         if (!this.firstGroundedBall) {
@@ -984,58 +988,60 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           }
         }
       }
-      if (this.balls[i].ball.y < ballRadius) {
-        this.balls[i].ball.y = ballRadius;
+      if (this.balls[i].ball.y < ballRadius + _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop) {
+        this.balls[i].ball.y = ballRadius + _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop;
         this.balls[i].dy = -this.balls[i].dy;
       }
     }
   }
   // handle mouse 
   mouseHandler(e) {
-    if (e.type == "pointerdown") {
-      this.mousePress = true;
-      this.oldPosition.x = e.clientX;
-      this.oldPosition.y = e.clientY;
-    }
-    if (e.type == "pointerup") {
-      if (this.ready) {
-        this.balls.forEach((ball) => {
-          ball.dx = this.dx;
-          ball.dy = this.dy;
-        });
-        this.removeChild(this.needle, this.echo);
-        this.readyAttack = true;
-        this.firstGroundedBall = false;
+    if (!this.isCreating && !this.map.isCreating) {
+      if (e.type == "pointerdown") {
+        this.mousePress = true;
+        this.oldPosition.x = e.clientX;
+        this.oldPosition.y = e.clientY;
       }
-      this.mousePress = false;
-    }
-    if (e.type == "pointermove") {
-      if (!this.readyAttack) {
-        if (this.mousePress) {
-          var x = this.oldPosition.x - e.clientX;
-          var y = this.oldPosition.y - e.clientY;
-          this.needle.rotation = -Math.atan(x / y);
-          this.echo.rotation = -Math.atan(x / y);
-          if (Math.abs(y) < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMaxNumerator && Math.abs(y) > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator)
-            this.echo.scale.set(Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator, Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator);
-          if (x != 0 && y != 0) {
-            this.dx = this.speed * x / Math.sqrt(x * x + y * y);
-            this.dy = this.speed * y / Math.sqrt(x * x + y * y);
-          }
-          if (x == 0) {
-            this.dx = 0;
-            this.dy = this.speed;
-          }
-          if (y == 0) {
-            this.dx = this.speed;
-            this.dy = 0;
-          }
-          if (y < -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator) {
-            this.addChild(this.needle, this.echo);
-            this.ready = true;
-          } else {
-            this.removeChild(this.needle, this.echo);
-            this.ready = false;
+      if (e.type == "pointerup") {
+        if (this.ready) {
+          this.balls.forEach((ball) => {
+            ball.dx = this.dx;
+            ball.dy = this.dy;
+          });
+          this.removeChild(this.needle, this.echo);
+          this.readyAttack = true;
+          this.firstGroundedBall = false;
+        }
+        this.mousePress = false;
+      }
+      if (e.type == "pointermove") {
+        if (!this.readyAttack) {
+          if (this.mousePress) {
+            var x = this.oldPosition.x - e.clientX;
+            var y = this.oldPosition.y - e.clientY;
+            this.needle.rotation = -Math.atan(x / y);
+            this.echo.rotation = -Math.atan(x / y);
+            if (Math.abs(y) < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMaxNumerator && Math.abs(y) > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator)
+              this.echo.scale.set(Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator, Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator);
+            if (x != 0 && y != 0) {
+              this.dx = this.speed * x / Math.sqrt(x * x + y * y);
+              this.dy = this.speed * y / Math.sqrt(x * x + y * y);
+            }
+            if (x == 0) {
+              this.dx = 0;
+              this.dy = this.speed;
+            }
+            if (y == 0) {
+              this.dx = this.speed;
+              this.dy = 0;
+            }
+            if (y < -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator) {
+              this.addChild(this.needle, this.echo);
+              this.ready = true;
+            } else {
+              this.removeChild(this.needle, this.echo);
+              this.ready = false;
+            }
           }
         }
       }
@@ -1119,17 +1125,17 @@ class CollisionHandler {
       if (this.balls[b].isBall) {
         for (var s = 0; s < this.squares.length; s++) {
           var ball = this.balls[b];
-          var square = this.squares[s].square;
+          var square = this.squares[s].square.getBounds();
           var ballX = ball.ball.x;
           var ballY = ball.ball.y;
-          var squareX = square.x;
-          var squareY = square.y;
+          var squareX = square.x + edge;
+          var squareY = square.y + edge;
           var distX = ballX + ball.dx - squareX;
           var distY = ballY + ball.dy - squareY;
-          var leftBottom = { x: square.x - edge, y: square.y + edge };
-          var leftTop = { x: square.x - edge, y: square.y - edge };
-          var rightBottom = { x: square.x + edge, y: square.y + edge };
-          var rightTop = { x: square.x - edge, y: square.y - edge };
+          var leftBottom = { x: square.left, y: square.bottom };
+          var leftTop = { x: square.left, y: square.top };
+          var rightBottom = { x: square.right, y: square.bottom };
+          var rightTop = { x: square.right, y: square.top };
           var leftBottomDistance = this.vectorDistance(ball.ball, leftBottom);
           var leftTopDistance = this.vectorDistance(ball.ball, leftTop);
           var rightBottomDistance = this.vectorDistance(ball.ball, rightBottom);
@@ -1193,7 +1199,7 @@ class CollisionHandler {
       if (this.balls[b].isBall) {
         for (var c = 0; c < this.coins.length; c++) {
           var ball = this.balls[b].ball;
-          var coin = this.coins[c].coin;
+          var coin = { x: this.coins[c].coin.getBounds().x + coinRadius, y: this.coins[c].coin.getBounds().y + coinRadius };
           if (this.vectorDistance(ball, coin) < ballRadius + coinRadius) {
             this.coins[c].destroy();
             this.coins.splice(c, 1);
@@ -1208,7 +1214,7 @@ class CollisionHandler {
       if (this.balls[b].isBall) {
         for (var p = 0; p < this.preBalls.length; p++) {
           var ball = this.balls[b].ball;
-          var preBall = this.preBalls[p].ball;
+          var preBall = { x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius };
           if (this.vectorDistance(ball, preBall) < ballRadius + coinRadius) {
             this.preBalls[p].ringDestroy = true;
             this.preBalls[p].ball.tint = "green";
@@ -1251,6 +1257,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _collisionhandler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./collisionhandler */ "./src/collisionhandler.js");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
 /* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./coin */ "./src/coin.js");
+/* harmony import */ var _genmap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./genmap */ "./src/genmap.js");
+
 
 
 
@@ -1264,9 +1272,21 @@ class Game {
     const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
       width: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth,
       height: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight,
-      background: 1193046
+      background: 1118481
     });
+    var padding = (innerWidth - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth) / 2;
     document.body.appendChild(app.view);
+    const viewStyle = app.view.style;
+    viewStyle.position = "absolute";
+    viewStyle.display = "block";
+    viewStyle.padding = "0px " + padding + "px";
+    var backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
+    backYard.tint = 0;
+    backYard.width = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
+    backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultY - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.ballRadius;
+    backYard.x = 0.5;
+    backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
+    app.stage.addChild(backYard);
     this.balls = [];
     for (var i = 0; i < 10; i++) {
       var ball = new _activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
@@ -1275,38 +1295,17 @@ class Game {
     this.balls.forEach((ball2) => {
       app.stage.addChild(ball2);
     });
-    this.squares = [];
-    for (var i = 0; i < 10; i++) {
-      var square = new _square__WEBPACK_IMPORTED_MODULE_4__.Square(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 5 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 10 * i + 1);
-      this.squares.push(square);
-    }
-    this.squares.forEach((square2) => {
-      app.stage.addChildAt(square2);
-    });
-    this.coins = [];
-    for (var i = 0; i < 10; i++) {
-      var coin = new _coin__WEBPACK_IMPORTED_MODULE_7__.Coin(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, 3 * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge);
-      this.coins.push(coin);
-    }
-    this.coins.forEach((coin2) => {
-      app.stage.addChild(coin2);
-    });
-    this.preBalls = [];
-    for (var i = 0; i < 10; i++) {
-      var preBall = new _preball__WEBPACK_IMPORTED_MODULE_2__.PreBall(_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge + 2 * i * _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge, _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.edge);
-      this.preBalls.push(preBall);
-    }
-    this.preBalls.forEach((preBall2) => {
-      app.stage.addChild(preBall2);
-    });
-    this.ballController = new _ballcontroller__WEBPACK_IMPORTED_MODULE_3__.BallController(this.balls);
+    this.map = new _genmap__WEBPACK_IMPORTED_MODULE_8__.GenMap();
+    app.stage.addChild(this.map);
+    this.ballController = new _ballcontroller__WEBPACK_IMPORTED_MODULE_3__.BallController(this.balls, this.map);
     app.stage.addChild(this.ballController);
-    this.collision = new _collisionhandler__WEBPACK_IMPORTED_MODULE_5__.CollisionHandler(this.balls, this.squares, this.coins, this.preBalls);
+    this.collision = new _collisionhandler__WEBPACK_IMPORTED_MODULE_5__.CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
     app.ticker.add(Game.update.bind(this));
   }
   static update(dt) {
-    this.collision.update(dt);
-    this.ballController.update(dt, this.balls);
+    this.map.update(dt);
+    this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
+    this.ballController.update(dt, this.balls, this.map);
   }
 }
 window.onload = function() {
@@ -1327,26 +1326,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameConstants: () => (/* binding */ GameConstants)
 /* harmony export */ });
+const padding = 5;
+const column = 7;
+const line = 14;
 const screenHeight = innerHeight;
-const screenWidth = innerWidth;
-const padding = 2.5;
-const column = 10;
-const edge = screenWidth / 2 / column;
-const ballRadius = 10;
+const screenWidth = (screenHeight - line * padding) / line * column;
+const squareEdge = (screenWidth - (column + 1) * padding) / 2 / column;
+const ballRadius = 5;
+const defaultY = screenHeight - ballRadius - 3 * padding - 8 * squareEdge;
+const defaultTop = 3 * padding + 6 * squareEdge;
 const GameConstants = {
   //Screen
   screenWidth,
   screenHeight,
   //Default position x = screen/2,y = screen - ballradius
   defaultX: screenWidth / 2,
-  defaultY: screenHeight - ballRadius,
+  defaultY,
+  defaultTop,
   column,
+  line,
   //Padding between square
   padding,
   //Hafl edge of a block
-  edge,
+  //edge : edge,
   //Square edge = edge - padding
-  squareEdge: edge - padding,
+  squareEdge,
   //Anchor
   needleAnchor: { x: 0.5, y: 1.5 },
   echoAnchor: { x: 0.5, y: 1.2 },
@@ -1367,8 +1371,107 @@ const GameConstants = {
   fallSpeed: 10,
   //Tween animation
   ballTweenTime: 500,
-  ringTweenTime: 10
+  ringTweenTime: 5
 };
+
+
+/***/ }),
+
+/***/ "./src/genmap.js":
+/*!***********************!*\
+  !*** ./src/genmap.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   GenMap: () => (/* binding */ GenMap)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
+/* harmony import */ var _square__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./square */ "./src/square.js");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./coin */ "./src/coin.js");
+/* harmony import */ var _preball__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./preball */ "./src/preball.js");
+
+
+
+
+
+
+class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this.line = 1;
+    this.squares = [];
+    this.coins = [];
+    this.preBalls = [];
+    this.createNewLine();
+    this.distance = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + 2 * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+    this.count = this.distance;
+    this.isCreatingMap = false;
+    ;
+  }
+  update(dt) {
+    this.pushDown(dt);
+    console.log(this.isCreatingMap);
+  }
+  createNewLine() {
+    for (var i = 0; i < _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.column; i++) {
+      var positionX = (i + 1) * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + (2 * i + 1) * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+      var positionY = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+      var randomObj = Math.floor(Math.random() * 100);
+      if (randomObj >= 0 && randomObj <= 20) {
+        continue;
+      }
+      if (randomObj >= 21 && randomObj <= 60) {
+        var square = new _square__WEBPACK_IMPORTED_MODULE_2__.Square(positionX, positionY, this.line);
+        this.squares.push(square);
+        this.addChildAt(square);
+        continue;
+      }
+      if (randomObj >= 61 && randomObj <= 80) {
+        var square = new _square__WEBPACK_IMPORTED_MODULE_2__.Square(positionX, positionY, 2 * this.line);
+        this.squares.push(square);
+        this.addChildAt(square);
+        continue;
+      }
+      if (randomObj >= 81 && randomObj <= 90) {
+        var coin = new _coin__WEBPACK_IMPORTED_MODULE_4__.Coin(positionX, positionY);
+        this.coins.push(coin);
+        this.addChildAt(coin);
+        continue;
+      }
+      if (randomObj >= 91 && randomObj <= 100) {
+        var preBall = new _preball__WEBPACK_IMPORTED_MODULE_5__.PreBall(positionX, positionY);
+        this.preBalls.push(preBall);
+        this.addChildAt(preBall);
+        continue;
+      }
+    }
+    this.line++;
+    this.count = this.distance;
+  }
+  pushDown(dt) {
+    this.isCreatingMap = false;
+    if (this.count > 0) {
+      for (var i = 0; i < this.squares.length; i++) {
+        this.squares[i].square.y += dt;
+        this.squares[i].text.y += dt;
+      }
+      for (var i = 0; i < this.coins.length; i++) {
+        this.coins[i].coin.y += dt;
+      }
+      for (var i = 0; i < this.preBalls.length; i++) {
+        this.preBalls[i].ball.y += dt;
+        this.preBalls[i].ring.y += dt;
+      }
+      this.count -= dt;
+      this.isCreatingMap = true;
+    }
+  }
+}
 
 
 /***/ }),
@@ -1445,7 +1548,8 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y, index) {
     super();
     this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
-    this.square.tint = "green";
+    this.color = 16777215;
+    this.square.tint = this.color;
     this.square.anchor.set(0.5, 0.5);
     this.square.width = 2 * edge;
     this.square.height = 2 * edge;
@@ -1466,6 +1570,8 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.setText();
   }
   setText() {
+    this.color -= 15;
+    this.square.tint = this.color;
     this.removeChild(this.text);
     this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.index, this.textStyle);
     this.text.anchor.set(0.5, 0.5);
