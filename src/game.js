@@ -30,7 +30,7 @@ export class Game{
         app.stage.addChild(backYard);
         //Add balls
         this.balls = [];
-        //day len git
+        //day len
         for(var i = 0; i<10; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
