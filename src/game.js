@@ -1,4 +1,4 @@
-import { Application } from "pixi.js"
+import { Application, Sprite } from "pixi.js"
 import { ActiveBall } from "./activeball";
 import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
@@ -13,9 +13,21 @@ export class Game{
         const app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
-            background: 0x123456
+            background: 0x111111
         })
+        var padding = (innerWidth - GameConstants.screenWidth)/2;
         document.body.appendChild(app.view);
+        const viewStyle = app.view.style;
+        viewStyle.position = "absolute";
+        viewStyle.display = "block";
+        viewStyle.padding = "0px " + padding + "px";
+        var backYard = Sprite.from("assets/images/square.png");
+        backYard.tint = 0x000000;
+        backYard.width = GameConstants.screenWidth;
+        backYard.height = GameConstants.defaultY - GameConstants.defaultTop + GameConstants.ballRadius;
+        backYard.x = 0.5;
+        backYard.y = GameConstants.defaultTop;
+        app.stage.addChild(backYard);
         //Add balls
         this.balls = [];
         for(var i = 0; i<10; i++){
@@ -33,6 +45,7 @@ export class Game{
         app.ticker.add(Game.update.bind(this));
     }
     static update(dt){
+        this.map.update(dt);
         this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
         this.ballController.update(dt, this.balls, this.map);
     }

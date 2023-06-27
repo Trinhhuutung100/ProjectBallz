@@ -36,6 +36,7 @@ export class BallController extends Container{
         this.groundPositionX = GameConstants.defaultX;
         this.groundPositionY = GameConstants.defaultY;
         this.firstGroundedBall = false;
+        this.isCreating = false;
         
     }
     // Add listener
@@ -80,13 +81,15 @@ export class BallController extends Container{
                     .to({x: this.groundPositionX }, GameConstants.ballTweenTime*dt)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
-                        this.mousePress = false;
-                        this.dx = 0;
-                        this.dy = 0;
-                        this.removeChild(this.needle, this.echo);
+                        this.isCreating = true;
+                        //this.mousePress = false;
+                        // this.dx = 0;
+                        // this.dy = 0;
+                        //this.removeChild(this.needle, this.echo);
                     })
                     .onComplete(() => {
                         ball.ball.tint = "white";
+                        this.isCreating = false;
                         
                     })
                     tween.start(this._current);
@@ -123,8 +126,8 @@ export class BallController extends Container{
                 this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.y > GameConstants.screenHeight - ballRadius) {
-                this.balls[i].ball.y = GameConstants.screenHeight - ballRadius;
+            if(this.balls[i].ball.y > GameConstants.defaultY) {
+                this.balls[i].ball.y = GameConstants.defaultY;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
                 //console.log(" Ground position x " + this.balls[i].ball.x);    
@@ -136,73 +139,75 @@ export class BallController extends Container{
                     //console.log("First ball position x " + this.groundPositionX);
                 }       
             }
-            if(this.balls[i].ball.y < ballRadius) {
-                this.balls[i].ball.y = ballRadius;
+            if(this.balls[i].ball.y < ballRadius + GameConstants.defaultTop) {
+                this.balls[i].ball.y = ballRadius + GameConstants.defaultTop;
                 this.balls[i].dy = -this.balls[i].dy;
             }            
         }
     }
     // handle mouse 
     mouseHandler(e){
-        // khi nhan chuot
-        if(e.type == "pointerdown"){
-            this.mousePress = true;
-            // vi tri tu luc bat dau di chuot
-            this.oldPosition.x = e.clientX;
-            this.oldPosition.y = e.clientY;
-        }
-        //khi tha chuot
-        if(e.type == "pointerup"){
-            if(this.ready){                
-                this.balls.forEach(ball => {
-                    ball.dx = this.dx; //van toc phuong x cua bong
-                    ball.dy = this.dy; // van toc phuong y cua bong
-                })
-                this.removeChild(this.needle, this.echo);      
-                this.readyAttack = true;
-                this.firstGroundedBall = false;
+        if(!this.isCreating && !this.map.isCreating){
+            // khi nhan chuot
+            if(e.type == "pointerdown"){
+                this.mousePress = true;
+                // vi tri tu luc bat dau di chuot
+                this.oldPosition.x = e.clientX;
+                this.oldPosition.y = e.clientY;
             }
-            this.mousePress = false;
-        }
-        // khi nhan chuot va di chuot
-        if(e.type == "pointermove"){
-            if(!this.readyAttack){
-                if(this.mousePress){
-                    // (x,y) la vector keo chuot, dinh huong cho bong
-                    var x = this.oldPosition.x - e.clientX;
-                    var y = this.oldPosition.y - e.clientY;
-                    this.needle.rotation = -Math.atan(x/y);
-                    this.echo.rotation = -Math.atan(x/y);
-                    if(Math.abs(y) < GameConstants.echoMaxNumerator && Math.abs(y) > GameConstants.echoMinNumerator)
-                    this.echo.scale.set(Math.abs(y)/GameConstants.echoDenominator, Math.abs(y)/GameConstants.echoDenominator);
-
-                    // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
-                    if(x!=0&&y!=0){                        
-                        this.dx = this.speed*x/Math.sqrt((x*x+y*y));
-                        this.dy = this.speed*y/Math.sqrt((x*x+y*y));
-                        //console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
-                    }
-                    if(x==0){
-                        this.dx = 0;
-                        this.dy = this.speed;
-                    }
-                    if(y==0){
-                        this.dx = this.speed;
-                        this.dy = 0;
-                    }
-                    // di chuot xuong duoi mot doan nhat dinh moi duoc ban
-                    if( y < -GameConstants.echoMinNumerator ) {
-                        this.addChild(this.needle, this.echo);
-                        this.ready = true;
-                        //console.log("ready");
-                    }
-                    else {
-                        this.removeChild(this.needle, this.echo);
-                        this.ready = false;
-                        //console.log("not ready");
-                    }
-                } 
-            }                 
+            //khi tha chuot
+            if(e.type == "pointerup"){
+                if(this.ready){                
+                    this.balls.forEach(ball => {
+                        ball.dx = this.dx; //van toc phuong x cua bong
+                        ball.dy = this.dy; // van toc phuong y cua bong
+                    })
+                    this.removeChild(this.needle, this.echo);      
+                    this.readyAttack = true;
+                    this.firstGroundedBall = false;
+                }
+                this.mousePress = false;
+            }
+            // khi nhan chuot va di chuot
+            if(e.type == "pointermove"){
+                if(!this.readyAttack){
+                    if(this.mousePress){
+                        // (x,y) la vector keo chuot, dinh huong cho bong
+                        var x = this.oldPosition.x - e.clientX;
+                        var y = this.oldPosition.y - e.clientY;
+                        this.needle.rotation = -Math.atan(x/y);
+                        this.echo.rotation = -Math.atan(x/y);
+                        if(Math.abs(y) < GameConstants.echoMaxNumerator && Math.abs(y) > GameConstants.echoMinNumerator)
+                        this.echo.scale.set(Math.abs(y)/GameConstants.echoDenominator, Math.abs(y)/GameConstants.echoDenominator);
+    
+                        // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
+                        if(x!=0&&y!=0){                        
+                            this.dx = this.speed*x/Math.sqrt((x*x+y*y));
+                            this.dy = this.speed*y/Math.sqrt((x*x+y*y));
+                            //console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
+                        }
+                        if(x==0){
+                            this.dx = 0;
+                            this.dy = this.speed;
+                        }
+                        if(y==0){
+                            this.dx = this.speed;
+                            this.dy = 0;
+                        }
+                        // di chuot xuong duoi mot doan nhat dinh moi duoc ban
+                        if( y < -GameConstants.echoMinNumerator ) {
+                            this.addChild(this.needle, this.echo);
+                            this.ready = true;
+                            //console.log("ready");
+                        }
+                        else {
+                            this.removeChild(this.needle, this.echo);
+                            this.ready = false;
+                            //console.log("not ready");
+                        }
+                    } 
+                }                 
+            }
         }
     }
 }

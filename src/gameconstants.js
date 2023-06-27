@@ -1,23 +1,29 @@
-const screenHeight = innerHeight;
-const screenWidth = innerWidth;
 const padding = 5;
-const column = 10;
+const column = 7;
+const line = 14;
+const screenHeight = innerHeight;
+const screenWidth = (screenHeight - line*padding)/line*column;
+const squareEdge = (screenWidth - (column+1)*padding)/2/column;
 //const edge = screenWidth/2/column;
-const ballRadius = 10 ;
+const ballRadius = 5;
+const defaultY = screenHeight - ballRadius - 3*padding - 8*squareEdge;
+const defaultTop = 3*padding + 6*squareEdge ;
 export const GameConstants = {
     //Screen
     screenWidth : screenWidth,
     screenHeight : screenHeight,
     //Default position x = screen/2,y = screen - ballradius
     defaultX : screenWidth/2,
-    defaultY : screenHeight - ballRadius,
-    column : column,    
+    defaultY : defaultY,
+    defaultTop : defaultTop,
+    column : column, 
+    line : line,   
     //Padding between square
     padding : padding,
     //Hafl edge of a block
     //edge : edge,
     //Square edge = edge - padding
-    squareEdge : (screenWidth - (column+1)*padding)/2/column,
+    squareEdge : squareEdge,
     //Anchor
     needleAnchor : {x: 0.5, y: 1.5},
     echoAnchor : {x: 0.5, y: 1.2},
@@ -38,5 +44,5 @@ export const GameConstants = {
     fallSpeed : 10,
     //Tween animation
     ballTweenTime : 500,
-    ringTweenTime : 10,
+    ringTweenTime : 5,
 }

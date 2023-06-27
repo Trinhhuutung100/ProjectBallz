@@ -12,12 +12,19 @@ export class GenMap extends Container{
         this.squares = [];
         this.coins = [];
         this.preBalls = [];    
-        this.createNewLine();    
+        this.createNewLine();  
+        this.distance = GameConstants.padding + 2*GameConstants.squareEdge;
+        this.count = this.distance
+        this.isCreatingMap = false;;  
+    }
+    update(dt){
+        this.pushDown(dt);
+        console.log(this.isCreatingMap);
     }
     createNewLine(){
         for(var i = 0; i<GameConstants.column; i++){
             var positionX = (i+1)*GameConstants.padding + (2*i+1)*GameConstants.squareEdge;
-            var positionY = GameConstants.padding + GameConstants.squareEdge;
+            var positionY = GameConstants.defaultTop + GameConstants.padding + GameConstants.squareEdge;
             var randomObj = Math.floor(Math.random()*100);
             // var square = new Square(positionX, positionY, 40);
             // this.squares.push(square);
@@ -51,55 +58,59 @@ export class GenMap extends Container{
             }
         }
         this.line++;
-        this.pushDown();
+        this.count = this.distance;
+        //this.pushDown();
     }
-    pushDown(){
-        var sy = 0;
-        var dy = GameConstants.padding + 2*GameConstants.squareEdge;
-        console.log(dy);
-        var tween = new TWEEN.Tween({y: sy})
-        .to({y: dy}, Ticker.shared.deltaMS*(GameConstants.padding + 2*GameConstants.squareEdge-1))
-        .onUpdate((obj) => {
+    pushDown(dt){
+        this.isCreatingMap = false;
+        if(this.count > 0){
             for(var i = 0; i < this.squares.length; i++){
-                this.squares[i].square.y += obj.y*2/dy;
-                this.squares[i].text.y += obj.y*2/dy;
+                //console.log(" over here");
+                this.squares[i].square.y +=dt;
+                this.squares[i].text.y +=dt;
             }
             for(var i = 0; i < this.coins.length; i++){
-                this.coins[i].coin.y += obj.y*2/dy;
+                this.coins[i].coin.y +=dt;
             }
             for(var i = 0; i < this.preBalls.length; i++){
-                this.preBalls[i].ball.y += obj.y*2/dy;
-                this.preBalls[i].ring.y += obj.y*2/dy;
-            }
-            sy += obj.y*2/dy;
-            console.log(sy + " " + obj.y);
-        })
-        .onComplete(() => {
-            console.log(sy - dy);
-        })
-        .start();
+                this.preBalls[i].ball.y +=dt;
+                this.preBalls[i].ring.y +=dt;
+            } 
+            this.count -=dt;  
+            this.isCreatingMap = true;         
+        }
         // var sy = 0;
         // var dy = GameConstants.padding + 2*GameConstants.squareEdge;
+        // var speed =  2;
         // console.log(dy);
         // var tween = new TWEEN.Tween({y: sy})
-        // .to({y: dy}, Ticker.shared.deltaMS*(GameConstants.padding + 2*GameConstants.squareEdge-1))
+        // .to({y: dy}, Ticker.shared.deltaMS*dy/(speed/2))
         // .onUpdate((obj) => {
         //     for(var i = 0; i < this.squares.length; i++){
-        //         this.squares[i].square.y += obj.y*2/dy;
-        //         this.squares[i].text.y += obj.y*2/dy;
+        //         this.squares[i].square.y += obj.y*speed/dy;
+        //         this.squares[i].text.y += obj.y*speed/dy;
         //     }
         //     for(var i = 0; i < this.coins.length; i++){
-        //         this.coins[i].coin.y += obj.y*2/dy;
+        //         this.coins[i].coin.y += obj.y*speed/dy;
         //     }
         //     for(var i = 0; i < this.preBalls.length; i++){
-        //         this.preBalls[i].ball.y += obj.y*2/dy;
-        //         this.preBalls[i].ring.y += obj.y*2/dy;
+        //         this.preBalls[i].ball.y += obj.y*speed/dy;
+        //         this.preBalls[i].ring.y += obj.y*speed/dy;
         //     }
-        //     sy += obj.y*2/dy;
+        //     sy += obj.y*speed/dy;
         //     console.log(sy + " " + obj.y);
         // })
         // .onComplete(() => {
         //     console.log(sy - dy);
+        // })
+        // .start();
+        // var sy = this.y;
+        // var dy = sy + GameConstants.padding + 2*GameConstants.squareEdge;
+        // console.log(dy);
+        // var tween = new TWEEN.Tween({y: sy})
+        // .to({y: dy}, 500)
+        // .onUpdate((obj) => {
+        //     this.y = obj.y
         // })
         // .start();
         // for(var i = 0; i < this.squares.length; i++){
@@ -114,6 +125,7 @@ export class GenMap extends Container{
         //     })
         //     .start();
         // }
+        
         // for(var i = 0; i < this.squares.length; i++){
         //     this.squares[i].square.y +=GameConstants.padding + 2*GameConstants.squareEdge;
         //     this.squares[i].text.y +=GameConstants.padding + 2*GameConstants.squareEdge;
