@@ -4,6 +4,7 @@ import { Square } from "./square";
 import TWEEN, { Tween } from "@tweenjs/tween.js";
 import { Coin } from "./coin";
 import { PreBall } from "./preball";
+import { Row } from "./row";
 
 export class GenMap extends Container{
     constructor(){
@@ -19,44 +20,69 @@ export class GenMap extends Container{
     }
     update(dt){
         this.pushDown(dt);
-        console.log(this.isCreatingMap);
+        //console.log(this.isCreatingMap);
     }
     createNewLine(){
-        for(var i = 0; i<GameConstants.column; i++){
+        var line = new Row(this.line);
+        var arr = line.data;
+        for(var i = 0; i < arr.length ; i++){
             var positionX = (i+1)*GameConstants.padding + (2*i+1)*GameConstants.squareEdge;
-            var positionY = GameConstants.defaultTop + GameConstants.padding + GameConstants.squareEdge;
-            var randomObj = Math.floor(Math.random()*100);
+            var positionY = GameConstants.defaultTop + GameConstants.squareEdge;
+            var value = arr[i];
+            //console.log(value);
+            switch (value) {
+                case 0:
+                    continue;
+                case -1:
+                    var preBall = new PreBall(positionX, positionY);
+                    this.preBalls.push(preBall);
+                    this.addChildAt(preBall);
+                    continue;
+                case -2:
+                    var coin = new Coin(positionX, positionY);
+                    this.coins.push(coin);
+                    this.addChildAt(coin);
+                    continue;
+                default:
+                    var square = new Square(positionX, positionY, value);
+                    this.squares.push(square);
+                    this.addChildAt(square);
+                    continue;
+            }
+        }
+        // for(var i = 0; i<GameConstants.column; i++){
+           
             // var square = new Square(positionX, positionY, 40);
             // this.squares.push(square);
             // this.addChildAt(square);
-            if( randomObj >= 0 && randomObj <= 20) {
-                continue;
-            }
-            if(randomObj >= 21 && randomObj <= 60){
-                var square = new Square(positionX, positionY, this.line);
-                this.squares.push(square);
-                this.addChildAt(square);
-                continue;
-            }
-            if(randomObj >= 61 && randomObj <= 80){
-                var square = new Square(positionX, positionY, 2*this.line);
-                this.squares.push(square);
-                this.addChildAt(square);
-                continue;
-            }
-            if(randomObj >= 81 && randomObj <= 90){
-                var coin = new Coin(positionX, positionY);
-                this.coins.push(coin);
-                this.addChildAt(coin);
-                continue;
-            }
-            if(randomObj >= 91 && randomObj <= 100){
-                var preBall = new PreBall(positionX, positionY);
-                this.preBalls.push(preBall);
-                this.addChildAt(preBall);
-                continue;
-            }
-        }
+            // if(randomObj >= 50 && randomObj <= 100){
+                // var preBall = new PreBall(positionX, positionY);
+                // this.preBalls.push(preBall);
+                // this.addChildAt(preBall);
+                // continue;
+            // }
+            // if(randomObj >= 0 && randomObj <= 50){
+                // var square = new Square(positionX, positionY, this.line);
+                // this.squares.push(square);
+                // this.addChildAt(square);
+                // continue;
+            // }
+            // if(randomObj >= 61 && randomObj <= 80){
+            //     var square = new Square(positionX, positionY, 2*this.line);
+            //     this.squares.push(square);
+            //     this.addChildAt(square);
+            //     continue;
+            // }
+            // if(randomObj >= 81 && randomObj <= 90){
+            //     var coin = new Coin(positionX, positionY);
+            //     this.coins.push(coin);
+            //     this.addChildAt(coin);
+            //     continue;
+            // }
+            // if( randomObj >= 0 && randomObj <= 20) {
+            //     continue;
+            // }            
+        // }
         this.line++;
         this.count = this.distance;
         //this.pushDown();

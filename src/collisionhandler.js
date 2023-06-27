@@ -54,6 +54,7 @@ export class CollisionHandler{
                         continue;
                     }
                     if(rightBottomDistance<ballRadius){
+                        this.ballSound.play(); 
                         if(ball.dx<0) ball.dx = -ball.dx;
                         if(ball.dy<0) ball.dy = -ball.dy;
                         this.squares[s].decreaseIndex(); 

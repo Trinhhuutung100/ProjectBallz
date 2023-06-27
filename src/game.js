@@ -13,7 +13,7 @@ export class Game{
         const app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
-            background: 0x111111
+            background: 0x222222
         })
         var padding = (innerWidth - GameConstants.screenWidth)/2;
         document.body.appendChild(app.view);
@@ -24,7 +24,7 @@ export class Game{
         var backYard = Sprite.from("assets/images/square.png");
         backYard.tint = 0x000000;
         backYard.width = GameConstants.screenWidth;
-        backYard.height = GameConstants.defaultY - GameConstants.defaultTop + GameConstants.ballRadius;
+        backYard.height = GameConstants.defaultY - GameConstants.defaultTop;
         backYard.x = 0.5;
         backYard.y = GameConstants.defaultTop;
         app.stage.addChild(backYard);

@@ -126,8 +126,8 @@ export class BallController extends Container{
                 this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.y > GameConstants.defaultY) {
-                this.balls[i].ball.y = GameConstants.defaultY;
+            if(this.balls[i].ball.y > GameConstants.defaultY - ballRadius) {
+                this.balls[i].ball.y = GameConstants.defaultY - ballRadius;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
                 //console.log(" Ground position x " + this.balls[i].ball.x);    

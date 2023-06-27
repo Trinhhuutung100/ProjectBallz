@@ -1,13 +1,13 @@
 const padding = 5;
 const column = 7;
-const line = 14;
+const line = 13;
 const screenHeight = innerHeight;
-const screenWidth = (screenHeight - line*padding)/line*column;
+const screenWidth = (screenHeight - line*padding)/line*column + (column + 1)* padding;
 const squareEdge = (screenWidth - (column+1)*padding)/2/column;
 //const edge = screenWidth/2/column;
-const ballRadius = 5;
-const defaultY = screenHeight - ballRadius - 3*padding - 8*squareEdge;
-const defaultTop = 3*padding + 6*squareEdge ;
+const ballRadius = squareEdge/3;
+const defaultY = screenHeight - 2*padding - 4*squareEdge;
+const defaultTop = 2*padding + 4*squareEdge ;
 export const GameConstants = {
     //Screen
     screenWidth : screenWidth,
