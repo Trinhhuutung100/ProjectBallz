@@ -3,7 +3,7 @@ import TWEEN from "@tweenjs/tween.js"
 import { Ball } from "./ball";
 import { GameConstants } from "./gameconstants";
 export class PreBall extends Ball{
-    constructor(x=GameConstants.defaultX, y=GameConstants.defaultY){
+    constructor(x=GameConstants.defaultX, y=GameConstants.defaultY + GameConstants.ballRadius){
         super(x, y);       
         this.ring = Sprite.from("assets/images/ring.png");
         this.ring.anchor.set(0.5, 0.5);
