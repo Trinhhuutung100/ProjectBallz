@@ -1,6 +1,7 @@
 import TWEEN from "@tweenjs/tween.js";
 import {Container, Sprite, Ticker } from "pixi.js"
 import { GameConstants } from "./gameconstants";
+import { Game } from "./game";
 
 const ballRadius = GameConstants.ballRadius;
 
@@ -17,8 +18,6 @@ export class BallController extends Container{
         this.dx = 0;
         this.dy = 0;
         this.distance = [];
-        this._dt = 0;
-        this._current = 0;
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
         }
@@ -48,10 +47,7 @@ export class BallController extends Container{
     update(dt, balls, map){
         this.balls = balls;
         this.map = map; 
-        //console.log(this.balls);
-        this._dt = Ticker.shared.deltaMS;
-        this._current += this._dt;
-        TWEEN.update(this._current);
+        //console.log(this.balls);\
         this.checkAllGround();
         this.moveBall(dt);
         this.border();
@@ -92,7 +88,7 @@ export class BallController extends Container{
                         this.isCreating = false;
                         
                     })
-                    tween.start(this._current);
+                    tween.start(Game._current);
                 }   
                 if(this.readyAttack){
                     this.map.createNewLine();

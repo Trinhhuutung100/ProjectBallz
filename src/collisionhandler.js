@@ -120,8 +120,7 @@ export class CollisionHandler{
                         this.balls.push(preBall);
                         this.balls[this.balls.length-1].dx = 0; 
                         this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
-                        this.balls[this.balls.length-1].readyGo = true;  
-                        
+                        this.balls[this.balls.length-1].readyGo = true;                          
                         this.ballSound.play();
                     }
                 }

@@ -1,4 +1,4 @@
-import { Application, Sprite } from "pixi.js"
+import { Application, Sprite, Ticker } from "pixi.js"
 import { ActiveBall } from "./activeball";
 import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
@@ -7,6 +7,8 @@ import { CollisionHandler } from "./collisionhandler";
 import { GameConstants } from "./gameconstants";
 import { Coin } from "./coin";
 import { GenMap } from "./genmap";
+import TWEEN from "@tweenjs/tween.js";
+
 
 export class Game{
     static init(){
@@ -44,8 +46,14 @@ export class Game{
         app.stage.addChild(this.ballController);
         this.collision = new CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
         app.ticker.add(Game.update.bind(this));
+        
+        this._dt = 0;
+        this._current = 0;
     }
-    static update(dt){
+    static update(dt){        
+        this._dt = Ticker.shared.deltaMS;
+        this._current += this._dt;
+        TWEEN.update(this._current);
         this.map.update(dt);
         this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
         this.ballController.update(dt, this.balls, this.map);

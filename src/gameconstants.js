@@ -28,8 +28,6 @@ export const GameConstants = {
     needleAnchor : {x: 0.5, y: 1.5},
     echoAnchor : {x: 0.5, y: 1.2},
     //Scale
-    minRingScale : 0.011,
-    maxRingScale : 0.0135,
     needleScale : {x: 0.5, y: 0.5},
     echoDenominator : 150,
     echoMaxNumerator : 120,
@@ -38,11 +36,13 @@ export const GameConstants = {
     fontSize : 30,
     ballRadius : ballRadius,
     coinRadius : 15,
+    minRing : 25,
+    maxRing : 30,
     //Ball move
     ballSpeed : 10,
     distanceBetweenBalls : 10,
     fallSpeed : 10,
     //Tween animation
     ballTweenTime : 500,
-    ringTweenTime : 5,
+    ringTweenTime : 10,
 }
