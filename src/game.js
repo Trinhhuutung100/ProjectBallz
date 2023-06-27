@@ -13,6 +13,7 @@ export class Game{
         })
         document.body.appendChild(app.view);
         this.balls = [];
+        //day len
         for(var i = 0; i<10; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
