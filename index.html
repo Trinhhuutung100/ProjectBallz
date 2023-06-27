@@ -804,7 +804,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class ActiveBall extends _ball__WEBPACK_IMPORTED_MODULE_1__.Ball {
-  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultY) {
+  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.defaultY + _gameconstants__WEBPACK_IMPORTED_MODULE_0__.GameConstants.ballRadius) {
     super(x, y);
   }
 }
@@ -977,8 +977,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY) {
-        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY;
+      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY - ballRadius) {
+        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultY - ballRadius;
         this.balls[i].dx = 0;
         this.balls[i].dy = 0;
         if (!this.firstGroundedBall) {
@@ -1154,6 +1154,7 @@ class CollisionHandler {
             continue;
           }
           if (rightBottomDistance < ballRadius) {
+            this.ballSound.play();
             if (ball.dx < 0)
               ball.dx = -ball.dx;
             if (ball.dy < 0)
@@ -1272,7 +1273,7 @@ class Game {
     const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
       width: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth,
       height: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight,
-      background: 1118481
+      background: 2236962
     });
     var padding = (innerWidth - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth) / 2;
     document.body.appendChild(app.view);
@@ -1283,7 +1284,7 @@ class Game {
     var backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
     backYard.tint = 0;
     backYard.width = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
-    backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultY - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.ballRadius;
+    backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultY - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     backYard.x = 0.5;
     backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     app.stage.addChild(backYard);
@@ -1328,13 +1329,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const padding = 5;
 const column = 7;
-const line = 14;
+const line = 13;
 const screenHeight = innerHeight;
-const screenWidth = (screenHeight - line * padding) / line * column;
+const screenWidth = (screenHeight - line * padding) / line * column + (column + 1) * padding;
 const squareEdge = (screenWidth - (column + 1) * padding) / 2 / column;
-const ballRadius = 5;
-const defaultY = screenHeight - ballRadius - 3 * padding - 8 * squareEdge;
-const defaultTop = 3 * padding + 6 * squareEdge;
+const ballRadius = squareEdge / 3;
+const defaultY = screenHeight - 2 * padding - 4 * squareEdge;
+const defaultTop = 2 * padding + 4 * squareEdge;
 const GameConstants = {
   //Screen
   screenWidth,
@@ -1394,6 +1395,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
 /* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./coin */ "./src/coin.js");
 /* harmony import */ var _preball__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./preball */ "./src/preball.js");
+/* harmony import */ var _row__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./row */ "./src/row.js");
+
 
 
 
@@ -1415,39 +1418,32 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   update(dt) {
     this.pushDown(dt);
-    console.log(this.isCreatingMap);
   }
   createNewLine() {
-    for (var i = 0; i < _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.column; i++) {
+    var line = new _row__WEBPACK_IMPORTED_MODULE_6__.Row(this.line);
+    var arr = line.data;
+    for (var i = 0; i < arr.length; i++) {
       var positionX = (i + 1) * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + (2 * i + 1) * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
-      var positionY = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
-      var randomObj = Math.floor(Math.random() * 100);
-      if (randomObj >= 0 && randomObj <= 20) {
-        continue;
-      }
-      if (randomObj >= 21 && randomObj <= 60) {
-        var square = new _square__WEBPACK_IMPORTED_MODULE_2__.Square(positionX, positionY, this.line);
-        this.squares.push(square);
-        this.addChildAt(square);
-        continue;
-      }
-      if (randomObj >= 61 && randomObj <= 80) {
-        var square = new _square__WEBPACK_IMPORTED_MODULE_2__.Square(positionX, positionY, 2 * this.line);
-        this.squares.push(square);
-        this.addChildAt(square);
-        continue;
-      }
-      if (randomObj >= 81 && randomObj <= 90) {
-        var coin = new _coin__WEBPACK_IMPORTED_MODULE_4__.Coin(positionX, positionY);
-        this.coins.push(coin);
-        this.addChildAt(coin);
-        continue;
-      }
-      if (randomObj >= 91 && randomObj <= 100) {
-        var preBall = new _preball__WEBPACK_IMPORTED_MODULE_5__.PreBall(positionX, positionY);
-        this.preBalls.push(preBall);
-        this.addChildAt(preBall);
-        continue;
+      var positionY = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+      var value = arr[i];
+      switch (value) {
+        case 0:
+          continue;
+        case -1:
+          var preBall = new _preball__WEBPACK_IMPORTED_MODULE_5__.PreBall(positionX, positionY);
+          this.preBalls.push(preBall);
+          this.addChildAt(preBall);
+          continue;
+        case -2:
+          var coin = new _coin__WEBPACK_IMPORTED_MODULE_4__.Coin(positionX, positionY);
+          this.coins.push(coin);
+          this.addChildAt(coin);
+          continue;
+        default:
+          var square = new _square__WEBPACK_IMPORTED_MODULE_2__.Square(positionX, positionY, value);
+          this.squares.push(square);
+          this.addChildAt(square);
+          continue;
       }
     }
     this.line++;
@@ -1528,6 +1524,71 @@ class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
 
 /***/ }),
 
+/***/ "./src/row.js":
+/*!********************!*\
+  !*** ./src/row.js ***!
+  \********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Row: () => (/* binding */ Row)
+/* harmony export */ });
+function getRandomElementsFromArray(arr, k) {
+  var result = [];
+  for (let i = 0; i < k; i++) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    result.push(arr[randomIndex]);
+    arr.splice(randomIndex, 1);
+  }
+  return result;
+}
+class Row {
+  constructor(count) {
+    this.count = count;
+    this.data = [0, 0, 0, 0, 0, 0, 0];
+    this.idx = [0, 1, 2, 3, 4, 5, 6];
+    this.createNewRow();
+  }
+  createNewRow() {
+    if (this.count > 1) {
+      var idxB = getRandomElementsFromArray(this.idx, 1)[0];
+      this.data[idxB] = -1;
+      const isHaveRing = Math.random() <= 0.5;
+      if (isHaveRing) {
+        var idxR = getRandomElementsFromArray(this.idx, 1)[0];
+        this.data[idxR] = -2;
+      }
+    }
+    var random = Math.random();
+    var idxX = [];
+    if (random <= 0.65) {
+      idxX = getRandomElementsFromArray(this.idx, 1);
+    }
+    if (random <= 0.8 && random > 0.65) {
+      idxX = getRandomElementsFromArray(this.idx, 2);
+    }
+    if (random <= 0.85 && random > 0.8) {
+      idxX = getRandomElementsFromArray(this.idx, 3);
+    }
+    for (let i = 0; i < idxX.length; i++) {
+      this.data[idxX[i]] = this.count * 2;
+    }
+    for (let i = 0; i < this.idx.length; i++) {
+      var tmp = Math.random();
+      if (tmp >= 0.5) {
+        this.data[this.idx[i]] = 0;
+      } else {
+        this.data[this.idx[i]] = this.count;
+      }
+    }
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/square.js":
 /*!***********************!*\
   !*** ./src/square.js ***!
@@ -1548,7 +1609,7 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y, index) {
     super();
     this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
-    this.color = 16777215;
+    this.color = changeColor(index);
     this.square.tint = this.color;
     this.square.anchor.set(0.5, 0.5);
     this.square.width = 2 * edge;
@@ -1567,10 +1628,10 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   decreaseIndex() {
     if (this.index > 0)
       this.index--;
+    this.color = changeColor(this.index);
     this.setText();
   }
   setText() {
-    this.color -= 15;
     this.square.tint = this.color;
     this.removeChild(this.text);
     this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.index, this.textStyle);
@@ -1579,6 +1640,13 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.text.y = this.square.y;
     this.addChild(this.text);
   }
+}
+function changeColor(score) {
+  var baseColor = "f29305";
+  var tmp = parseInt(baseColor, 16);
+  tmp += (score - 1) * 2048;
+  var res = tmp.toString(16);
+  return res;
 }
 
 
