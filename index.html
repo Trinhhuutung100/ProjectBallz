@@ -1492,7 +1492,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
-  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultY) {
+  constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultY + _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ballRadius) {
     super(x, y);
     this.ring = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ring.png");
     this.ring.anchor.set(0.5, 0.5);
