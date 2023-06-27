@@ -25,15 +25,16 @@ export class BallController extends Container{
         this.oldPosition = {x:0, y: 0};
         this.needle = Sprite.from("assets/images/needle.png");
         this.needle.anchor.set(GameConstants.needleAnchor.x, GameConstants.needleAnchor.y);
-        this.needle.scale.set(GameConstants.needleScale.x, GameConstants.needleScale.y);
-        this.needle.x = GameConstants.defaultX;
-        this.needle.y = GameConstants.defaultY;
+        this.needle.width = GameConstants.needleWidth;
+        this.needle.height = GameConstants.needleHeight;
+        this.needle.x = GameConstants.defaultBallX;
+        this.needle.y = GameConstants.defaultBottomBall;
         this.echo = Sprite.from("assets/images/echo.png");
         this.echo.anchor.set(GameConstants.echoAnchor.x, GameConstants.echoAnchor.y);
-        this.echo.x = GameConstants.defaultX;
-        this.echo.y = GameConstants.defaultY;
-        this.groundPositionX = GameConstants.defaultX;
-        this.groundPositionY = GameConstants.defaultY;
+        this.echo.x = GameConstants.defaultBallX;
+        this.echo.y = GameConstants.defaultBottomBall;
+        this.groundPositionX = GameConstants.defaultBallX;
+        this.groundPositionY = GameConstants.defaultBottomBall;
         this.firstGroundedBall = false;
         this.isCreating = false;
         
@@ -122,8 +123,8 @@ export class BallController extends Container{
                 this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.y > GameConstants.defaultY - ballRadius) {
-                this.balls[i].ball.y = GameConstants.defaultY - ballRadius;
+            if(this.balls[i].ball.y > GameConstants.defaultBottomBall) {
+                this.balls[i].ball.y = GameConstants.defaultBottomBall;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
                 //console.log(" Ground position x " + this.balls[i].ball.x);    
@@ -135,8 +136,8 @@ export class BallController extends Container{
                     //console.log("First ball position x " + this.groundPositionX);
                 }       
             }
-            if(this.balls[i].ball.y < ballRadius + GameConstants.defaultTop) {
-                this.balls[i].ball.y = ballRadius + GameConstants.defaultTop;
+            if(this.balls[i].ball.y < GameConstants.defaultTopBall) {
+                this.balls[i].ball.y = GameConstants.defaultTopBall;
                 this.balls[i].dy = -this.balls[i].dy;
             }            
         }

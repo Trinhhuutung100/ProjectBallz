@@ -27,7 +27,7 @@ export class GenMap extends Container{
         var arr = line.data;
         for(var i = 0; i < arr.length ; i++){
             var positionX = (i+1)*GameConstants.padding + (2*i+1)*GameConstants.squareEdge;
-            var positionY = GameConstants.defaultTop + GameConstants.squareEdge;
+            var positionY = GameConstants.defaultTopMap;
             var value = arr[i];
             //console.log(value);
             switch (value) {
@@ -85,7 +85,6 @@ export class GenMap extends Container{
         // }
         this.line++;
         this.count = this.distance;
-        //this.pushDown();
     }
     pushDown(dt){
         this.isCreatingMap = false;

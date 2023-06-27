@@ -26,7 +26,7 @@ export class Game{
         var backYard = Sprite.from("assets/images/square.png");
         backYard.tint = 0x000000;
         backYard.width = GameConstants.screenWidth;
-        backYard.height = GameConstants.defaultY - GameConstants.defaultTop;
+        backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
         backYard.x = 0.5;
         backYard.y = GameConstants.defaultTop;
         app.stage.addChild(backYard);
@@ -36,6 +36,7 @@ export class Game{
         for(var i = 0; i<10; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
+            //console.log(ball);
         }
         this.balls.forEach(ball => {
             app.stage.addChild(ball);

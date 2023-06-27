@@ -5,7 +5,7 @@ import { GameConstants } from "./gameconstants";
 import { gsap} from "gsap"
 import { Game } from "./game";
 export class PreBall extends Ball{
-    constructor(x=GameConstants.defaultX, y=GameConstants.defaultY + GameConstants.ballRadius){
+    constructor(x=GameConstants.defaultBallX, y=GameConstants.defaultBottomBall){
         super(x, y);       
         this.ring = Sprite.from("assets/images/ring.png");
         this.ring.anchor.set(0.5, 0.5);

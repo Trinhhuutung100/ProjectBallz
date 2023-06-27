@@ -15,6 +15,7 @@ export class CollisionHandler{
         this.preBalls = preBalls;
         this.ballSound = Sound.from("assets/sounds/Ball.wav");
         this.coinSound = Sound.from("assets/sounds/Coin.wav");
+        console.log(edge);
     }
     update(dt){
         this.squareCollision();
