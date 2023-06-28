@@ -56,8 +56,8 @@ export class Game{
         this._current += this._dt;
         TWEEN.update(this._current);
         this.map.update(dt);
-        this.ballController.update(dt);
         this.collision.update(dt);
+        this.ballController.update(dt);
     }
 } 
 

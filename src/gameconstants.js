@@ -2,8 +2,8 @@ const column = 7;
 const line = 14;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
-const squareEdge = screenWidth/16;
-const padding = squareEdge/4;
+const squareEdge = screenWidth/15;
+const padding = squareEdge/8;
 //const edge = screenWidth/2/column;
 const ballRadius = squareEdge/3;
 const defaultBottom = screenHeight/2 + 5*padding + 8*squareEdge;
@@ -46,7 +46,7 @@ export const GameConstants = {
     minRing : squareEdge,
     maxRing : squareEdge*1.5,
     //Ball move
-    ballSpeed : squareEdge/2,
+    ballSpeed : squareEdge*0.5,
     distanceBetweenBalls : Math.round(squareEdge/2),
     fallSpeed : squareEdge/2,
     //Tween animation

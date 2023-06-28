@@ -114,11 +114,11 @@ export class BallController extends Container{
         for(var i = 0; i< this.balls.length; i++){            
             //make border
             if(this.balls[i].ball.x + this.balls[i].dx*dt> GameConstants.screenWidth - ballRadius ) {
-                //this.balls[i].ball.x = GameConstants.screenWidth - ballRadius;
+                this.balls[i].ball.x = GameConstants.screenWidth - ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
             if(this.balls[i].ball.x + this.balls[i].dx*dt < ballRadius ) {
-                //this.balls[i].ball.x = ballRadius;
+                this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
             if(this.balls[i].ball.y + this.balls[i].dy*dt > GameConstants.defaultBottomBall) {
@@ -135,7 +135,7 @@ export class BallController extends Container{
                 }       
             }
             if(this.balls[i].ball.y + this.balls[i].dy*dt < GameConstants.defaultTopBall) {
-                //this.balls[i].ball.y = GameConstants.defaultTopBall;
+                this.balls[i].ball.y = GameConstants.defaultTopBall;
                 this.balls[i].dy = -this.balls[i].dy;
             }            
         }

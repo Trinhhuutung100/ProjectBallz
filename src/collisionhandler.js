@@ -100,7 +100,8 @@ export class CollisionHandler{
                         //     this.balls[b].ball.y = square.top - ballRadius;
                         // } else this.balls[b].ball.y = square.top + ballRadius;
                         ball.dy = -ball.dy;  
-                        this.squares[s].decreaseIndex();          
+                        this.squares[s].decreaseIndex();    
+                        continue;      
                     }
                 }
             }
