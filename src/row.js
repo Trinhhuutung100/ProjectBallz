@@ -20,16 +20,16 @@ export class Row {
         this.createNewRow();
     }
     createNewRow(){
-        if(this.count>0){
-            this.data[0] = 10;
-            this.data[1] = 10;
-            this.data[2] = 10;
-            this.data[3] = 10;
-            this.data[4] = 10;
-            this.data[5] = 10;
-            this.data[6] = 10;
-            return;
-        }
+        // if(this.count>0){
+        //     this.data[0] = 10;
+        //     this.data[1] = 10;
+        //     this.data[2] = 10;
+        //     this.data[3] = 10;
+        //     this.data[4] = 10;
+        //     this.data[5] = 10;
+        //     this.data[6] = 10;
+        //     return;
+        // }
         if(this.count>1){ // ring và bonus không xuất hiện ở hàng đầu tiên, chỉ xuất hiện từ hàng thứ 2 trở đi
             var idxB= getRandomElementsFromArray(this.idx,1)[0]; // hàng nào cũng phải có 1 item bonus, xác định vị trí của item này
             this.data[idxB]=-1; //preBall
