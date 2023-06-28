@@ -1291,7 +1291,7 @@ class Game {
     this.backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     app.stage.addChild(this.backYard);
     this.balls = [];
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 10; i++) {
       var ball = new _activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
       this.balls.push(ball);
     }
@@ -1571,16 +1571,6 @@ class Row {
     this.createNewRow();
   }
   createNewRow() {
-    if (this.count > 0) {
-      this.data[0] = 10;
-      this.data[1] = 10;
-      this.data[2] = 10;
-      this.data[3] = 10;
-      this.data[4] = 10;
-      this.data[5] = 10;
-      this.data[6] = 10;
-      return;
-    }
     if (this.count > 1) {
       var idxB = getRandomElementsFromArray(this.idx, 1)[0];
       this.data[idxB] = -1;
