@@ -1110,7 +1110,6 @@ class CollisionHandler {
     this.preBalls = preBalls;
     this.ballSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.Sound.from("assets/sounds/Ball.wav");
     this.coinSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.Sound.from("assets/sounds/Coin.wav");
-    console.log(edge);
   }
   update(dt) {
     this.squareCollision(dt);
@@ -1121,73 +1120,72 @@ class CollisionHandler {
     for (var b = 0; b < this.balls.length; b++) {
       if (this.balls[b].isBall) {
         for (var s = 0; s < this.squares.length; s++) {
-          var ball = this.balls[b];
+          var bc = this.balls[b];
+          var ball = bc.ball.getBounds();
           var square = this.squares[s].square.getBounds();
-          var ballX = ball.ball.getBounds().x + ballRadius + ball.dx * dt;
-          var ballY = ball.ball.getBounds().y + ballRadius + ball.dy * dt;
-          var squareX = square.x + edge;
-          var squareY = square.y + edge;
-          var distX = ballX - squareX;
-          var distY = ballY - squareY;
+          var bx = ball.x + ballRadius + bc.dx * dt;
+          var by = ball.y + ballRadius + bc.dy * dt;
+          var sx = square.x + edge;
+          var sy = square.y + edge;
+          var dx = Math.abs(bx - sx);
+          var dy = Math.abs(by - sy);
           var leftBottom = { x: square.left, y: square.bottom };
           var leftTop = { x: square.left, y: square.top };
           var rightBottom = { x: square.right, y: square.bottom };
           var rightTop = { x: square.right, y: square.top };
-          var leftBottomDistance = this.vectorDistance({ x: ballX, y: ballY }, leftBottom);
-          var leftTopDistance = this.vectorDistance({ x: ballX, y: ballY }, leftTop);
-          var rightBottomDistance = this.vectorDistance({ x: ballX, y: ballY }, rightBottom);
-          var rightTopDistance = this.vectorDistance({ x: ballX, y: ballY }, rightTop);
+          var bp = { x: bx, y: by };
           if (this.squares[s].index == 0) {
             this.squares[s].destroy();
-            continue;
+            this.squares.splice(s, 1);
           }
-          if (leftBottomDistance < ballRadius) {
+          if (this.vectorDistance(bp, leftBottom) < ballRadius) {
             this.ballSound.play();
-            if (ball.dx > 0)
-              ball.dx = -ball.dx;
-            if (ball.dy < 0)
-              ball.dy = -ball.dy;
+            if (bc.dx > 0)
+              bc.dx = -bc.dx;
+            if (bc.dy < 0)
+              bc.dy = -bc.dy;
             this.squares[s].decreaseIndex();
             continue;
           }
-          if (rightBottomDistance < ballRadius) {
+          if (this.vectorDistance(bp, leftTop) < ballRadius) {
             this.ballSound.play();
-            if (ball.dx < 0)
-              ball.dx = -ball.dx;
-            if (ball.dy < 0)
-              ball.dy = -ball.dy;
+            if (bc.dx > 0)
+              bc.dx = -bc.dx;
+            if (bc.dy > 0)
+              bc.dy = -bc.dy;
             this.squares[s].decreaseIndex();
             continue;
           }
-          if (leftTopDistance < ballRadius) {
+          if (this.vectorDistance(bp, rightBottom) < ballRadius) {
             this.ballSound.play();
-            if (ball.dx > 0)
-              ball.dx = -ball.dx;
-            if (ball.dy > 0)
-              ball.dy = -ball.dy;
+            if (bc.dx < 0)
+              bc.dx = -bc.dx;
+            if (bc.dy < 0)
+              bc.dy = -bc.dy;
             this.squares[s].decreaseIndex();
             continue;
           }
-          if (rightTopDistance < ballRadius) {
+          if (this.vectorDistance(bp, rightTop) < ballRadius) {
             this.ballSound.play();
-            if (ball.dx < 0)
-              ball.dx = -ball.dx;
-            if (ball.dy > 0)
-              ball.dy = -ball.dy;
+            if (bc.dx < 0)
+              bc.dx = -bc.dx;
+            if (bc.dy > 0)
+              bc.dy = -bc.dy;
             this.squares[s].decreaseIndex();
             continue;
           }
-          if (Math.abs(distX) < ballRadius + edge && Math.abs(ballY - squareY) < edge) {
-            this.ballSound.play();
-            ball.dx = -ball.dx;
-            this.squares[s].decreaseIndex();
-            continue;
-          }
-          if (Math.abs(distY) < ballRadius + edge && Math.abs(ballX - squareX) < edge) {
-            this.ballSound.play();
-            ball.dy = -ball.dy;
-            this.squares[s].decreaseIndex();
-            continue;
+          if (dx > dy) {
+            if (dx < ballRadius + edge && dy < edge) {
+              this.ballSound.play();
+              bc.dx = -bc.dx;
+              this.squares[s].decreaseIndex();
+            }
+          } else {
+            if (dy < ballRadius + edge && dx < edge) {
+              this.ballSound.play();
+              bc.dy = -bc.dy;
+              this.squares[s].decreaseIndex();
+            }
           }
         }
       }
@@ -1285,15 +1283,15 @@ class Game {
     viewStyle.position = "absolute";
     viewStyle.display = "block";
     viewStyle.padding = "0px " + padding + "px";
-    var backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
-    backYard.tint = 0;
-    backYard.width = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
-    backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
-    backYard.x = 0.5;
-    backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
-    app.stage.addChild(backYard);
+    this.backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
+    this.backYard.tint = 0;
+    this.backYard.width = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
+    this.backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
+    this.backYard.x = 0.5;
+    this.backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
+    app.stage.addChild(this.backYard);
     this.balls = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       var ball = new _activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
       this.balls.push(ball);
     }
@@ -1573,6 +1571,16 @@ class Row {
     this.createNewRow();
   }
   createNewRow() {
+    if (this.count > 0) {
+      this.data[0] = 10;
+      this.data[1] = 10;
+      this.data[2] = 10;
+      this.data[3] = 10;
+      this.data[4] = 10;
+      this.data[5] = 10;
+      this.data[6] = 10;
+      return;
+    }
     if (this.count > 1) {
       var idxB = getRandomElementsFromArray(this.idx, 1)[0];
       this.data[idxB] = -1;
