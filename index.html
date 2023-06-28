@@ -916,10 +916,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     if (this.readyAttack) {
       this.ready = false;
       for (var i = 0; i < this.balls.length; i++) {
-        if (this.distance[i] == i * _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls)
+        if (this.distance[i] > i * _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls * dt)
           this.balls[i].readyGo = true;
         else
-          this.distance[i]++;
+          this.distance[i] += dt;
         if (this.balls[i].readyGo) {
           this.balls[i].ball.x += this.balls[i].dx * dt;
           this.balls[i].ball.y += this.balls[i].dy * dt;
