@@ -1,5 +1,5 @@
 const column = 7;
-const line = 14;
+const line = 13;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
 const squareEdge = screenWidth/15;

@@ -32,8 +32,8 @@ export class CollisionHandler{
                     var ballY = ball.ball.getBounds().y + ballRadius + ball.dy*dt;
                     var squareX = square.x + edge;
                     var squareY = square.y + edge;
-                    var distX = ballX - squareX;
-                    var distY = ballY - squareY;
+                    var distX = ballX + ball.dx - squareX;
+                    var distY = ballY + ball.dy - squareY;
                     var leftBottom = {x: square.left, y: square.bottom};
                     var leftTop = {x: square.left, y: square.top};
                     var rightBottom = {x: square.right, y: square.bottom};
@@ -112,8 +112,8 @@ export class CollisionHandler{
             if(this.balls[b].isBall){
                 for(var c = 0; c< this.coins.length; c++){
                     var ball = this.balls[b].ball;
-                    var ballX = ball.getBounds().x + ballRadius + this.balls[b].dx*dt;
-                    var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy*dt;
+                    var ballX = ball.getBounds().x + ballRadius;
+                    var ballY = ball.getBounds().y + ballRadius;
                     var coin = {x: this.coins[c].coin.getBounds().x + coinRadius, y: this.coins[c].coin.getBounds().y + coinRadius};
                     if(this.vectorDistance({x: ballX, y: ballY}, coin)<ballRadius+coinRadius){
                         this.coins[c].destroy();
@@ -129,8 +129,8 @@ export class CollisionHandler{
             if(this.balls[b].isBall){
                 for(var p = 0; p< this.preBalls.length; p++){
                     var ball = this.balls[b].ball;
-                    var ballX = ball.getBounds().x + ballRadius + this.balls[b].dx*dt;
-                    var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy*dt;
+                    var ballX = ball.getBounds().x + ballRadius;
+                    var ballY = ball.getBounds().y + ballRadius;
                     var preBall = {x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius};
                     if(this.vectorDistance({x: ballX, y: ballY}, preBall)<ballRadius+coinRadius){
                         this.preBalls[p].ringDestroy = true;
