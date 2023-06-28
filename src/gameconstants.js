@@ -46,7 +46,7 @@ export const GameConstants = {
     minRing : squareEdge,
     maxRing : squareEdge*1.5,
     //Ball move
-    ballSpeed : squareEdge,
+    ballSpeed : squareEdge*0.5,
     distanceBetweenBalls : Math.round(squareEdge/2),
     fallSpeed : squareEdge*0.5,
     //Tween animation
