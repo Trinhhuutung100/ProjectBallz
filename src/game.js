@@ -33,7 +33,7 @@ export class Game{
         //Add balls
         this.balls = [];
         //day len git
-        for(var i = 0; i<1; i++){
+        for(var i = 0; i<10; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
             //console.log(ball);
@@ -51,13 +51,13 @@ export class Game{
         this._dt = 0;
         this._current = 0;
     }
-    static update(dt){        
+    static update(dt){      
         this._dt = Ticker.shared.deltaMS;
         this._current += this._dt;
         TWEEN.update(this._current);
         this.map.update(dt);
-        this.collision.update(dt);
         this.ballController.update(dt);
+        this.collision.update(dt);  
     }
 } 
 
