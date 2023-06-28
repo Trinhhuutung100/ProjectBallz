@@ -23,17 +23,17 @@ export class Game{
         viewStyle.position = "absolute";
         viewStyle.display = "block";
         viewStyle.padding = "0px " + padding + "px";
-        var backYard = Sprite.from("assets/images/square.png");
-        backYard.tint = 0x000000;
-        backYard.width = GameConstants.screenWidth;
-        backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
-        backYard.x = 0.5;
-        backYard.y = GameConstants.defaultTop;
-        app.stage.addChild(backYard);
+        this.backYard = Sprite.from("assets/images/square.png");
+        this.backYard.tint = 0x000000;
+        this.backYard.width = GameConstants.screenWidth;
+        this.backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
+        this.backYard.x = 0.5;
+        this.backYard.y = GameConstants.defaultTop;
+        app.stage.addChild(this.backYard);
         //Add balls
         this.balls = [];
         //day len git
-        for(var i = 0; i<10; i++){
+        for(var i = 0; i<20; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
             //console.log(ball);

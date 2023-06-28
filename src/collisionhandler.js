@@ -15,7 +15,6 @@ export class CollisionHandler{
         this.preBalls = preBalls;
         this.ballSound = Sound.from("assets/sounds/Ball.wav");
         this.coinSound = Sound.from("assets/sounds/Coin.wav");
-        console.log(edge);
     }
     update(dt){
         this.squareCollision(dt);
@@ -26,74 +25,81 @@ export class CollisionHandler{
         for(var b = 0; b< this.balls.length; b++){
             if(this.balls[b].isBall){
                 for(var s = 0; s< this.squares.length; s++){
-                    var ball = this.balls[b];
+                    //Ball container
+                    var bc = this.balls[b];
+                    //Get bounds
+                    var ball = bc.ball.getBounds();
                     var square = this.squares[s].square.getBounds();
                     //Position
-                    var ballX = ball.ball.getBounds().x + ballRadius + ball.dx*dt;
-                    var ballY = ball.ball.getBounds().y + ballRadius + ball.dy*dt;
-                    var squareX = square.x + edge;
-                    var squareY = square.y + edge;
+                    var bx = ball.x + ballRadius + bc.dx*dt;
+                    var by = ball.y + ballRadius + bc.dy*dt;
+                    var sx = square.x + edge;
+                    var sy = square.y + edge;
                     //Distance
-                    var distX = ballX - squareX;
-                    var distY = ballY - squareY;
+                    var dx = Math.abs(bx - sx);
+                    var dy = Math.abs(by - sy);
                     //Corner
                     var leftBottom = {x: square.left, y: square.bottom};
                     var leftTop = {x: square.left, y: square.top};
                     var rightBottom = {x: square.right, y: square.bottom};
                     var rightTop = {x: square.right, y: square.top};
-                    //Distance to corner
-                    var leftBottomDistance = this.vectorDistance({x: ballX, y: ballY}, leftBottom);
-                    var leftTopDistance = this.vectorDistance({x: ballX, y: ballY}, leftTop);
-                    var rightBottomDistance = this.vectorDistance({x: ballX, y: ballY}, rightBottom);
-                    var rightTopDistance = this.vectorDistance({x: ballX, y: ballY}, rightTop);
+                    var bp = {x: bx, y: by}
                     //Destroy square
                     if(this.squares[s].index == 0) {
                         this.squares[s].destroy();
-                        continue;
+                        this.squares.splice(s, 1);
                     }
-                    //Handle collision
-                    if(leftBottomDistance<ballRadius){
+                    //Corner collision
+                    if(this.vectorDistance(bp, leftBottom)<ballRadius){
                         this.ballSound.play(); 
-                        if(ball.dx>0) ball.dx = -ball.dx;
-                        if(ball.dy<0) ball.dy = -ball.dy;
+                        if(bc.dx>0) bc.dx = -bc.dx;
+                        if(bc.dy<0) bc.dy = -bc.dy;
                         this.squares[s].decreaseIndex();
                         continue;
-                    }
-                    if(rightBottomDistance<ballRadius){
+                    } 
+                    //Corner collision
+                    if(this.vectorDistance(bp, leftTop)<ballRadius){
                         this.ballSound.play(); 
-                        if(ball.dx<0) ball.dx = -ball.dx;
-                        if(ball.dy<0) ball.dy = -ball.dy;
-                        this.squares[s].decreaseIndex(); 
-                        continue;
-                    }
-                    if(leftTopDistance<ballRadius){
-                        this.ballSound.play();
-                        if(ball.dx>0) ball.dx = -ball.dx;
-                        if(ball.dy>0) ball.dy = -ball.dy;
-                        this.squares[s].decreaseIndex(); 
-                        continue;
-                    }
-                    if(rightTopDistance<ballRadius){
-                        this.ballSound.play(); 
-                        if(ball.dx<0) ball.dx = -ball.dx;
-                        if(ball.dy>0) ball.dy = -ball.dy;
-                        this.squares[s].decreaseIndex(); 
-                        continue;
-                    }
-                    if( Math.abs(distX) < ballRadius + edge 
-                    && Math.abs(ballY - squareY) < edge) { 
-                        this.ballSound.play();
-                        ball.dx = -ball.dx;   
+                        if(bc.dx>0) bc.dx = -bc.dx;
+                        if(bc.dy>0) bc.dy = -bc.dy;
                         this.squares[s].decreaseIndex();
-                        continue;                       
-                    }
-                    if( Math.abs(distY) < ballRadius + edge 
-                    && Math.abs(ballX - squareX) < edge) {       
-                        this.ballSound.play();      
-                        ball.dy = -ball.dy;  
-                        this.squares[s].decreaseIndex();    
-                        continue;      
-                    }
+                        continue;
+                    } 
+                    //Corner collision
+                    if(this.vectorDistance(bp, rightBottom)<ballRadius){
+                        this.ballSound.play(); 
+                        if(bc.dx<0) bc.dx = -bc.dx;
+                        if(bc.dy<0) bc.dy = -bc.dy;
+                        this.squares[s].decreaseIndex();
+                        continue;
+                    } 
+                    //Corner collision
+                    if(this.vectorDistance(bp, rightTop)<ballRadius){
+                        this.ballSound.play(); 
+                        if(bc.dx<0) bc.dx = -bc.dx;
+                        if(bc.dy>0) bc.dy = -bc.dy;
+                        this.squares[s].decreaseIndex();
+                        continue;
+                    }     
+                    if(dx > dy) {      
+                        //Horizontal collision     
+                        if( dx < ballRadius + edge && dy < edge ) { 
+                            this.ballSound.play();
+                            //this.balls[b].ball.x -=bc.dx*dt;
+                            bc.dx = -bc.dx;   
+                            this.squares[s].decreaseIndex();      
+                            //console.log("ngang");        
+                        }
+                    } else { 
+                        //Vertical collision
+                        if( dy < ballRadius + edge && dx < edge) {       
+                            this.ballSound.play();  
+                            //this.balls[b].ball.y -=bc.dy*dt;
+                            bc.dy = -bc.dy;  
+                            this.squares[s].decreaseIndex(); 
+                            //console.log("doc");
+                        }
+                    } 
                 }
             }
         }
