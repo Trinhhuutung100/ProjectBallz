@@ -20,7 +20,7 @@ export class GenMap extends Container{
     }
     update(dt){
         this.pushDown(dt);
-        //console.log(this.isCreatingMap);
+        //console.log(this.isCreatingMap)
     }
     createNewLine(){
         var line = new Row(this.line);
