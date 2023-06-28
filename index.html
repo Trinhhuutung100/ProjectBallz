@@ -965,17 +965,15 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   }
   border() {
     for (var i = 0; i < this.balls.length; i++) {
-      if (this.balls[i].ball.x > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius) {
-        this.balls[i].ball.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius;
+      if (this.balls[i].ball.x + this.balls[i].dx > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius) {
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.x < ballRadius) {
-        this.balls[i].ball.x = ballRadius;
+      if (this.balls[i].ball.x + this.balls[i].dx < ballRadius) {
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.y > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall) {
+      if (this.balls[i].ball.y + this.balls[i].dy > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall) {
         this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
         this.balls[i].dx = 0;
         this.balls[i].dy = 0;
@@ -986,8 +984,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           }
         }
       }
-      if (this.balls[i].ball.y < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall) {
-        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
+      if (this.balls[i].ball.y + this.balls[i].dy < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall) {
         this.balls[i].dy = -this.balls[i].dy;
       }
     }
