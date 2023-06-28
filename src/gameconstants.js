@@ -40,15 +40,15 @@ export const GameConstants = {
     echoMaxNumerator : 4*squareEdge,
     echoMinNumerator : squareEdge,
     //Text font
-    fontSize : Math.floor(squareEdge),
+    fontSize : Math.round(squareEdge),
     ballRadius : ballRadius,
     coinRadius : squareEdge/2,
     minRing : squareEdge,
     maxRing : squareEdge*1.5,
     //Ball move
-    ballSpeed : 10,
-    distanceBetweenBalls : 10,
-    fallSpeed : 10,
+    ballSpeed : squareEdge/2,
+    distanceBetweenBalls : Math.round(squareEdge/2),
+    fallSpeed : squareEdge/2,
     //Tween animation
     ballTweenTime : 500,
     ringTweenTime : 10,

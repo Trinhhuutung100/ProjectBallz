@@ -45,13 +45,11 @@ export class BallController extends Container{
         window.addEventListener("pointermove", this.mouseHandler.bind(this));
         window.addEventListener("pointerup", this.mouseHandler.bind(this));
     }
-    update(dt, balls, map){
-        this.balls = balls;
-        this.map = map; 
+    update(dt){
         //console.log(this.balls);\
         this.checkAllGround();
         this.moveBall(dt);
-        this.border();
+        this.border(dt);
     }
     // move balls and stare
     moveBall(dt){
@@ -112,18 +110,18 @@ export class BallController extends Container{
             }
         }        
     }
-    border(){
+    border(dt){
         for(var i = 0; i< this.balls.length; i++){            
             //make border
-            if(this.balls[i].ball.x + this.balls[i].dx> GameConstants.screenWidth - ballRadius ) {
+            if(this.balls[i].ball.x + this.balls[i].dx*dt> GameConstants.screenWidth - ballRadius ) {
                 //this.balls[i].ball.x = GameConstants.screenWidth - ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.x + this.balls[i].dx < ballRadius ) {
+            if(this.balls[i].ball.x + this.balls[i].dx*dt < ballRadius ) {
                 //this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.y + this.balls[i].dy > GameConstants.defaultBottomBall) {
+            if(this.balls[i].ball.y + this.balls[i].dy*dt > GameConstants.defaultBottomBall) {
                 this.balls[i].ball.y = GameConstants.defaultBottomBall;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
@@ -136,7 +134,7 @@ export class BallController extends Container{
                     //console.log("First ball position x " + this.groundPositionX);
                 }       
             }
-            if(this.balls[i].ball.y + this.balls[i].dy < GameConstants.defaultTopBall) {
+            if(this.balls[i].ball.y + this.balls[i].dy*dt < GameConstants.defaultTopBall) {
                 //this.balls[i].ball.y = GameConstants.defaultTopBall;
                 this.balls[i].dy = -this.balls[i].dy;
             }            
