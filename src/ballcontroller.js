@@ -57,8 +57,8 @@ export class BallController extends Container{
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
                 //console.log(i+" "+this.distance[i]);
-                if(this.distance[i]==i*GameConstants.distanceBetweenBalls) this.balls[i].readyGo=true;
-                else this.distance[i]++;
+                if(this.distance[i]>i*GameConstants.distanceBetweenBalls*dt) this.balls[i].readyGo=true;
+                else this.distance[i] +=dt;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
                     this.balls[i].ball.x +=this.balls[i].dx*dt;
