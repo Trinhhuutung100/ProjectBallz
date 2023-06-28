@@ -1293,7 +1293,7 @@ class Game {
     backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     app.stage.addChild(backYard);
     this.balls = [];
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 10; i++) {
       var ball = new _activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
       this.balls.push(ball);
     }
@@ -1314,8 +1314,8 @@ class Game {
     this._current += this._dt;
     _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_9__["default"].update(this._current);
     this.map.update(dt);
-    this.collision.update(dt);
     this.ballController.update(dt);
+    this.collision.update(dt);
   }
 }
 window.onload = function() {
@@ -1337,7 +1337,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   GameConstants: () => (/* binding */ GameConstants)
 /* harmony export */ });
 const column = 7;
-const line = 14;
+const line = 13;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line * column;
 const squareEdge = screenWidth / 15;
@@ -1385,7 +1385,7 @@ const GameConstants = {
   //Ball move
   ballSpeed: squareEdge * 0.5,
   distanceBetweenBalls: Math.round(squareEdge / 2),
-  fallSpeed: squareEdge / 2,
+  fallSpeed: squareEdge * 0.5,
   //Tween animation
   ballTweenTime: 500,
   ringTweenTime: 10
@@ -1573,16 +1573,6 @@ class Row {
     this.createNewRow();
   }
   createNewRow() {
-    if (this.count < 3) {
-      this.data[0] = -1;
-      this.data[1] = -1;
-      this.data[2] = -1;
-      this.data[3] = -1;
-      this.data[4] = -1;
-      this.data[5] = -1;
-      this.data[6] = -1;
-      return;
-    }
     if (this.count > 1) {
       var idxB = getRandomElementsFromArray(this.idx, 1)[0];
       this.data[idxB] = -1;
