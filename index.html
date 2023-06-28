@@ -906,12 +906,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     window.addEventListener("pointermove", this.mouseHandler.bind(this));
     window.addEventListener("pointerup", this.mouseHandler.bind(this));
   }
-  update(dt, balls, map) {
-    this.balls = balls;
-    this.map = map;
+  update(dt) {
     this.checkAllGround();
     this.moveBall(dt);
-    this.border();
+    this.border(dt);
   }
   // move balls and stare
   moveBall(dt) {
@@ -963,17 +961,19 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       }
     }
   }
-  border() {
+  border(dt) {
     for (var i = 0; i < this.balls.length; i++) {
-      if (this.balls[i].ball.x + this.balls[i].dx > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius) {
+      if (this.balls[i].ball.x + this.balls[i].dx * dt > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius) {
+        this.balls[i].ball.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius;
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.x + this.balls[i].dx < ballRadius) {
+      if (this.balls[i].ball.x + this.balls[i].dx * dt < ballRadius) {
+        this.balls[i].ball.x = ballRadius;
         this.balls[i].dx = -this.balls[i].dx;
       }
       ;
-      if (this.balls[i].ball.y + this.balls[i].dy > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall) {
+      if (this.balls[i].ball.y + this.balls[i].dy * dt > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall) {
         this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
         this.balls[i].dx = 0;
         this.balls[i].dy = 0;
@@ -984,7 +984,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           }
         }
       }
-      if (this.balls[i].ball.y + this.balls[i].dy < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall) {
+      if (this.balls[i].ball.y + this.balls[i].dy * dt < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall) {
+        this.balls[i].ball.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
         this.balls[i].dy = -this.balls[i].dy;
       }
     }
@@ -1112,18 +1113,18 @@ class CollisionHandler {
     console.log(edge);
   }
   update(dt) {
-    this.squareCollision();
-    this.coinCollision();
+    this.squareCollision(dt);
+    this.coinCollision(dt);
     this.preBallCollision(dt);
   }
-  squareCollision() {
+  squareCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
       if (this.balls[b].isBall) {
         for (var s = 0; s < this.squares.length; s++) {
           var ball = this.balls[b];
           var square = this.squares[s].square.getBounds();
-          var ballX = ball.ball.getBounds().x + ballRadius + ball.dx;
-          var ballY = ball.ball.getBounds().y + ballRadius + ball.dy;
+          var ballX = ball.ball.getBounds().x + ballRadius + ball.dx * dt;
+          var ballY = ball.ball.getBounds().y + ballRadius + ball.dy * dt;
           var squareX = square.x + edge;
           var squareY = square.y + edge;
           var distX = ballX - squareX;
@@ -1186,18 +1187,19 @@ class CollisionHandler {
             this.ballSound.play();
             ball.dy = -ball.dy;
             this.squares[s].decreaseIndex();
+            continue;
           }
         }
       }
     }
   }
-  coinCollision() {
+  coinCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
       if (this.balls[b].isBall) {
         for (var c = 0; c < this.coins.length; c++) {
           var ball = this.balls[b].ball;
-          var ballX = ball.getBounds().x + ballRadius + this.balls[b].dx;
-          var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy;
+          var ballX = ball.getBounds().x + ballRadius + this.balls[b].dx * dt;
+          var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy * dt;
           var coin = { x: this.coins[c].coin.getBounds().x + coinRadius, y: this.coins[c].coin.getBounds().y + coinRadius };
           if (this.vectorDistance({ x: ballX, y: ballY }, coin) < ballRadius + coinRadius) {
             this.coins[c].destroy();
@@ -1213,8 +1215,8 @@ class CollisionHandler {
       if (this.balls[b].isBall) {
         for (var p = 0; p < this.preBalls.length; p++) {
           var ball = this.balls[b].ball;
-          var ballX = ball.getBounds().x + ballRadius + this.balls[b].dx;
-          var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy;
+          var ballX = ball.getBounds().x + ballRadius + this.balls[b].dx * dt;
+          var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy * dt;
           var preBall = { x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius };
           if (this.vectorDistance({ x: ballX, y: ballY }, preBall) < ballRadius + coinRadius) {
             this.preBalls[p].ringDestroy = true;
@@ -1291,7 +1293,7 @@ class Game {
     backYard.y = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     app.stage.addChild(backYard);
     this.balls = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 1; i++) {
       var ball = new _activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
       this.balls.push(ball);
     }
@@ -1312,8 +1314,8 @@ class Game {
     this._current += this._dt;
     _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_9__["default"].update(this._current);
     this.map.update(dt);
-    this.collision.update(dt, this.balls, this.map.squares, this.map.coins, this.map.preBalls);
-    this.ballController.update(dt, this.balls, this.map);
+    this.collision.update(dt);
+    this.ballController.update(dt);
   }
 }
 window.onload = function() {
@@ -1338,8 +1340,8 @@ const column = 7;
 const line = 14;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line * column;
-const squareEdge = screenWidth / 16;
-const padding = squareEdge / 4;
+const squareEdge = screenWidth / 15;
+const padding = squareEdge / 8;
 const ballRadius = squareEdge / 3;
 const defaultBottom = screenHeight / 2 + 5 * padding + 8 * squareEdge;
 const defaultTop = screenHeight / 2 - 5 * padding - 10 * squareEdge;
@@ -1375,15 +1377,15 @@ const GameConstants = {
   echoMaxNumerator: 4 * squareEdge,
   echoMinNumerator: squareEdge,
   //Text font
-  fontSize: Math.floor(squareEdge),
+  fontSize: Math.round(squareEdge),
   ballRadius,
   coinRadius: squareEdge / 2,
   minRing: squareEdge,
   maxRing: squareEdge * 1.5,
   //Ball move
-  ballSpeed: 10,
-  distanceBetweenBalls: 10,
-  fallSpeed: 10,
+  ballSpeed: squareEdge * 0.5,
+  distanceBetweenBalls: Math.round(squareEdge / 2),
+  fallSpeed: squareEdge / 2,
   //Tween animation
   ballTweenTime: 500,
   ringTweenTime: 10
@@ -1571,6 +1573,16 @@ class Row {
     this.createNewRow();
   }
   createNewRow() {
+    if (this.count < 3) {
+      this.data[0] = -1;
+      this.data[1] = -1;
+      this.data[2] = -1;
+      this.data[3] = -1;
+      this.data[4] = -1;
+      this.data[5] = -1;
+      this.data[6] = -1;
+      return;
+    }
     if (this.count > 1) {
       var idxB = getRandomElementsFromArray(this.idx, 1)[0];
       this.data[idxB] = -1;
