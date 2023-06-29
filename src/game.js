@@ -34,7 +34,7 @@ export class Game{
         //Add balls
         this.balls = [];
         //day len git
-        for(var i = 0; i<10; i++){
+        for(var i = 0; i<1; i++){
             var ball = new ActiveBall();
             this.balls.push(ball);
             //console.log(ball);
@@ -56,6 +56,7 @@ export class Game{
     static update(dt){    
         if(this.map.bottom>GameConstants.defaultBottom) {
             //console.log("game over");
+            this.app.stage.addChild(this.uiManager.goUI);
             return;
         }  
         this._dt = Ticker.shared.deltaMS;

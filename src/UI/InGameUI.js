@@ -6,6 +6,19 @@ export class InGameUI extends Container{
     constructor(){
         super(); 
         this.createPauseButton();    
+        this.guide();
+    }
+    guide(){
+        this.textStyle = new TextStyle({
+            fontSize: GameConstants.fontSize,
+            fill: "white",
+            fontFamily: "Arial", 
+        }); 
+        this.guideText = new Text("Kéo xuống và\ndi sang 2 bên\nđể điều hướng", this.textStyle);
+        this.guideText.anchor.set(0.5, 0.5);
+        this.guideText.x = GameConstants.screenWidth*0.5;
+        this.guideText.y = GameConstants.screenHeight*0.5;
+        this.addChild(this.guideText);
     }
     createPauseButton(){
         this.pauseButton = Sprite.from("assets/images/pause.png");

@@ -191,6 +191,9 @@ export class BallController extends Container{
                         }
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                         if( y < -GameConstants.echoMinNumerator ) {
+                            if(y < -GameConstants.echoMaxNumerator){
+                                Game.uiManager.igUI.guideText.destroy();
+                            }
                             this.addChild(this.needle, this.echo);
                             this.ready = true;
                             //console.log("ready");
