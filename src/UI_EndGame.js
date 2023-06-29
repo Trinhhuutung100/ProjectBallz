@@ -4,34 +4,20 @@ export class UI_PauseGame extends Container {
     constructor(game) {
         super();
         this.game=game;
-        this.drawTextPause();
-        this.drawContinueButton();
-        this.drawRestartButton();
-        this.drawMainMenuButton();
-        this.drawMusicButton();
-        this.drawLikeButton();
-        this.drawAdsButton();
-    }
-    drawTextPause() {
-        const style = new TextStyle({
+        this.style = new TextStyle({
             fontFamily: "Arial",
-            fontSize: 48,
+            fontSize: 24,
             fill: "white",
             align: "center"
         });
-        const text = new Text("PAUSE", style);
-        text.anchor.set(0.5);
-        text.position.set(Screen.width/2,Screen.height/3);
-        this.addChild(text);
+        this.drawReplayButton();
+        this.drawMainMenuButton();
+        this.drawChartButton();
+        this.drawLikeButton();
+        this.drawAdsButton();
     }
-    drawContinueButton(){
-        var tmp = Sprite.from("assets/images/continue.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set(GameScreen.width/2,GameScreen.height/2);
-        this.addChild(tmp);
-    }
-    drawRestartButton(){
-        var tmp = Sprite.from("assets/images/restart.png");
+    drawReplayButton(){
+        var tmp = Sprite.from("assets/images/replay.png");
         tmp.anchor.set(0.5);
         tmp.position.set();
         this.addChild(tmp);
@@ -42,8 +28,8 @@ export class UI_PauseGame extends Container {
         tmp.position.set();
         this.addChild(tmp);
     }
-    drawMusicButton(){
-        var tmp = Sprite.from("assets/images/music.png");
+    drawChartButton(){
+        var tmp = Sprite.from("assets/images/chart.png");
         tmp.anchor.set(0.5);
         tmp.position.set();
         this.addChild(tmp);
