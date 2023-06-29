@@ -1,4 +1,4 @@
-import { Container, Ticker } from "pixi.js";
+import { Container, Ticker, copySearchParams } from "pixi.js";
 import { GameConstants } from "./gameconstants";
 import { Square } from "./square";
 import TWEEN, { Tween } from "@tweenjs/tween.js";
@@ -16,7 +16,8 @@ export class GenMap extends Container{
         this.createNewLine();  
         this.distance = GameConstants.padding + 2*GameConstants.squareEdge;
         this.count = this.distance
-        this.isCreatingMap = false;;  
+        this.isCreatingMap = false;
+        this.bottom = 0;
     }
     update(dt){
         this.pushDown(dt);
@@ -54,7 +55,20 @@ export class GenMap extends Container{
         this.count = this.distance;
     }
     pushDown(dt){
+        this.bottom = 0;
         this.isCreatingMap = false;
+        if(this.squares.length>0){
+            if(this.bottom < this.squares[0].getBounds().bottom)
+            this.bottom = this.squares[0].getBounds().bottom;
+        }
+        if(this.coins.length>0){
+            if(this.bottom < this.coins[0].getBounds().bottom)
+            this.bottom = this.coins[0].getBounds().bottom;
+        }
+        if(this.preBalls.length>0){
+            if(this.bottom < this.preBalls[0].getBounds().bottom)
+            this.bottom = this.preBalls[0].getBounds().bottom;
+        }
         if(this.count > 0){
             for(var i = 0; i < this.squares.length; i++){
                 //console.log(" over here");
@@ -70,6 +84,7 @@ export class GenMap extends Container{
             } 
             this.count -=dt;  
             this.isCreatingMap = true;         
-        }        
+        }      
+        //console.log(this.bottom);  
     }
 }

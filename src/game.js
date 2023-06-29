@@ -51,7 +51,11 @@ export class Game{
         this._dt = 0;
         this._current = 0;
     }
-    static update(dt){      
+    static update(dt){    
+        if(this.map.bottom>GameConstants.defaultBottom) {
+            //console.log("game over");
+            return;
+        }  
         this._dt = Ticker.shared.deltaMS;
         this._current += this._dt;
         TWEEN.update(this._current);
