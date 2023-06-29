@@ -1,8 +1,8 @@
-import { Container } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { gsap } from "gsap";
 import { GameConstants } from "../gameconstants";
-import EventEmitter from "events";
+import { Game } from "../game";
 export class StartUI extends Container{
     constructor(){
         super();
@@ -35,14 +35,12 @@ export class StartUI extends Container{
         tmp.width = GameConstants.squareEdge*10
         tmp.height = GameConstants.squareEdge*3
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.4);
+        tmp.interactive = true;
+        tmp.on("mousedown",() => {
+            console.log("Play");
+            Game.play();
+        });
         this.addChild(tmp);
-        tmp.emitter = new EventEmitter();
-        tmp.on("pointerdown",() =>{
-            tmp.emitter.emit("play");
-        })
-        tmp.on("play",() =>{
-            console.log("now play");
-        })
     }
     drawRateButton(){
         var tmp = Sprite.from("assets/images/rate.png");

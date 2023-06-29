@@ -1,5 +1,6 @@
 import { Container, Sprite, Text, TextStyle, Ticker} from "pixi.js"
 import { GameConstants } from "./gameconstants";
+import { Game } from "./game";
 
 const edge = GameConstants.squareEdge;
 export class Square extends Container{

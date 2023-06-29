@@ -12,6 +12,7 @@ export class BallController extends Container{
         this.map = map;
         this.init();
         this.speed = GameConstants.ballSpeed;
+        console.log(this.speed);
         this.mousePress = false;
         this.ready = false;
         this.readyAttack = false;
@@ -192,7 +193,7 @@ export class BallController extends Container{
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                         if( y < -GameConstants.echoMinNumerator ) {
                             if(y < -GameConstants.echoMaxNumerator){
-                                Game.uiManager.igUI.guideText.destroy();
+                                Game.uiManager.igUI.removeChild(Game.uiManager.igUI.guideText);
                             }
                             this.addChild(this.needle, this.echo);
                             this.ready = true;
