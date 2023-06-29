@@ -51,7 +51,7 @@ export class UI_StartGame extends Container{
         this.addChild(tmp);
     }
     drawBalltButton(){
-        var tmp = Sprite.from("assets/images/ball.png");
+        var tmp = Sprite.from("assets/images/iconBall.png");
         tmp.position.set(GameScreen.width/9*5,GameScreen.height*0.75);
         this.addChild(tmp);
     }
