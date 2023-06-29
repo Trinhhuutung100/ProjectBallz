@@ -8,18 +8,20 @@ import { GameConstants } from "./gameconstants";
 import { Coin } from "./coin";
 import { GenMap } from "./genmap";
 import TWEEN from "@tweenjs/tween.js";
+import { UIManager } from "./UI/UIManager";
+import { InGameUI } from "./UI/InGameUI";
 
 
 export class Game{
     static init(){
-        const app =  new Application({
+        this.app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
             background: 0x222222
         })
         var padding = (innerWidth - GameConstants.screenWidth)/2;
-        document.body.appendChild(app.view);
-        const viewStyle = app.view.style;
+        document.body.appendChild(this.app.view);
+        const viewStyle = this.app.view.style;
         viewStyle.position = "absolute";
         viewStyle.display = "block";
         viewStyle.padding = "0px " + padding + "px";
@@ -29,7 +31,7 @@ export class Game{
         this.backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
         this.backYard.x = 0.5;
         this.backYard.y = GameConstants.defaultTop;
-        app.stage.addChild(this.backYard);
+        this.app.stage.addChild(this.backYard);
         //Add balls
         this.balls = [];
         //day len git
@@ -39,17 +41,28 @@ export class Game{
             //console.log(ball);
         }
         this.balls.forEach(ball => {
-            app.stage.addChild(ball);
+            this.app.stage.addChild(ball);
         });
+        // this.uiManager = new UIManager();
+        
+        this.igUI = new InGameUI();
+        this.igUI.on("pause",() => {
+            this.pause();
+        });        
+        this.app.stage.addChild(this.igUI.container);
+
         this.map = new GenMap();
-        app.stage.addChild(this.map);
+        this.app.stage.addChild(this.map);
         this.ballController = new BallController(this.balls, this.map);
-        app.stage.addChild(this.ballController);
+        this.app.stage.addChild(this.ballController);
         this.collision = new CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
-        app.ticker.add(Game.update.bind(this));
+        this.app.ticker.add(Game.update.bind(this));
         
         this._dt = 0;
         this._current = 0;
+    }
+    static pause(){        
+        console.log("pause");
     }
     static update(dt){    
         if(this.map.bottom>GameConstants.defaultBottom) {

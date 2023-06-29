@@ -5,6 +5,7 @@ import TWEEN, { Tween } from "@tweenjs/tween.js";
 import { Coin } from "./coin";
 import { PreBall } from "./preball";
 import { Row } from "./row";
+import { Game } from "./game";
 
 export class GenMap extends Container{
     constructor(){
@@ -24,6 +25,7 @@ export class GenMap extends Container{
         //console.log(this.isCreatingMap)
     }
     createNewLine(){
+        Game.igUI.setText(this.line);
         var line = new Row(this.line);
         var arr = line.data;
         for(var i = 0; i < arr.length ; i++){
