@@ -9,7 +9,6 @@ import { Coin } from "./coin";
 import { GenMap } from "./genmap";
 import TWEEN from "@tweenjs/tween.js";
 import { UIManager } from "./UI/UIManager";
-import { InGameUI } from "./UI/InGameUI";
 
 
 export class Game{
@@ -43,14 +42,7 @@ export class Game{
         this.balls.forEach(ball => {
             this.app.stage.addChild(ball);
         });
-        // this.uiManager = new UIManager();
-        
-        this.igUI = new InGameUI();
-        this.igUI.on("pause",() => {
-            this.pause();
-        });        
-        this.app.stage.addChild(this.igUI.container);
-
+        this.uiManager = new UIManager();
         this.map = new GenMap();
         this.app.stage.addChild(this.map);
         this.ballController = new BallController(this.balls, this.map);
@@ -60,9 +52,6 @@ export class Game{
         
         this._dt = 0;
         this._current = 0;
-    }
-    static pause(){        
-        console.log("pause");
     }
     static update(dt){    
         if(this.map.bottom>GameConstants.defaultBottom) {

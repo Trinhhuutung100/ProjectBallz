@@ -2,10 +2,9 @@ import { Container, Sprite, Text, TextStyle } from "pixi.js";
 import { GameConstants } from "../gameconstants";
 import {EventEmitter} from "events"
 
-export class InGameUI extends EventEmitter{
+export class InGameUI extends Container{
     constructor(){
-        super();
-        this.container = new Container();   
+        super(); 
         this.createPauseButton();    
     }
     createPauseButton(){
@@ -15,13 +14,7 @@ export class InGameUI extends EventEmitter{
         this.pauseButton.anchor.set(0.5, 0.5);
         this.pauseButton.x = GameConstants.squareEdge;
         this.pauseButton.y = GameConstants.squareEdge;
-        //Event        
-        this.pauseButton.eventMode = true;
-        this.pauseButton.buttonMode = true;
-        this.pauseButton.on("pointerdown", () =>{
-            this.emit("pause");
-        });
-        this.container.addChild(this.pauseButton);
+        this.addChild(this.pauseButton);
     }
     setText(score){       
         this.textStyle = new TextStyle({
@@ -29,11 +22,11 @@ export class InGameUI extends EventEmitter{
             fill: "white",
             fontFamily: "Arial", 
         }); 
-        this.container.removeChild(this.text);
+        this.removeChild(this.text);
         this.text = new Text(score, this.textStyle);
         this.text.anchor.set(0.5, 0.5);
         this.text.x = GameConstants.screenWidth/2;
         this.text.y = GameConstants.squareEdge;
-        this.container.addChild(this.text);        
+        this.addChild(this.text);        
     }
 }
