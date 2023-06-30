@@ -831,7 +831,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
     tmp.eventMode = "static";
-    tmp.on("pointerup", () => {
+    tmp.on("pointerdown", () => {
       console.log("Replay");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.rePlay();
     });
@@ -844,7 +844,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.42);
     tmp.eventMode = "static";
-    tmp.on("pointerup", () => {
+    tmp.on("pointerdown", () => {
       console.log("Mainmenu");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.init();
     });
@@ -914,7 +914,7 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
     tmp.tint = "red";
     tmp.eventMode = "static";
-    tmp.on("pointerup", () => {
+    tmp.on("pointerdown", () => {
       console.log("Speedup");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.balls.forEach((ball) => {
         var x = ball.dx > 0 ? -1 : 1;
@@ -1010,7 +1010,7 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4);
     tmp.eventMode = "static";
-    tmp.on("pointerup", () => {
+    tmp.on("pointerdown", () => {
       console.log("Play");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.play();
     });
@@ -1716,9 +1716,9 @@ const GameConstants = {
   //Scale
   needleWidth: squareEdge / 2.5,
   needleHeight: squareEdge * 1.5,
-  echoDenominator: 7.5 * squareEdge,
-  echoMaxNumerator: 4 * squareEdge,
-  echoMinNumerator: squareEdge,
+  echoDenominator: 5 * squareEdge,
+  echoMaxNumerator: 3 * squareEdge,
+  echoMinNumerator: 0.1 * squareEdge,
   //Text font
   fontSize: Math.round(squareEdge),
   ballRadius,
