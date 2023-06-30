@@ -15,7 +15,7 @@ export class InGameUI extends Container{
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2;
         tmp.height = GameConstants.squareEdge*2;
-        tmp.position.set(GameConstants.screenWidth*0.6, GameConstants.screenHeight*0.4);
+        tmp.position.set(GameConstants.screenWidth*0.7, GameConstants.screenHeight*0.4);
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Speedup");
