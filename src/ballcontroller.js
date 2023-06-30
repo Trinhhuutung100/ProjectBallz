@@ -67,6 +67,7 @@ export class BallController extends Container{
                 } 
             }
             if(this.allGround){
+                // this.speed = GameConstants.ballSpeed;
                 //console.log("All ground "+this.allGround);
                 for(var i = 0; i < this.balls.length; i++){
                     let ball = this.balls[i];
@@ -199,7 +200,7 @@ export class BallController extends Container{
                             this.ready = true;
                             //console.log("ready");
                         }
-                        if( y > -GameConstants.echoMinNumerator/2 ) {
+                        if( y > -GameConstants.echoMinNumerator ) {
                             this.removeChild(this.needle, this.echo);
                             this.ready = false;
                             //console.log("not ready");

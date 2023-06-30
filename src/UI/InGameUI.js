@@ -1,12 +1,32 @@
-import { Container, Sprite, Text, TextStyle } from "pixi.js";
+import { Container, Text, TextStyle, Texture } from "pixi.js";
+import { Sprite } from "pixi.js";
+import { gsap } from "gsap";
 import { GameConstants } from "../gameconstants";
-import {EventEmitter} from "events"
-
+import { Game } from "../game";
 export class InGameUI extends Container{
     constructor(){
-        super(); 
-        this.createPauseButton();    
+        super();
+        this.drawSpeedupButton();
         this.guide();
+    }
+    drawSpeedupButton(){
+        var tmp = Sprite.from("assets/images/lightning.png");
+        tmp.tint = "red";
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*2;
+        tmp.height = GameConstants.squareEdge*2;
+        tmp.position.set(GameConstants.screenWidth*0.6, GameConstants.screenHeight*0.4);
+        tmp.eventMode = "static";
+        tmp.on("pointerup",() => {
+            console.log("Speedup");
+            Game.balls.forEach(ball => {
+                var x = ball.dx >0 ? -1: 1;
+                var y = ball.dy >0 ? -1: 1;
+                ball.dx = x*Game.ballController.dx*2; //van toc phuong x cua bong
+                ball.dy = y*Game.ballController.dy*2; // van toc phuong y cua bong
+            })
+        });
+        this.addChild(tmp);
     }
     guide(){
         this.textStyle = new TextStyle({
@@ -19,15 +39,6 @@ export class InGameUI extends Container{
         this.guideText.x = GameConstants.screenWidth*0.5;
         this.guideText.y = GameConstants.screenHeight*0.5;
         this.addChild(this.guideText);
-    }
-    createPauseButton(){
-        this.pauseButton = Sprite.from("assets/images/pause.png");
-        this.pauseButton.width = GameConstants.squareEdge;
-        this.pauseButton.height = GameConstants.squareEdge;
-        this.pauseButton.anchor.set(0.5, 0.5);
-        this.pauseButton.x = GameConstants.squareEdge;
-        this.pauseButton.y = GameConstants.squareEdge;
-        this.addChild(this.pauseButton);
     }
     setText(score){       
         this.textStyle = new TextStyle({

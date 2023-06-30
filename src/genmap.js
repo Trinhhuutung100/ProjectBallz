@@ -6,6 +6,7 @@ import { Coin } from "./coin";
 import { PreBall } from "./preball";
 import { Row } from "./row";
 import { Game } from "./game";
+import { ActiveBall } from "./activeball";
 
 export class GenMap extends Container{
     constructor(){
@@ -88,5 +89,37 @@ export class GenMap extends Container{
             this.isCreatingMap = true;         
         }      
         //console.log(this.bottom);  
+    }
+    resetMap(){
+        for(var i = 0; i < this.squares.length; i++){
+            this.squares[i].destroy();
+        }
+        if(this.squares.length>0){
+            this.squares.splice(0, this.squares.length);
+        }
+
+        for(var i = 0; i < this.coins.length; i++){
+            this.coins[i].destroy();
+        }
+        if(this.coins.length>0){
+            this.coins.splice(0, this.coins.length);
+        }
+
+        for(var i = 0; i < this.preBalls.length; i++){
+            this.preBalls[i].destroy();
+        } 
+        if(this.preBalls.length>0){
+            this.preBalls.splice(0, this.preBalls.length);
+        }
+
+        if(Game.balls.length>1){
+            for(var i = 1; i < Game.balls.length; i++){
+                Game.balls[i].destroy();
+            } 
+            Game.balls.splice(1, Game.balls.length-1);
+        }
+        this.bottom = 0;
+        this.line = 1;
+        this.createNewLine();
     }
 }

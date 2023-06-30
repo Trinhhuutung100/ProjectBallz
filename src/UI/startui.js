@@ -1,4 +1,4 @@
-import { Container, Texture } from "pixi.js";
+import { Container, Text, TextStyle, Texture } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { gsap } from "gsap";
 import { GameConstants } from "../gameconstants";
@@ -36,7 +36,7 @@ export class StartUI extends Container{
         tmp.height = GameConstants.squareEdge*3
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.4);
         tmp.eventMode = "static";
-        tmp.on("pointerdown",() => {
+        tmp.on("pointerup",() => {
             console.log("Play");
             Game.play();
         });

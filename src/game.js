@@ -40,9 +40,9 @@ export class Game{
     }
     static rePlay(){
         //Remove start-game ui
-        // this.clearProp();
-        this.init();
-        this.play();
+        Game.app.stage.removeChild(this.uiManager.goUI);
+        //Clear map
+        this.map.resetMap();
     }
     static clearProp(){
         if(this.app != null){
