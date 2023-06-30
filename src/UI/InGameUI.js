@@ -13,10 +13,10 @@ export class InGameUI extends Container{
         var texture = Texture.from("assets/images/lightning.png");
         var tmp = Sprite.from(texture);
         tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*2;
-        tmp.height = GameConstants.squareEdge*2;
-        tmp.x = GameConstants.screenWidth*0.9;
-        tmp.y = GameConstants.screenHeight*0.4;
+        tmp.width = GameConstants.squareEdge*1.5;
+        tmp.height = GameConstants.squareEdge*1.5;
+        tmp.x = GameConstants.screenWidth*0.95;
+        tmp.y = GameConstants.defaultTop + GameConstants.squareEdge;
         tmp.tint = "red";
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
