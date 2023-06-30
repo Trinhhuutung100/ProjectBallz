@@ -823,8 +823,8 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   drawReplayButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/replay.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 8;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
@@ -836,8 +836,8 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   drawMainMenuButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/mainmenu.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 8;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.42);
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
@@ -849,25 +849,25 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   drawChartButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/chart.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.3, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
     this.addChild(tmp);
   }
   drawLikeButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/like.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4.5;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2.25;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
     this.addChild(tmp);
   }
   drawAdsButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ads.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.8, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.7, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
     this.addChild(tmp);
   }
 }
@@ -912,7 +912,9 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       console.log("Speedup");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.balls.forEach((ball) => {
         var x = ball.dx > 0 ? -1 : 1;
+        x = ball.dx == 0 ? 0 : x;
         var y = ball.dy > 0 ? -1 : 1;
+        y = ball.dy == 0 ? 0 : y;
         ball.dx = x * _game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.dx * 2;
         ball.dy = y * _game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.dy * 2;
       });
@@ -998,8 +1000,8 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   drawPlayButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/play.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 8;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4);
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
@@ -1011,8 +1013,8 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   drawRateButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/rate.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 8;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.52);
     this.addChild(tmp);
   }
@@ -1021,30 +1023,30 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.9, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.95);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
   drawChartButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/chart.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.4, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
   drawBalltButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/iconBall.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.6, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
   drawAdsButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ads.png");
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 4;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.8, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
@@ -1601,7 +1603,9 @@ class Game {
   }
   static rePlay() {
     Game.app.stage.removeChild(this.uiManager.goUI);
-    this.map.resetMap();
+    Game.app.stage.addChild(Game.balls[0]);
+    Game.app.stage.addChild(this.uiManager.igUI);
+    this.map.createNewLine();
   }
   static clearProp() {
     if (this.app != null) {
@@ -1642,7 +1646,8 @@ class Game {
     this._current = 0;
   }
   static update(dt) {
-    if (this.map.bottom > _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom) {
+    if (this.map.bottom > _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.squareEdge * 0.25) {
+      this.map.resetMap();
       this.app.stage.addChild(this.uiManager.goUI);
       return;
     }
@@ -1806,7 +1811,8 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.line++;
     this.count = this.distance;
   }
-  pushDown(dt) {
+  pushDown(delta) {
+    var dt = 2 * delta;
     this.bottom = 0;
     this.isCreatingMap = false;
     if (this.squares.length > 0) {
@@ -1864,7 +1870,8 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
     this.bottom = 0;
     this.line = 1;
-    this.createNewLine();
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI);
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[0]);
   }
 }
 
