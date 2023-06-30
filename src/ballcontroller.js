@@ -199,7 +199,7 @@ export class BallController extends Container{
                             this.ready = true;
                             //console.log("ready");
                         }
-                        else {
+                        if( y > -GameConstants.echoMinNumerator/2 ) {
                             this.removeChild(this.needle, this.echo);
                             this.ready = false;
                             //console.log("not ready");
