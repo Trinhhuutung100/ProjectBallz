@@ -40,9 +40,10 @@ export class Game{
     }
     static rePlay(){
         //Remove start-game ui
-        Game.app.stage.removeChild(this.uiManager.goUI);
-        //Clear map
-        this.map.resetMap();
+        Game.app.stage.removeChild(this.uiManager.goUI);  
+        Game.app.stage.addChild(Game.balls[0]);    
+        Game.app.stage.addChild(this.uiManager.igUI);
+        this.map.createNewLine();
     }
     static clearProp(){
         if(this.app != null){
@@ -91,8 +92,8 @@ export class Game{
 
     }
     static update(dt){    
-        if(this.map.bottom>GameConstants.defaultBottom) {
-            //console.log("game over");
+        if(this.map.bottom>GameConstants.defaultBottom - GameConstants.squareEdge*0.25) {
+            this.map.resetMap();
             this.app.stage.addChild(this.uiManager.goUI);
             return;
         }  

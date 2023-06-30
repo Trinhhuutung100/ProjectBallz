@@ -32,8 +32,8 @@ export class StartUI extends Container{
     drawPlayButton(){
         var tmp = Sprite.from("assets/images/play.png");
         tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*10
-        tmp.height = GameConstants.squareEdge*3
+        tmp.width = GameConstants.squareEdge*8
+        tmp.height = GameConstants.squareEdge*2
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.4);
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
@@ -45,8 +45,8 @@ export class StartUI extends Container{
     drawRateButton(){
         var tmp = Sprite.from("assets/images/rate.png");
         tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*10
-        tmp.height = GameConstants.squareEdge*3
+        tmp.width = GameConstants.squareEdge*8;
+        tmp.height = GameConstants.squareEdge*2;
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.52);
         this.addChild(tmp);
     }
@@ -55,30 +55,30 @@ export class StartUI extends Container{
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
-        tmp.position.set(GameConstants.screenWidth*0.9, GameConstants.screenHeight*0.95);
+        tmp.position.set(GameConstants.screenWidth*0.2, GameConstants.screenHeight*0.7);
         this.addChild(tmp);
     }
     drawChartButton(){
         var tmp = Sprite.from("assets/images/chart.png");
         tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*4
-        tmp.height = GameConstants.squareEdge*4
-        tmp.position.set(GameConstants.screenWidth*0.2, GameConstants.screenHeight*0.7);
+        tmp.width = GameConstants.squareEdge*2
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.4, GameConstants.screenHeight*0.7);
         this.addChild(tmp);
     }
     drawBalltButton(){
         var tmp = Sprite.from("assets/images/iconBall.png");
         tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*4
-        tmp.height = GameConstants.squareEdge*4
-        tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.7);
+        tmp.width = GameConstants.squareEdge*2
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.6, GameConstants.screenHeight*0.7);
         this.addChild(tmp);
     }
     drawAdsButton(){
         var tmp = Sprite.from("assets/images/ads.png");
         tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*4
-        tmp.height = GameConstants.squareEdge*4
+        tmp.width = GameConstants.squareEdge*2
+        tmp.height = GameConstants.squareEdge*2
         tmp.position.set(GameConstants.screenWidth*0.8, GameConstants.screenHeight*0.7);
         this.addChild(tmp);
     }

@@ -57,7 +57,8 @@ export class GenMap extends Container{
         this.line++;
         this.count = this.distance;
     }
-    pushDown(dt){
+    pushDown(delta){
+        var dt = 2*delta;
         this.bottom = 0;
         this.isCreatingMap = false;
         if(this.squares.length>0){
@@ -87,8 +88,7 @@ export class GenMap extends Container{
             } 
             this.count -=dt;  
             this.isCreatingMap = true;         
-        }      
-        //console.log(this.bottom);  
+        }       
     }
     resetMap(){
         for(var i = 0; i < this.squares.length; i++){
@@ -120,6 +120,9 @@ export class GenMap extends Container{
         }
         this.bottom = 0;
         this.line = 1;
-        this.createNewLine();
+        // this.createNewLine();            
+        Game.app.stage.removeChild(Game.uiManager.igUI);
+        Game.app.stage.removeChild(Game.balls[0]);
+
     }
 }

@@ -21,7 +21,9 @@ export class InGameUI extends Container{
             console.log("Speedup");
             Game.balls.forEach(ball => {
                 var x = ball.dx >0 ? -1: 1;
+                x = ball.dx == 0 ? 0 : x;
                 var y = ball.dy >0 ? -1: 1;
+                y = ball.dy == 0 ? 0 : y;
                 ball.dx = x*Game.ballController.dx*2; //van toc phuong x cua bong
                 ball.dy = y*Game.ballController.dy*2; // van toc phuong y cua bong
             })
