@@ -4,7 +4,11 @@
       background: black;
       overflow: hidden;
     }
-  
+  canvas {
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+  }
     #game {
       margin: 0;
       padding: 0;
@@ -901,12 +905,14 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.guide();
   }
   drawSpeedupButton() {
-    var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/lightning.png");
-    tmp.tint = "red";
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/lightning.png");
+    var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.7, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4);
+    tmp.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.9;
+    tmp.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4;
+    tmp.tint = "red";
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Speedup");
@@ -1591,10 +1597,6 @@ class Game {
     });
     var padding = (innerWidth - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth) / 2;
     document.body.appendChild(this.app.view);
-    const viewStyle = this.app.view.style;
-    viewStyle.position = "absolute";
-    viewStyle.display = "block";
-    viewStyle.padding = "0px " + padding + "px";
     this.uiManager = new _UI_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
   }
   static play() {
@@ -1603,9 +1605,9 @@ class Game {
   }
   static rePlay() {
     Game.app.stage.removeChild(this.uiManager.goUI);
+    this.map.createNewLine();
     Game.app.stage.addChild(Game.balls[0]);
     Game.app.stage.addChild(this.uiManager.igUI);
-    this.map.createNewLine();
   }
   static clearProp() {
     if (this.app != null) {
@@ -1637,13 +1639,13 @@ class Game {
     });
     this.map = new _genmap__WEBPACK_IMPORTED_MODULE_8__.GenMap();
     this.app.stage.addChild(this.map);
-    Game.app.stage.addChild(this.uiManager.igUI);
     this.ballController = new _ballcontroller__WEBPACK_IMPORTED_MODULE_3__.BallController(this.balls, this.map);
     this.app.stage.addChild(this.ballController);
     this.collision = new _collisionhandler__WEBPACK_IMPORTED_MODULE_5__.CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
     this.app.ticker.add(Game.update.bind(this));
     this._dt = 0;
     this._current = 0;
+    Game.app.stage.addChild(this.uiManager.igUI);
   }
   static update(dt) {
     if (this.map.bottom > _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.squareEdge * 0.25) {
