@@ -36,9 +36,9 @@ export const GameConstants = {
     //Scale
     needleWidth : squareEdge/2.5,
     needleHeight : squareEdge*1.5,
-    echoDenominator : 7.5*squareEdge,
-    echoMaxNumerator : 4*squareEdge,
-    echoMinNumerator : squareEdge,
+    echoDenominator : 5*squareEdge,
+    echoMaxNumerator : 3*squareEdge,
+    echoMinNumerator : 0.1*squareEdge,
     //Text font
     fontSize : Math.round(squareEdge),
     ballRadius : ballRadius,

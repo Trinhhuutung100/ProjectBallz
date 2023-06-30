@@ -36,7 +36,7 @@ export class StartUI extends Container{
         tmp.height = GameConstants.squareEdge*2
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.4);
         tmp.eventMode = "static";
-        tmp.on("pointerup",() => {
+        tmp.on("pointerdown",() => {
             console.log("Play");
             Game.play();
         });

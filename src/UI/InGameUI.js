@@ -19,7 +19,7 @@ export class InGameUI extends Container{
         tmp.y = GameConstants.defaultTop + GameConstants.squareEdge;
         tmp.tint = "red";
         tmp.eventMode = "static";
-        tmp.on("pointerup",() => {
+        tmp.on("pointerdown",() => {
             console.log("Speedup");
             Game.balls.forEach(ball => {
                 var x = ball.dx >0 ? -1: 1;
