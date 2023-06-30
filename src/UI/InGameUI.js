@@ -10,12 +10,14 @@ export class InGameUI extends Container{
         this.guide();
     }
     drawSpeedupButton(){
-        var tmp = Sprite.from("assets/images/lightning.png");
-        tmp.tint = "red";
+        var texture = Texture.from("assets/images/lightning.png");
+        var tmp = Sprite.from(texture);
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2;
         tmp.height = GameConstants.squareEdge*2;
-        tmp.position.set(GameConstants.screenWidth*0.7, GameConstants.screenHeight*0.4);
+        tmp.x = GameConstants.screenWidth*0.9;
+        tmp.y = GameConstants.screenHeight*0.4;
+        tmp.tint = "red";
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Speedup");

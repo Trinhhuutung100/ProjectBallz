@@ -26,10 +26,7 @@ export class Game{
         })
         var padding = (innerWidth - GameConstants.screenWidth)/2;
         document.body.appendChild(this.app.view);
-        const viewStyle = this.app.view.style;
-        viewStyle.position = "absolute";
-        viewStyle.display = "block";
-        viewStyle.padding = "0px " + padding + "px";
+        //this.app.view.style.padding = "0px " + padding + "px";
         this.uiManager = new UIManager();
         
     }
@@ -40,10 +37,10 @@ export class Game{
     }
     static rePlay(){
         //Remove start-game ui
-        Game.app.stage.removeChild(this.uiManager.goUI);  
-        Game.app.stage.addChild(Game.balls[0]);    
-        Game.app.stage.addChild(this.uiManager.igUI);
+        Game.app.stage.removeChild(this.uiManager.goUI);   
         this.map.createNewLine();
+        Game.app.stage.addChild(Game.balls[0]);   
+        Game.app.stage.addChild(this.uiManager.igUI);
     }
     static clearProp(){
         if(this.app != null){
@@ -78,8 +75,6 @@ export class Game{
         //Gen map
         this.map = new GenMap();
         this.app.stage.addChild(this.map);
-        //Add in-game ui        
-        Game.app.stage.addChild(this.uiManager.igUI);
         //Ball controller
         this.ballController = new BallController(this.balls, this.map);
         this.app.stage.addChild(this.ballController);
@@ -89,6 +84,8 @@ export class Game{
         //Delta time
         this._dt = 0;
         this._current = 0;
+        //Add in-game ui        
+        Game.app.stage.addChild(this.uiManager.igUI);
 
     }
     static update(dt){    
