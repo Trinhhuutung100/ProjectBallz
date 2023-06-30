@@ -23,8 +23,8 @@ export class GameOverUI extends Container {
         tmp.width = GameConstants.squareEdge*10
         tmp.height = GameConstants.squareEdge*3
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.3);
-        tmp.interactive = true;
-        tmp.on("mousedown",() => {
+        tmp.eventMode = "static";
+        tmp.on("pointerdown",() => {
             console.log("Replay");
             Game.rePlay();
         });
@@ -36,8 +36,8 @@ export class GameOverUI extends Container {
         tmp.width = GameConstants.squareEdge*10
         tmp.height = GameConstants.squareEdge*3
         tmp.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.42);
-        tmp.interactive = true;
-        tmp.on("mousedown",() => {
+        tmp.eventMode = "static";
+        tmp.on("pointerdown",() => {
             console.log("Mainmenu");
             Game.init();
         });

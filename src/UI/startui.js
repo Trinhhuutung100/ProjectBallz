@@ -35,8 +35,8 @@ export class StartUI extends Container{
         tmp.width = GameConstants.squareEdge*10
         tmp.height = GameConstants.squareEdge*3
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.4);
-        tmp.interactive = true;
-        tmp.on("mousedown",() => {
+        tmp.eventMode = "static";
+        tmp.on("pointerdown",() => {
             console.log("Play");
             Game.play();
         });

@@ -15,6 +15,10 @@ export class Game{
     static init(){
         // if(this.app != null) delete this.app;
         this.clearProp();
+        if(this.app != null) {
+            delete this.app;
+            console.log("delete this app");
+        }
         this.app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
@@ -37,8 +41,8 @@ export class Game{
     static rePlay(){
         //Remove start-game ui
         // this.clearProp();
-        // this.startGame();
         this.init();
+        this.play();
     }
     static clearProp(){
         if(this.app != null){
