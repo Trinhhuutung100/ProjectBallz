@@ -58,7 +58,7 @@ export class GenMap extends Container{
         this.count = this.distance;
     }
     pushDown(delta){
-        var dt = 2*delta;
+        var dt = delta;
         this.bottom = 0;
         this.isCreatingMap = false;
         if(this.squares.length>0){
