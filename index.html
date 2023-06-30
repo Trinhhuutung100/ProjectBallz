@@ -826,8 +826,8 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
-    tmp.interactive = true;
-    tmp.on("mousedown", () => {
+    tmp.eventMode = "static";
+    tmp.on("pointerdown", () => {
       console.log("Replay");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.rePlay();
     });
@@ -839,8 +839,8 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.42);
-    tmp.interactive = true;
-    tmp.on("mousedown", () => {
+    tmp.eventMode = "static";
+    tmp.on("pointerdown", () => {
       console.log("Mainmenu");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.init();
     });
@@ -990,8 +990,8 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 10;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 3;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4);
-    tmp.interactive = true;
-    tmp.on("mousedown", () => {
+    tmp.eventMode = "static";
+    tmp.on("pointerdown", () => {
       console.log("Play");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.play();
     });
@@ -1325,7 +1325,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
               }
               this.addChild(this.needle, this.echo);
               this.ready = true;
-            } else {
+            }
+            if (y > -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator / 2) {
               this.removeChild(this.needle, this.echo);
               this.ready = false;
             }
@@ -1566,6 +1567,10 @@ __webpack_require__.r(__webpack_exports__);
 class Game {
   static init() {
     this.clearProp();
+    if (this.app != null) {
+      delete this.app;
+      console.log("delete this app");
+    }
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
       width: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth,
       height: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight,
@@ -1585,6 +1590,7 @@ class Game {
   }
   static rePlay() {
     this.init();
+    this.play();
   }
   static clearProp() {
     if (this.app != null) {
