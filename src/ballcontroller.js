@@ -12,7 +12,7 @@ export class BallController extends Container{
         this.map = map;
         this.init();
         this.speed = GameConstants.ballSpeed;
-        console.log(this.speed);
+        // console.log(this.speed);
         this.mousePress = false;
         this.ready = false;
         this.readyAttack = false;
@@ -144,7 +144,9 @@ export class BallController extends Container{
     }
     // handle mouse 
     mouseHandler(e){
-        if(!this.isCreating && !this.map.isCreating){
+        if(!Game.isWaiting && !this.map.isCreating)
+        // if( !this.map.isCreating)
+        {
             // khi nhan chuot
             if(e.type == "pointerdown"){
                 this.mousePress = true;

@@ -9,50 +9,59 @@ import { Coin } from "./coin";
 import { GenMap } from "./genmap";
 import TWEEN from "@tweenjs/tween.js";
 import { UIManager } from "./UI/uimanager";
+import { GameOverUI } from "./UI/gameoverui";
+import { InGameUI } from "./UI/ingameui";
+import { StartUI } from "./UI/startui";
 
 
 export class Game{
     static init(){
-        // if(this.app != null) delete this.app;
-        this.clearProp();
-        if(this.app != null) {
-            delete this.app;
-            console.log("delete this app");
-        }
         this.app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
             background: 0x222222
         })
-        var padding = (innerWidth - GameConstants.screenWidth)/2;
         document.body.appendChild(this.app.view);
-        //this.app.view.style.padding = "0px " + padding + "px";
+        this.isWaiting = true;
+        this.isFirst = true;
         this.uiManager = new UIManager();
         
     }
     static play(){
         //Remove start-game ui
         Game.app.stage.removeChild(this.uiManager.stUI);
+        this.uiManager.stUI.destroy();
+        this.isWaiting = false;
         this.startGame();
+        if(this.isFirst) this.ticker();
+        this.isFirst = false;
     }
     static rePlay(){
-        //Remove start-game ui
-        Game.app.stage.removeChild(this.uiManager.goUI);   
-        this.map.createNewLine();
-        Game.app.stage.addChild(Game.balls[0]);   
+        //Remove start-game ui   
+        Game.app.stage.removeChild(this.uiManager.goUI);
+        this.uiManager.goUI.destroy(); 
+        this.uiManager.igUI = new InGameUI();
         Game.app.stage.addChild(this.uiManager.igUI);
-    }
-    static clearProp(){
-        if(this.app != null){
-            this.app.stage.removeChildren();
+        this.map.createNewLine();
+        for(var i = 0; i<1; i++){
+            var ball = new ActiveBall();
+            this.balls.push(ball);
         }
-        delete this.backYard;
-        delete this.ball;
-        delete this.map;
-        delete this.ballController;
-        delete this.collision;
-        delete this._dt;
-        delete this._current;
+        this.ballController.echo.x = this.balls[0].ball.x;
+        this.ballController.needle.x = this.balls[0].ball.x;
+        this.balls.forEach(ball => {
+            this.app.stage.addChild(ball);
+        });
+        this.isWaiting = false;
+    }
+    static menu(){
+        this.app.stage.removeChild(this.backYard);
+        this.backYard.destroy();
+        Game.app.stage.removeChild(this.uiManager.goUI);
+        this.uiManager.goUI.destroy(); 
+        this.uiManager.stUI = new StartUI();
+        Game.app.stage.addChild(this.uiManager.stUI);
+
     }
     static startGame(){
         //Back yard
@@ -72,6 +81,9 @@ export class Game{
         this.balls.forEach(ball => {
             this.app.stage.addChild(ball);
         });
+        //Add in-game ui    
+        this.uiManager.igUI = new InGameUI();    
+        Game.app.stage.addChild(this.uiManager.igUI);
         //Gen map
         this.map = new GenMap();
         this.app.stage.addChild(this.map);
@@ -80,20 +92,22 @@ export class Game{
         this.app.stage.addChild(this.ballController);
         //Collision handler
         this.collision = new CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
+
+    }
+    static ticker(){
         this.app.ticker.add(Game.update.bind(this));
         //Delta time
         this._dt = 0;
         this._current = 0;
-        //Add in-game ui        
-        Game.app.stage.addChild(this.uiManager.igUI);
-
     }
     static update(dt){    
-        if(this.map.bottom>GameConstants.defaultBottom - GameConstants.squareEdge*0.25) {
+        if(this.map.bottom>GameConstants.defaultBottom - GameConstants.ballRadius*3) {
             this.map.resetMap();
+            this.uiManager.goUI = new GameOverUI();
             this.app.stage.addChild(this.uiManager.goUI);
             return;
         }  
+        if(this.isWaiting) return;
         this._dt = Ticker.shared.deltaMS;
         this._current += this._dt;
         TWEEN.update(this._current);

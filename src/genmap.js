@@ -111,18 +111,25 @@ export class GenMap extends Container{
         if(this.preBalls.length>0){
             this.preBalls.splice(0, this.preBalls.length);
         }
-
-        if(Game.balls.length>1){
-            for(var i = 1; i < Game.balls.length; i++){
-                Game.balls[i].destroy();
-            } 
-            Game.balls.splice(1, Game.balls.length-1);
+        for(var i = 0; i < Game.balls.length; i++){
+            Game.balls[i].destroy();
+        } 
+        if(Game.balls.length>0){
+            Game.balls.splice(0, Game.balls.length);
         }
+        // if(Game.balls.length>1){
+        //     for(var i = 1; i < Game.balls.length; i++){
+        //         Game.balls[i].destroy();
+        //     } 
+        //     Game.balls.splice(1, Game.balls.length-1);
+        // }
         this.bottom = 0;
         this.line = 1;
-        // this.createNewLine();            
+        // this.createNewLine();          
         Game.app.stage.removeChild(Game.uiManager.igUI);
-        Game.app.stage.removeChild(Game.balls[0]);
+        Game.uiManager.igUI.destroy();   
+        // Game.app.stage.removeChild(Game.balls[0]);
+        Game.isWaiting = true;
 
     }
 }

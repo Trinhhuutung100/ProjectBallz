@@ -6,8 +6,8 @@ import { Game } from "../game";
 export class InGameUI extends Container{
     constructor(){
         super();
-        this.drawSpeedupButton();
         this.guide();
+        this.drawSpeedupButton();
     }
     drawSpeedupButton(){
         var texture = Texture.from("assets/images/lightning.png");
@@ -19,17 +19,18 @@ export class InGameUI extends Container{
         tmp.y = GameConstants.defaultTop + GameConstants.squareEdge;
         tmp.tint = "red";
         tmp.eventMode = "static";
-        tmp.on("pointerdown",() => {
+        tmp.on("pointerup",() => {
             console.log("Speedup");
             Game.balls.forEach(ball => {
-                var x = ball.dx >0 ? -1: 1;
-                x = ball.dx == 0 ? 0 : x;
-                var y = ball.dy >0 ? -1: 1;
-                y = ball.dy == 0 ? 0 : y;
-                ball.dx = x*Game.ballController.dx*2; //van toc phuong x cua bong
-                ball.dy = y*Game.ballController.dy*2; // van toc phuong y cua bong
+                ball.dx = ball.dx*2; //van toc phuong x cua bong
+                ball.dy = ball.dy*2; // van toc phuong y cua bong
             })
         });
+        this.speedText = new Text("Speedup", this.textStyle);
+        this.speedText.anchor.set(0.5, 0.5);
+        this.speedText.x = GameConstants.screenWidth*0.8;
+        this.speedText.y = GameConstants.defaultTop + GameConstants.squareEdge;
+        this.addChild(this.speedText);
         this.addChild(tmp);
     }
     guide(){
@@ -43,6 +44,7 @@ export class InGameUI extends Container{
         this.guideText.x = GameConstants.screenWidth*0.5;
         this.guideText.y = GameConstants.screenHeight*0.5;
         this.addChild(this.guideText);
+
     }
     setText(score){       
         this.textStyle = new TextStyle({

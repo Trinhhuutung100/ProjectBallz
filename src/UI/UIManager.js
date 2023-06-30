@@ -5,8 +5,8 @@ import { StartUI } from "./startui";
 
 export class UIManager{
     constructor(){
-        this.igUI = new InGameUI();
-        this.goUI = new GameOverUI();
+        // this.igUI = new InGameUI();
+        // this.goUI = new GameOverUI();
         this.stUI = new StartUI();
         Game.app.stage.addChild(this.stUI);
     }
