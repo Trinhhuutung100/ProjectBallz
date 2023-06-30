@@ -96,6 +96,7 @@ export class Game{
     }
     static ticker(){
         this.app.ticker.add(Game.update.bind(this));
+        this.app.ticker.add(Game.update.bind(this));
         //Delta time
         this._dt = 0;
         this._current = 0;
