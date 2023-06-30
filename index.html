@@ -908,10 +908,10 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/lightning.png");
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     tmp.anchor.set(0.5, 0.5);
-    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.9;
-    tmp.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4;
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    tmp.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.95;
+    tmp.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop + _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
     tmp.tint = "red";
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
