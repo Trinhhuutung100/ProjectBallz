@@ -40,7 +40,7 @@ export const GameConstants = {
     echoMaxNumerator : 3*squareEdge,
     echoMinNumerator : 0.1*squareEdge,
     //Text font
-    defaultFont : "Roboto",
+    defaultFont : "Futura",
     fontSize : Math.round(squareEdge),
     ballRadius : ballRadius,
     coinRadius : squareEdge/2,
