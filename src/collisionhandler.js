@@ -116,6 +116,8 @@ export class CollisionHandler{
                         this.coins[c].destroy();
                         this.coins.splice(c, 1);
                         this.coinSound.play();
+                        Game.coinScore++;
+                        Game.uiManager.igUI.drawCoinScore();
                     }
                 }
             }

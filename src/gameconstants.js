@@ -2,8 +2,8 @@ const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
-const squareEdge = screenWidth/15;
-const padding = squareEdge/8;
+const squareEdge = screenWidth/16;
+const padding = squareEdge/4;
 //const edge = screenWidth/2/column;
 const ballRadius = squareEdge/3;
 const defaultBottom = screenHeight/2 + 5*padding + 8*squareEdge;
@@ -40,6 +40,7 @@ export const GameConstants = {
     echoMaxNumerator : 3*squareEdge,
     echoMinNumerator : 0.1*squareEdge,
     //Text font
+    defaultFont : "Roboto",
     fontSize : Math.round(squareEdge),
     ballRadius : ballRadius,
     coinRadius : squareEdge/2,
@@ -47,7 +48,7 @@ export const GameConstants = {
     maxRing : squareEdge*1.5,
     //Ball move
     ballSpeed : squareEdge*0.5/2,
-    distanceBetweenBalls : Math.round(squareEdge/2)*1.25,
+    distanceBetweenBalls : Math.round(squareEdge/2)*1.1,
     fallSpeed : squareEdge*0.5/2,
     //Tween animation
     ballTweenTime : 500/2,

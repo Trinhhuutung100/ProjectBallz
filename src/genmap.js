@@ -55,10 +55,14 @@ export class GenMap extends Container{
             }
         }
         this.line++;
+        if(this.line-1 > Game.best) {
+            Game.best = this.line-1;
+            Game.uiManager.igUI.drawBestScore();
+        }
         this.count = this.distance;
     }
     pushDown(delta){
-        var dt = delta;
+        var dt = delta*1.55;
         this.bottom = 0;
         this.isCreatingMap = false;
         if(this.squares.length>0){

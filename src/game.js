@@ -24,6 +24,8 @@ export class Game{
         document.body.appendChild(this.app.view);
         this.isWaiting = true;
         this.isFirst = true;
+        this.best = 0;
+        this.coinScore = 0;
         this.uiManager = new UIManager();
         
     }

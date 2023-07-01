@@ -19,7 +19,7 @@ export class Square extends Container{
         this.textStyle = new TextStyle({
             fontSize: GameConstants.fontSize,
             fill: "black",
-            fontFamily: "Arial", 
+            fontFamily: GameConstants.defaultFont, 
         })        
         this.setText();     
     }
