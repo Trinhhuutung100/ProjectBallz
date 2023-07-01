@@ -902,7 +902,57 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
     this.guide();
+    this.drawBestScore();
+    this.drawCoinSymbol();
+    this.drawCoinScore();
     this.drawSpeedupButton();
+  }
+  drawBestScore() {
+    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize / 2,
+      fill: "white",
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+    });
+    this.removeChild(this.bestText);
+    this.bestText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("B E S T", this.textStyle);
+    this.bestText.anchor.set(0, 0.5);
+    this.bestText.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    this.bestText.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge / 2;
+    this.addChild(this.bestText);
+    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
+      fill: "white",
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+    });
+    this.removeChild(this.bestScore);
+    this.bestScore = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_game__WEBPACK_IMPORTED_MODULE_2__.Game.best, this.textStyle);
+    this.bestScore.anchor.set(0, 0.5);
+    this.bestScore.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    this.bestScore.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    this.addChild(this.bestScore);
+  }
+  drawCoinSymbol() {
+    var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ring.png");
+    tmp.anchor.set(0.5, 0.5);
+    tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.coinRadius * 2;
+    tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.coinRadius * 2;
+    tmp.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth - _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+    tmp.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    tmp.tint = "yellow";
+    this.addChild(tmp);
+  }
+  drawCoinScore() {
+    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
+      fill: "white",
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+    });
+    this.removeChild(this.coinText);
+    this.coinText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_game__WEBPACK_IMPORTED_MODULE_2__.Game.coinScore, this.textStyle);
+    this.coinText.anchor.set(1, 0.5);
+    this.coinText.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth - _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+    this.coinText.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    this.addChild(this.coinText);
   }
   drawSpeedupButton() {
     var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/lightning.png");
@@ -921,6 +971,11 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         ball.dy = ball.dy * 2;
       });
     });
+    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
+      fill: "white",
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+    });
     this.speedText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("Speedup", this.textStyle);
     this.speedText.anchor.set(0.5, 0.5);
     this.speedText.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.8;
@@ -932,7 +987,7 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
       fill: "white",
-      fontFamily: "Arial"
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
     });
     this.guideText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("K\xE9o xu\u1ED1ng v\xE0\ndi sang 2 b\xEAn\n\u0111\u1EC3 \u0111i\u1EC1u h\u01B0\u1EDBng", this.textStyle);
     this.guideText.anchor.set(0.5, 0.5);
@@ -942,15 +997,15 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   setText(score) {
     this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 2,
       fill: "white",
-      fontFamily: "Arial"
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
     });
     this.removeChild(this.text);
     this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(score, this.textStyle);
     this.text.anchor.set(0.5, 0.5);
     this.text.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2;
-    this.text.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
+    this.text.y = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
     this.addChild(this.text);
   }
 }
@@ -1083,6 +1138,8 @@ __webpack_require__.r(__webpack_exports__);
 
 class UIManager {
   constructor() {
+    this.igUI = new _ingameui__WEBPACK_IMPORTED_MODULE_1__.InGameUI();
+    this.goUI = new _gameoverui__WEBPACK_IMPORTED_MODULE_2__.GameOverUI();
     this.stUI = new _startui__WEBPACK_IMPORTED_MODULE_3__.StartUI();
     _game__WEBPACK_IMPORTED_MODULE_0__.Game.app.stage.addChild(this.stUI);
   }
@@ -1513,6 +1570,8 @@ class CollisionHandler {
             this.coins[c].destroy();
             this.coins.splice(c, 1);
             this.coinSound.play();
+            _game__WEBPACK_IMPORTED_MODULE_1__.Game.coinScore++;
+            _game__WEBPACK_IMPORTED_MODULE_1__.Game.uiManager.igUI.drawCoinScore();
           }
         }
       }
@@ -1598,6 +1657,8 @@ class Game {
     document.body.appendChild(this.app.view);
     this.isWaiting = true;
     this.isFirst = true;
+    this.best = 0;
+    this.coinScore = 0;
     this.uiManager = new _UI_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
   }
   static play() {
@@ -1703,8 +1764,8 @@ const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line * column;
-const squareEdge = screenWidth / 15;
-const padding = squareEdge / 8;
+const squareEdge = screenWidth / 16;
+const padding = squareEdge / 4;
 const ballRadius = squareEdge / 3;
 const defaultBottom = screenHeight / 2 + 5 * padding + 8 * squareEdge;
 const defaultTop = screenHeight / 2 - 5 * padding - 10 * squareEdge;
@@ -1740,6 +1801,7 @@ const GameConstants = {
   echoMaxNumerator: 3 * squareEdge,
   echoMinNumerator: 0.1 * squareEdge,
   //Text font
+  defaultFont: "Roboto",
   fontSize: Math.round(squareEdge),
   ballRadius,
   coinRadius: squareEdge / 2,
@@ -1747,7 +1809,7 @@ const GameConstants = {
   maxRing: squareEdge * 1.5,
   //Ball move
   ballSpeed: squareEdge * 0.5 / 2,
-  distanceBetweenBalls: Math.round(squareEdge / 2) * 1.25,
+  distanceBetweenBalls: Math.round(squareEdge / 2) * 1.1,
   fallSpeed: squareEdge * 0.5 / 2,
   //Tween animation
   ballTweenTime: 500 / 2,
@@ -1831,10 +1893,14 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       }
     }
     this.line++;
+    if (this.line - 1 > _game__WEBPACK_IMPORTED_MODULE_7__.Game.best) {
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.best = this.line - 1;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI.drawBestScore();
+    }
     this.count = this.distance;
   }
   pushDown(delta) {
-    var dt = delta;
+    var dt = delta * 1.55;
     this.bottom = 0;
     this.isCreatingMap = false;
     if (this.squares.length > 0) {
@@ -2057,7 +2123,7 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
       fill: "black",
-      fontFamily: "Arial"
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
     });
     this.setText();
   }
