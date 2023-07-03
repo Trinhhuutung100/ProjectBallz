@@ -37,7 +37,7 @@ export const GameConstants = {
     needleWidth : squareEdge/2.5,
     needleHeight : squareEdge*1.5,
     echoDenominator : 5*squareEdge,
-    echoMaxNumerator : 3*squareEdge,
+    echoMaxNumerator : 2.5*squareEdge,
     echoMinNumerator : 0.1*squareEdge,
     //Text font
     defaultFont : "Futura",

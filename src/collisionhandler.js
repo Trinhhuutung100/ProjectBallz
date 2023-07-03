@@ -1,10 +1,12 @@
-import { Texture } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { ActiveBall } from "./activeball";
 import { Game } from "./game";
 import { GameConstants } from "./gameconstants";
 import { Sound } from "@pixi/sound";
 import *as setting from "../assets/particle/emitter.json";
-import { Emitter,upgradeConfig } from "@pixi/particle-emitter";
+import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
+import *as settingS from "../assets/particle/emitter.json";
+import *as settingP from "../assets/particle/emitter2.json";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 const coinRadius = GameConstants.coinRadius;
@@ -49,15 +51,7 @@ export class CollisionHandler{
                     var bp = {x: bx, y: by}
                     //Destroy square
                     if(this.squares[s].index == 0) {
-                        // // nếu điểm bằng 0 thì trước khi xóa ô, tạo particle
-                        // var tmp = new Container();
-                        // tmp.position.set(edge/2,edge/2); // vị trí của particle ở giữa hình vuông
-                        // this.addChild(tmp);
-                        // let texture = Texture.from("assets/images/square.png"); // các hạt là hình vuông
-                        // var emitter = new Emitter(tmp, upgradeConfig(setting,[texture]));
-                        // emitter.autoUpdate = true;
-                        // emitter.emit = true;// chạy particle
-                        // // đây là phần particle a thêm khi ô vỡ
+                        this.emitSquareParticale(this.squares[s]);
                         this.squares[s].destroy();
                         this.squares.splice(s, 1);
                     }
@@ -144,6 +138,7 @@ export class CollisionHandler{
                     var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy*dt;
                     var preBall = {x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius};
                     if(this.vectorDistance({x: ballX, y: ballY}, preBall)<ballRadius+coinRadius){
+                        this.emitPreBallParticle(this.preBalls[p]);
                         this.preBalls[p].ringDestroy = true;
                         this.preBalls[p].ball.tint = "green";
                         var preBall = this.preBalls[p];                    
@@ -160,5 +155,25 @@ export class CollisionHandler{
     }
     vectorDistance(objA, objB){
         return Math.sqrt((objA.x- objB.x)*(objA.x- objB.x)+(objA.y- objB.y)*(objA.y- objB.y));
+    }
+    emitSquareParticale(square){
+        // tạo particle trước khi biến mất
+        var tmp = new Container();
+        tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
+        Game.app.stage.addChild(tmp);
+        let texture = Texture.from("assets/images/ball.png"); // các hạt là hình tròn quả bóng
+        var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
+        emitter.autoUpdate = true;
+        emitter.emit = true;// chạy particle
+    }
+    emitPreBallParticle(ball){
+      // tạo particle trước khi biến mất
+        var tmp = new Container();
+        tmp.position.set(ball.ball.x,ball.ball.y); // vị trí của particle ở giữa hình vuông
+        Game.app.stage.addChild(tmp);
+        let texture = Texture.from("assets/images/ball.png"); // các hạt là hình tròn quả bóng
+        var emitter = new Emitter(tmp, upgradeConfig(settingP,[texture]));
+        emitter.autoUpdate = true;
+        emitter.emit = true;// chạy particle
     }
 }
