@@ -82,6 +82,7 @@ export class InGameUI extends Container{
             fill: "white",
             fontFamily: GameConstants.defaultFont, 
         }); 
+        console.log(this.textStyle.fontFamily);
         this.speedText = new Text("Speedup", this.textStyle);
         this.speedText.anchor.set(0.5, 0.5);
         this.speedText.x = GameConstants.screenWidth*0.8;

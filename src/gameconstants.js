@@ -1,3 +1,5 @@
+import { Assets } from "pixi.js";
+
 const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
@@ -11,6 +13,21 @@ const defaultTop = screenHeight/2 - 5*padding - 10*squareEdge ;
 const defaultBottomBall = defaultBottom - ballRadius;
 const defaultTopBall = defaultTop + ballRadius;
 const defaultTopMap = defaultTop + squareEdge;
+// const defaultFont = "";
+Assets.addBundle("Roboto",{
+    black : "src/Fonts/Roboto/Roboto-Black.ttf" ,
+    blackItalic : "src/Fonts/Roboto/Roboto-BlackItalic.ttf" ,
+    bold : " src/Fonts/Roboto/Roboto-Bold.ttf" ,
+    boldItalic : " src/Fonts/Roboto/Roboto-BoldItalic.ttf" ,
+    italic : " src/Fonts/Roboto/Roboto-Italic.ttf" ,
+    light : " src/Fonts/Roboto/Roboto-Light.ttf" ,
+    lightItalic : " src/Fonts/Roboto/Roboto-LightItalic.ttf" ,
+    medium : " src/Fonts/Roboto/Roboto-Medium.ttf" ,
+    mediumItalic : " src/Fonts/Roboto/Roboto-MediumItalic.ttf" ,
+    regular : " src/Fonts/Roboto/Roboto-Regular.ttf" ,
+    thin : " src/Fonts/Roboto/Roboto-Thin.ttf" ,
+    thinItalic : " src/Fonts/Roboto/Roboto-ThinItalic.ttf" 
+});
 export const GameConstants = {
     //Screen
     screenWidth : screenWidth,
@@ -26,9 +43,6 @@ export const GameConstants = {
     line : line,   
     //Padding between square
     padding : padding,
-    //Hafl edge of a block
-    //edge : edge,
-    //Square edge = edge - padding
     squareEdge : squareEdge,
     //Anchor
     needleAnchor : {x: 0.5, y: 1.5},
@@ -40,7 +54,7 @@ export const GameConstants = {
     echoMaxNumerator : 2.5*squareEdge,
     echoMinNumerator : 0.1*squareEdge,
     //Text font
-    defaultFont : "Roboto",
+    defaultFont : "Futura PT",
     fontSize : Math.round(squareEdge),
     ballRadius : ballRadius,
     coinRadius : squareEdge/2,
