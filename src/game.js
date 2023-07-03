@@ -59,6 +59,8 @@ export class Game{
     static menu(){
         this.app.stage.removeChild(this.backYard);
         this.backYard.destroy();
+        Game.app.stage.removeChild(this.ballController);
+        this.ballController.destroy();
         Game.app.stage.removeChild(this.uiManager.goUI);
         this.uiManager.goUI.destroy(); 
         this.uiManager.stUI = new StartUI();
@@ -66,6 +68,7 @@ export class Game{
 
     }
     static startGame(){
+
         //Back yard
         this.backYard = Sprite.from("assets/images/square.png");
         this.backYard.tint = 0x000000;
@@ -74,6 +77,7 @@ export class Game{
         this.backYard.x = 0.5;
         this.backYard.y = GameConstants.defaultTop;
         this.app.stage.addChild(this.backYard);
+
         //Add balls
         this.balls = [];
         for(var i = 0; i<1; i++){
@@ -83,15 +87,19 @@ export class Game{
         this.balls.forEach(ball => {
             this.app.stage.addChild(ball);
         });
+
         //Add in-game ui    
         this.uiManager.igUI = new InGameUI();    
         Game.app.stage.addChild(this.uiManager.igUI);
+
         //Gen map
         this.map = new GenMap();
         this.app.stage.addChild(this.map);
+
         //Ball controller
         this.ballController = new BallController(this.balls, this.map);
         this.app.stage.addChild(this.ballController);
+
         //Collision handler
         this.collision = new CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
 
