@@ -1,8 +1,9 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Demo</title><style>body {
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet"><title>Demo</title><style>body {
       margin: 0;
       padding: 0;
       background: black;
       overflow: hidden;
+      font-family: 'Futura PT', sans-serif
     }
   canvas {
     margin-right: auto;
@@ -4517,6 +4518,7 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       fill: "white",
       fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
     });
+    console.log(this.textStyle.fontFamily);
     this.speedText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("Speedup", this.textStyle);
     this.speedText.anchor.set(0.5, 0.5);
     this.speedText.x = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.8;
@@ -5361,9 +5363,6 @@ const GameConstants = {
   line,
   //Padding between square
   padding,
-  //Hafl edge of a block
-  //edge : edge,
-  //Square edge = edge - padding
   squareEdge,
   //Anchor
   needleAnchor: { x: 0.5, y: 1.5 },
@@ -5375,7 +5374,7 @@ const GameConstants = {
   echoMaxNumerator: 2.5 * squareEdge,
   echoMinNumerator: 0.1 * squareEdge,
   //Text font
-  defaultFont: "Roboto",
+  defaultFont: "Futura PT",
   fontSize: Math.round(squareEdge),
   ballRadius,
   coinRadius: squareEdge / 2,
