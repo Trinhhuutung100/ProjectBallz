@@ -1,7 +1,10 @@
+import { Texture } from "pixi.js";
 import { ActiveBall } from "./activeball";
 import { Game } from "./game";
 import { GameConstants } from "./gameconstants";
 import { Sound } from "@pixi/sound";
+import *as setting from "../assets/particle/emitter.json";
+import { Emitter,upgradeConfig } from "@pixi/particle-emitter";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 const coinRadius = GameConstants.coinRadius;
@@ -46,6 +49,15 @@ export class CollisionHandler{
                     var bp = {x: bx, y: by}
                     //Destroy square
                     if(this.squares[s].index == 0) {
+                        // // nếu điểm bằng 0 thì trước khi xóa ô, tạo particle
+                        // var tmp = new Container();
+                        // tmp.position.set(edge/2,edge/2); // vị trí của particle ở giữa hình vuông
+                        // this.addChild(tmp);
+                        // let texture = Texture.from("assets/images/square.png"); // các hạt là hình vuông
+                        // var emitter = new Emitter(tmp, upgradeConfig(setting,[texture]));
+                        // emitter.autoUpdate = true;
+                        // emitter.emit = true;// chạy particle
+                        // // đây là phần particle a thêm khi ô vỡ
                         this.squares[s].destroy();
                         this.squares.splice(s, 1);
                     }

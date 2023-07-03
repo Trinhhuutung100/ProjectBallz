@@ -1,6 +1,7 @@
 import { Container, Sprite, Text, TextStyle, Ticker} from "pixi.js"
 import { GameConstants } from "./gameconstants";
-import { Game } from "./game";
+import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
+import *as setting from "../assets/particle/emitter.json";
 
 const edge = GameConstants.squareEdge;
 export class Square extends Container{
@@ -24,7 +25,7 @@ export class Square extends Container{
         this.setText();     
     }
     decreaseIndex(){
-        if(this.index > 0) this.index--;
+        if(this.index > 0)this.index--;
         this.color = changeColor(this.index);
         this.setText();
     }
