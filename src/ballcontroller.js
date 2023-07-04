@@ -18,12 +18,16 @@ export class BallController extends Container{
         this.readyAttack = false;
         this.dx = 0;
         this.dy = 0;
+        this.allGround = true;
+        this.oldPosition = {x:0, y: 0};
+        this.groundPositionX = GameConstants.defaultBallX;
+        this.groundPositionY = GameConstants.defaultBottomBall;
+        this.firstGroundedBall = false;
+        this.isCreating = false;
         this.distance = [];
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
         }
-        this.allGround = true;
-        this.oldPosition = {x:0, y: 0};
         this.needle = Sprite.from("assets/images/needle.png");
         this.needle.anchor.set(GameConstants.needleAnchor.x, GameConstants.needleAnchor.y);
         this.needle.width = GameConstants.needleWidth;
@@ -34,10 +38,6 @@ export class BallController extends Container{
         this.echo.anchor.set(GameConstants.echoAnchor.x, GameConstants.echoAnchor.y);
         this.echo.x = GameConstants.defaultBallX;
         this.echo.y = GameConstants.defaultBottomBall;
-        this.groundPositionX = GameConstants.defaultBallX;
-        this.groundPositionY = GameConstants.defaultBottomBall;
-        this.firstGroundedBall = false;
-        this.isCreating = false;
         
     }
     // Add listener

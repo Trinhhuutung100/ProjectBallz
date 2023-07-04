@@ -3,14 +3,36 @@ import { Sprite } from "pixi.js";
 import { gsap } from "gsap";
 import { GameConstants } from "../gameconstants";
 import { Game } from "../game";
+import { PauseUI } from "./pauseui";
 export class InGameUI extends Container{
     constructor(){
         super();
         this.guide();
+        this.drawPauseButton();
         this.drawBestScore();
         this.drawCoinSymbol();
         this.drawCoinScore();
         this.drawSpeedupButton();
+    }
+    drawPauseButton(){
+        var texture = Texture.from("assets/images/pause.png");
+        var tmp = Sprite.from(texture);
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*0.75;
+        tmp.height = GameConstants.squareEdge*1.25;
+        tmp.x = GameConstants.squareEdge;
+        tmp.y = GameConstants.squareEdge*1.2;
+        tmp.tint = "white";
+        tmp.eventMode = "static";
+        tmp.on("pointerup",() => {
+            console.log("Pause");
+            if(!Game.isWaiting){
+                Game.uiManager.psUI = new PauseUI();
+                Game.app.stage.addChild(Game.uiManager.psUI);
+            }
+            Game.isWaiting = true;
+        });
+        this.addChild(tmp);
     }
     drawBestScore(){
         this.textStyle = new TextStyle({
@@ -82,7 +104,7 @@ export class InGameUI extends Container{
             fill: "white",
             fontFamily: GameConstants.defaultFont, 
         }); 
-        console.log(this.textStyle.fontFamily);
+        //console.log(this.textStyle.fontFamily);
         this.speedText = new Text("Speedup", this.textStyle);
         this.speedText.anchor.set(0.5, 0.5);
         this.speedText.x = GameConstants.screenWidth*0.8;

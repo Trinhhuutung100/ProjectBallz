@@ -42,23 +42,37 @@ export class Game{
         //Remove start-game ui   
         Game.app.stage.removeChild(this.uiManager.goUI);
         this.uiManager.goUI.destroy(); 
-        this.uiManager.igUI = new InGameUI();
-        Game.app.stage.addChild(this.uiManager.igUI);
-        this.map.createNewLine();
-        for(var i = 0; i<1; i++){
-            var ball = new ActiveBall();
-            this.balls.push(ball);
-        }
-        this.ballController.echo.x = this.balls[0].ball.x;
-        this.ballController.needle.x = this.balls[0].ball.x;
-        this.balls.forEach(ball => {
-            this.app.stage.addChild(ball);
-        });
+        
+        Game.app.stage.removeChild(Game.backYard);
+        Game.backYard.destroy();
+
+        Game.app.stage.removeChild(this.ballController);
+        this.ballController.destroy();
+
         this.isWaiting = false;
+        
+        this.startGame();
+    }
+    static reStart(){
+        Game.app.stage.removeChild(this.uiManager.psUI);
+        this.uiManager.psUI.destroy(); 
+        
+        Game.app.stage.removeChild(Game.backYard);
+        Game.backYard.destroy();
+
+        Game.app.stage.removeChild(this.ballController);
+        this.ballController.destroy();
+
+        this.map.resetMap();
+
+        this.isWaiting = false;
+
+        this.startGame();
+        
     }
     static menu(){
-        this.app.stage.removeChild(this.backYard);
-        this.backYard.destroy();
+        Game.app.stage.removeChild(Game.backYard);
+        Game.backYard.destroy();
         Game.app.stage.removeChild(this.ballController);
         this.ballController.destroy();
         Game.app.stage.removeChild(this.uiManager.goUI);
@@ -113,6 +127,7 @@ export class Game{
     }
     static update(dt){    
         if(this.map.bottom>GameConstants.defaultBottom - GameConstants.ballRadius*3) {
+            console.log("Lose");
             this.map.resetMap();
             this.uiManager.goUI = new GameOverUI();
             this.app.stage.addChild(this.uiManager.goUI);

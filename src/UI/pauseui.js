@@ -1,9 +1,12 @@
-import { Container, Text, TextStyle } from "pixi.js";
+import { Container, Sprite, Text, TextStyle } from "pixi.js";
+import { GameConstants } from "../gameconstants";
+import { Game } from "../game";
+import { ActiveBall } from "../activeball";
 
 export class PauseUI extends Container {
-    constructor(game) {
+    constructor() {
         super();
-        this.game=game;
+        this.drawBackground();
         this.drawTextPause();
         this.drawContinueButton();
         this.drawRestartButton();
@@ -12,52 +15,94 @@ export class PauseUI extends Container {
         this.drawLikeButton();
         this.drawAdsButton();
     }
+    drawBackground(){
+        var tmp = Sprite.from("assets/images/square.png"); 
+        tmp.width = GameConstants.screenWidth
+        tmp.height = GameConstants.screenHeight     
+        tmp.position.set(0, 0);
+        tmp.tint = 0x222222;
+        this.addChild(tmp);
+    }
     drawTextPause() {
         const style = new TextStyle({
-            fontFamily: "Arial",
+            fontFamily: GameConstants.defaultFont,
             fontSize: 48,
             fill: "white",
             align: "center"
         });
         const text = new Text("PAUSE", style);
-        text.anchor.set(0.5);
-        text.position.set(Screen.width/2,Screen.height/3);
+        text.anchor.set(0.5, 0.5);
+        text.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.2);
         this.addChild(text);
     }
     drawContinueButton(){
-        var tmp = Sprite.from("assets/images/continue.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set();
+        var tmp = Sprite.from("assets/images/continue.png"); 
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*8
+        tmp.height = GameConstants.squareEdge*2      
+        tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.32);
+
+        tmp.eventMode = "static";
+        tmp.on("pointerup",() => {
+            console.log("Continue");        
+            Game.app.stage.removeChild(Game.uiManager.psUI);
+            Game.uiManager.psUI.destroy();
+            Game.isWaiting = false;            
+        });
         this.addChild(tmp);
     }
     drawRestartButton(){
         var tmp = Sprite.from("assets/images/restart.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set();
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*8
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.44);
+        tmp.eventMode = "static";
+        tmp.on("pointerup",() => {
+            console.log("Restart");
+            Game.reStart();
+            
+        });
         this.addChild(tmp);
     }
     drawMainMenuButton(){
         var tmp = Sprite.from("assets/images/mainmenu.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set();
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*8
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.56);
+        tmp.eventMode = "static";
+        tmp.on("pointerup",() => {
+            console.log("Mainmenu");
+            Game.map.resetMap();
+            Game.app.stage.removeChild(Game.uiManager.psUI);
+            Game.uiManager.psUI.destroy();
+            Game.menu();
+        });
         this.addChild(tmp);
     }
     drawMusicButton(){
         var tmp = Sprite.from("assets/images/music.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set();
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*2
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.3, GameConstants.screenHeight*0.68);
         this.addChild(tmp);
     }
     drawLikeButton(){
         var tmp = Sprite.from("assets/images/like.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set();
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*2.25
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.68);
         this.addChild(tmp);
     }
     drawAdsButton(){
         var tmp = Sprite.from("assets/images/ads.png");
-        tmp.anchor.set(0.5);
-        tmp.position.set();
+        tmp.anchor.set(0.5, 0.5);
+        tmp.width = GameConstants.squareEdge*2
+        tmp.height = GameConstants.squareEdge*2
+        tmp.position.set(GameConstants.screenWidth*0.7, GameConstants.screenHeight*0.68);
         this.addChild(tmp);
     }
 }
