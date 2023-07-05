@@ -4886,9 +4886,8 @@ __webpack_require__.r(__webpack_exports__);
 class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y) {
     super();
-    var ballBundle = _manifest__WEBPACK_IMPORTED_MODULE_2__.manifest.bundles.find((bundle) => bundle.name === "ball");
-    var tt = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(ballBundle.assets["ball"]);
-    this.ball = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(tt);
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("ball");
+    this.ball = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(texture);
     this.ball.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.ballRadius * 2;
     this.ball.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.ballRadius * 2;
     this.ball.anchor.set(0.5, 0.5);
@@ -5130,8 +5129,7 @@ __webpack_require__.r(__webpack_exports__);
 class Coin extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y) {
     super();
-    var bundle = _manifest__WEBPACK_IMPORTED_MODULE_2__.manifest.bundles.find((bundle2) => bundle2.name === "ring");
-    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(bundle.assets["ring"]);
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("ring");
     this.coin = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     this.coin.tint = "yellow";
     this.coin.anchor.set(0.5, 0.5);
@@ -5319,7 +5317,7 @@ class CollisionHandler {
     var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     tmp.position.set(square.square.x, square.square.y);
     _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(tmp);
-    let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/ball.png");
+    let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/square.png");
     var emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_5___namespace_cache || (_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_5___namespace_cache = __webpack_require__.t(_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_5__, 2))), [texture]));
     emitter.autoUpdate = true;
     emitter.emit = true;
@@ -5328,7 +5326,7 @@ class CollisionHandler {
     var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     tmp.position.set(ball.ball.x, ball.ball.y);
     _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(tmp);
-    let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/ball.png");
+    let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/square.png");
     var emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache || (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache = __webpack_require__.t(_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_7__, 2))), [texture]));
     emitter.autoUpdate = true;
     emitter.emit = true;
@@ -5748,25 +5746,19 @@ const manifest = {
     {
       name: "ball",
       assets: {
-        "ball": "../../assets/images/ball.png"
+        ball: "../assets/images/ball.png"
       }
     },
     {
       name: "square",
       assets: {
-        "square": "../../assets/images/square.png"
+        square: "../assets/images/square.png"
       }
     },
     {
       name: "ring",
       assets: {
-        "ring": "../../assets/images/ring.png"
-      }
-    },
-    {
-      name: "",
-      assets: {
-        "": ""
+        ring: "../assets/images/ring.png"
       }
     }
   ]
@@ -5802,8 +5794,7 @@ __webpack_require__.r(__webpack_exports__);
 class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
   constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultBallX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultBottomBall) {
     super(x, y);
-    var bundle = _manifest__WEBPACK_IMPORTED_MODULE_5__.manifest.bundles.find((bundle2) => bundle2.name === "ring");
-    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(bundle.assets["ring"]);
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("ring");
     this.ring = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     this.ring.anchor.set(0.5, 0.5);
     this.ring.width = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing;
@@ -5922,8 +5913,7 @@ const edge = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdg
 class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y, index) {
     super();
-    var bundle = _manifest__WEBPACK_IMPORTED_MODULE_2__.manifest.bundles.find((bundle2) => bundle2.name === "square");
-    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(bundle.assets["square"]);
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square");
     this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     this.color = changeColor(index);
     this.square.tint = this.color;
@@ -51737,7 +51727,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"alpha":{"start":0.93,"end":0.21},"scale":{"start":0.05,"end":0.05,"minimumScaleMultiplier":1.5},"color":{"start":"#ffbc40","end":"#ffd640"},"speed":{"start":200,"end":50,"minimumSpeedMultiplier":1.5},"acceleration":{"x":0,"y":0},"maxSpeed":0,"startRotation":{"min":0,"max":360},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":0.1,"max":0.2},"blendMode":"normal","frequency":0.001,"emitterLifetime":0.2,"maxParticles":50,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"circle","spawnCircle":{"x":0,"y":0,"r":0}}');
+module.exports = JSON.parse('{"alpha":{"start":1,"end":1},"scale":{"start":0.075,"end":0.075,"minimumScaleMultiplier":0.075},"color":{"start":"#ffb640","end":"#ffb640"},"speed":{"start":150,"end":50,"minimumSpeedMultiplier":1.25},"acceleration":{"x":0,"y":0},"maxSpeed":0,"startRotation":{"min":0,"max":360},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":0.2,"max":0.2},"blendMode":"Overlay blending","frequency":0.001,"emitterLifetime":0.2,"maxParticles":80,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"rect","spawnRect":{"x":0,"y":0,"w":0,"h":0}}');
 
 /***/ }),
 
@@ -51748,7 +51738,7 @@ module.exports = JSON.parse('{"alpha":{"start":0.93,"end":0.21},"scale":{"start"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"alpha":{"start":0.93,"end":0.88},"scale":{"start":0.05,"end":0.05,"minimumScaleMultiplier":3},"color":{"start":"#90ff40","end":"#53ff40"},"speed":{"start":200,"end":300,"minimumSpeedMultiplier":1.5},"acceleration":{"x":0,"y":0},"maxSpeed":0,"startRotation":{"min":60,"max":120},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":0.001,"max":1},"blendMode":"normal","frequency":0.001,"emitterLifetime":0.5,"maxParticles":80,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"circle","spawnCircle":{"x":0,"y":0,"r":0}}');
+module.exports = JSON.parse('{"alpha":{"start":0.97,"end":0.15},"scale":{"start":0.075,"end":0.075,"minimumScaleMultiplier":0.075},"color":{"start":"#40ff80","end":"#40ff80"},"speed":{"start":100,"end":600,"minimumSpeedMultiplier":1.5},"acceleration":{"x":0,"y":500},"maxSpeed":0,"startRotation":{"min":60,"max":120},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":0.7,"max":0.7},"blendMode":"Multiply blending","frequency":0.001,"emitterLifetime":0.7,"maxParticles":80,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"rect","spawnRect":{"x":0,"y":0,"w":0,"h":0}}');
 
 /***/ })
 
