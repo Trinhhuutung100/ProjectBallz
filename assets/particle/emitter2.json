@@ -1,19 +1,19 @@
 {
 	"alpha": {
-		"start": 0.93,
-		"end": 0.88
+		"start": 0.97,
+		"end": 0.32
 	},
 	"scale": {
-		"start": 0.05,
-		"end": 0.05,
-		"minimumScaleMultiplier": 3
+		"start": 0.15,
+		"end": 0.15,
+		"minimumScaleMultiplier": 0.15
 	},
 	"color": {
-		"start": "#90ff40",
-		"end": "#53ff40"
+		"start": "#40ff80",
+		"end": "#40ff80"
 	},
 	"speed": {
-		"start": 200,
+		"start": 100,
 		"end": 300,
 		"minimumSpeedMultiplier": 1.5
 	},
@@ -32,22 +32,23 @@
 		"max": 0
 	},
 	"lifetime": {
-		"min": 0.001,
-		"max": 1
+		"min": 0.5,
+		"max": 0.1
 	},
 	"blendMode": "normal",
 	"frequency": 0.001,
 	"emitterLifetime": 0.5,
-	"maxParticles": 80,
+	"maxParticles": 40,
 	"pos": {
 		"x": 0,
 		"y": 0
 	},
 	"addAtBack": false,
-	"spawnType": "circle",
-	"spawnCircle": {
+	"spawnType": "rect",
+	"spawnRect": {
 		"x": 0,
 		"y": 0,
-		"r": 0
+		"w": 0,
+		"h": 0
 	}
 }
