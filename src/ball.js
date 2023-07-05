@@ -4,9 +4,8 @@ import { manifest } from "./manifest";
 export class Ball extends Container{
     constructor(x, y){
         super();
-        var ballBundle = manifest.bundles.find(bundle => bundle.name === "ball")
-        var tt = Texture.from(ballBundle.assets["ball"]);
-        this.ball = new Sprite(tt);
+        var texture = Texture.from("ball");
+        this.ball = new Sprite(texture);
         this.ball.width = GameConstants.ballRadius*2;
         this.ball.height = GameConstants.ballRadius*2;
         this.ball.anchor.set(0.5, 0.5);

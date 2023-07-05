@@ -5,8 +5,7 @@ import { manifest } from "./manifest";
 export class Coin extends Container{
     constructor(x, y){
         super();
-        var bundle = manifest.bundles.find(bundle => bundle.name === "ring")
-        var texture = Texture.from(bundle.assets["ring"]);
+        var texture = Texture.from("ring")
         this.coin = Sprite.from(texture);
         this.coin.tint = "yellow";
         this.coin.anchor.set(0.5, 0.5);

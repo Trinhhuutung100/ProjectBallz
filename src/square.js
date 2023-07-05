@@ -6,8 +6,7 @@ const edge = GameConstants.squareEdge;
 export class Square extends Container{
     constructor(x, y, index){
         super();
-        var bundle = manifest.bundles.find(bundle => bundle.name === "square")
-        var texture = Texture.from(bundle.assets["square"]);
+        var texture = Texture.from("square")
         this.square = Sprite.from(texture);
         this.color = changeColor(index);
         this.square.tint = this.color;

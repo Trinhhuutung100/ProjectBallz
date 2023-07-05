@@ -7,9 +7,8 @@ import { Game } from "./game";
 import { manifest } from "./manifest";
 export class PreBall extends Ball{
     constructor(x=GameConstants.defaultBallX, y=GameConstants.defaultBottomBall){
-        super(x, y);       
-        var bundle = manifest.bundles.find(bundle => bundle.name === "ring")
-        var texture = Texture.from(bundle.assets["ring"]);
+        super(x, y);    
+        var texture = Texture.from("ring")   
         this.ring = Sprite.from(texture);
         this.ring.anchor.set(0.5, 0.5);
         this.ring.width = GameConstants.minRing;
