@@ -1,4 +1,4 @@
-import { Application, Sprite, Ticker } from "pixi.js"
+import { Application, Assets, Sprite, Ticker } from "pixi.js"
 import { ActiveBall } from "./activeball";
 import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
@@ -12,6 +12,7 @@ import { UIManager } from "./UI/uimanager";
 import { GameOverUI } from "./UI/gameoverui";
 import { InGameUI } from "./UI/ingameui";
 import { StartUI } from "./UI/startui";
+import { manifest } from "./manifest";
 
 
 export class Game{
@@ -26,8 +27,15 @@ export class Game{
         this.isFirst = true;
         this.best = 0;
         this.coinScore = 0;
+        this.loadGame();
         this.uiManager = new UIManager();
         
+    } 
+    static async loadGame(){
+        await Assets.init({manifest: manifest});
+        const bundleIDs = manifest.bundles.map(bundle => bundle.name);
+        console.log(bundleIDs);
+        await Assets.loadBundle(bundleIDs);
     }
     static play(){
         //Remove start-game ui
