@@ -5356,28 +5356,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UI_gameoverui__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./UI/gameoverui */ "./src/UI/gameoverui.js");
 /* harmony import */ var _UI_ingameui__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./UI/ingameui */ "./src/UI/ingameui.js");
 /* harmony import */ var _UI_startui__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./UI/startui */ "./src/UI/startui.js");
-/* harmony import */ var _manifest__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./manifest */ "./src/manifest.js");
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
-
 
 
 
@@ -5404,17 +5382,14 @@ class Game {
     this.isFirst = true;
     this.best = 0;
     this.coinScore = 0;
-    this.loadGame();
     this.uiManager = new _UI_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
   }
-  static loadGame() {
-    return __async(this, null, function* () {
-      yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.init({ manifest: _manifest__WEBPACK_IMPORTED_MODULE_14__.manifest });
-      const bundleIDs = _manifest__WEBPACK_IMPORTED_MODULE_14__.manifest.bundles.map((bundle) => bundle.name);
-      console.log(bundleIDs);
-      yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.loadBundle(bundleIDs);
-    });
-  }
+  // static async loadGame(){
+  //     await Assets.init({manifest: manifest});
+  //     const bundleIDs = manifest.bundles.map(bundle => bundle.name);
+  //     console.log(bundleIDs);
+  //     await Assets.loadBundle(bundleIDs);
+  // }
   static play() {
     Game.app.stage.removeChild(this.uiManager.stUI);
     this.uiManager.stUI.destroy();
@@ -5721,43 +5696,6 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.isWaiting = true;
   }
 }
-
-
-/***/ }),
-
-/***/ "./src/manifest.js":
-/*!*************************!*\
-  !*** ./src/manifest.js ***!
-  \*************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   manifest: () => (/* binding */ manifest)
-/* harmony export */ });
-const manifest = {
-  bundles: [
-    {
-      name: "ball",
-      assets: {
-        ball: "../assets/images/ball.png"
-      }
-    },
-    {
-      name: "square",
-      assets: {
-        square: "../assets/images/square.png"
-      }
-    },
-    {
-      name: "ring",
-      assets: {
-        ring: "../assets/images/ring.png"
-      }
-    }
-  ]
-};
 
 
 /***/ }),
