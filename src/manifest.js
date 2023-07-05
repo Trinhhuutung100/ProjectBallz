@@ -3,19 +3,19 @@ export const manifest = {
         {
             name : "ball",
             assets : {
-                "ball" : "../assets/images/ball.png",
+                "ball" : "../../assets/images/ball.png",
             }
         },
         {
             name : "square",
             assets : {
-                "square" : "../assets/images/square.png",
+                "square" : "../../assets/images/square.png",
             }
         },
         {
             name : "ring",
             assets : {
-                "ring" : "../assets/images/ring.png",
+                "ring" : "../../assets/images/ring.png",
             }
         },
         {
