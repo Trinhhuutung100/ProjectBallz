@@ -1,11 +1,10 @@
 import { Container, Sprite, Texture} from "pixi.js"
 import { GameConstants } from "./gameconstants";
-import { manifest } from "./manifest";
 export class Ball extends Container{
     constructor(x, y){
         super();
-        var texture = Texture.from("ball");
-        this.ball = new Sprite(texture);
+        var tt = Texture.from("assets/images/ball.png");
+        this.ball = new Sprite(tt);
         this.ball.width = GameConstants.ballRadius*2;
         this.ball.height = GameConstants.ballRadius*2;
         this.ball.anchor.set(0.5, 0.5);

@@ -1,13 +1,11 @@
 import { Container, Sprite, Text, TextStyle, Texture, Ticker} from "pixi.js"
 import { GameConstants } from "./gameconstants";
-import { manifest } from "./manifest";
 
 const edge = GameConstants.squareEdge;
 export class Square extends Container{
     constructor(x, y, index){
         super();
-        var texture = Texture.from("square")
-        this.square = Sprite.from(texture);
+        this.square = Sprite.from("assets/images/square.png");
         this.color = changeColor(index);
         this.square.tint = this.color;
         this.square.anchor.set(0.5, 0.5);

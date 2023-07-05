@@ -4,12 +4,10 @@ import { Ball } from "./ball";
 import { GameConstants } from "./gameconstants";
 import { gsap} from "gsap"
 import { Game } from "./game";
-import { manifest } from "./manifest";
 export class PreBall extends Ball{
     constructor(x=GameConstants.defaultBallX, y=GameConstants.defaultBottomBall){
-        super(x, y);    
-        var texture = Texture.from("ring")   
-        this.ring = Sprite.from(texture);
+        super(x, y);       
+        this.ring = Sprite.from("assets/images/ring.png");
         this.ring.anchor.set(0.5, 0.5);
         this.ring.width = GameConstants.minRing;
         this.ring.height = GameConstants.minRing;
