@@ -12,7 +12,6 @@ import { UIManager } from "./UI/uimanager";
 import { GameOverUI } from "./UI/gameoverui";
 import { InGameUI } from "./UI/ingameui";
 import { StartUI } from "./UI/startui";
-import { manifest } from "./loader";
 
 
 export class Game{
