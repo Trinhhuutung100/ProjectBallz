@@ -31,12 +31,12 @@ export class Game{
         this.uiManager = new UIManager();
         
     } 
-    static async loadGame(){
-        await Assets.init({manifest: manifest});
-        const bundleIDs = manifest.bundles.map(bundle => bundle.name);
-        console.log(bundleIDs);
-        await Assets.loadBundle(bundleIDs);
-    }
+    // static async loadGame(){
+    //     await Assets.init({manifest: manifest});
+    //     const bundleIDs = manifest.bundles.map(bundle => bundle.name);
+    //     console.log(bundleIDs);
+    //     await Assets.loadBundle(bundleIDs);
+    // }
     static play(){
         //Remove start-game ui
         Game.app.stage.removeChild(this.uiManager.stUI);
