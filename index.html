@@ -4879,12 +4879,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
+/* harmony import */ var _manifest__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./manifest */ "./src/manifest.js");
+
 
 
 class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y) {
     super();
-    var tt = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/ball.png");
+    var ballBundle = _manifest__WEBPACK_IMPORTED_MODULE_2__.manifest.bundles.find((bundle) => bundle.name === "ball");
+    var tt = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(ballBundle.assets["ball"]);
     this.ball = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(tt);
     this.ball.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.ballRadius * 2;
     this.ball.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.ballRadius * 2;
@@ -5120,12 +5123,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
+/* harmony import */ var _manifest__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./manifest */ "./src/manifest.js");
+
 
 
 class Coin extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y) {
     super();
-    this.coin = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ring.png");
+    var bundle = _manifest__WEBPACK_IMPORTED_MODULE_2__.manifest.bundles.find((bundle2) => bundle2.name === "ring");
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(bundle.assets["ring"]);
+    this.coin = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     this.coin.tint = "yellow";
     this.coin.anchor.set(0.5, 0.5);
     this.coin.width = 2 * _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.coinRadius;
@@ -5356,6 +5363,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UI_gameoverui__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./UI/gameoverui */ "./src/UI/gameoverui.js");
 /* harmony import */ var _UI_ingameui__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./UI/ingameui */ "./src/UI/ingameui.js");
 /* harmony import */ var _UI_startui__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./UI/startui */ "./src/UI/startui.js");
+/* harmony import */ var _manifest__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./manifest */ "./src/manifest.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
 
 
 
@@ -5382,7 +5411,16 @@ class Game {
     this.isFirst = true;
     this.best = 0;
     this.coinScore = 0;
+    this.loadGame();
     this.uiManager = new _UI_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
+  }
+  static loadGame() {
+    return __async(this, null, function* () {
+      yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.init({ manifest: _manifest__WEBPACK_IMPORTED_MODULE_14__.manifest });
+      const bundleIDs = _manifest__WEBPACK_IMPORTED_MODULE_14__.manifest.bundles.map((bundle) => bundle.name);
+      console.log(bundleIDs);
+      yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.loadBundle(bundleIDs);
+    });
   }
   static play() {
     Game.app.stage.removeChild(this.uiManager.stUI);
@@ -5694,6 +5732,49 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/manifest.js":
+/*!*************************!*\
+  !*** ./src/manifest.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   manifest: () => (/* binding */ manifest)
+/* harmony export */ });
+const manifest = {
+  bundles: [
+    {
+      name: "ball",
+      assets: {
+        "ball": "../assets/images/ball.png"
+      }
+    },
+    {
+      name: "square",
+      assets: {
+        "square": "../assets/images/square.png"
+      }
+    },
+    {
+      name: "ring",
+      assets: {
+        "ring": "../assets/images/ring.png"
+      }
+    },
+    {
+      name: "",
+      assets: {
+        "": ""
+      }
+    }
+  ]
+};
+
+
+/***/ }),
+
 /***/ "./src/preball.js":
 /*!************************!*\
   !*** ./src/preball.js ***!
@@ -5710,6 +5791,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ball__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ball */ "./src/ball.js");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./game */ "./src/game.js");
+/* harmony import */ var _manifest__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./manifest */ "./src/manifest.js");
+
 
 
 
@@ -5719,7 +5802,9 @@ __webpack_require__.r(__webpack_exports__);
 class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
   constructor(x = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultBallX, y = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.defaultBottomBall) {
     super(x, y);
-    this.ring = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/ring.png");
+    var bundle = _manifest__WEBPACK_IMPORTED_MODULE_5__.manifest.bundles.find((bundle2) => bundle2.name === "ring");
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(bundle.assets["ring"]);
+    this.ring = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     this.ring.anchor.set(0.5, 0.5);
     this.ring.width = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing;
     this.ring.height = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing;
@@ -5829,13 +5914,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameconstants */ "./src/gameconstants.js");
+/* harmony import */ var _manifest__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./manifest */ "./src/manifest.js");
+
 
 
 const edge = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
 class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y, index) {
     super();
-    this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
+    var bundle = _manifest__WEBPACK_IMPORTED_MODULE_2__.manifest.bundles.find((bundle2) => bundle2.name === "square");
+    var texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(bundle.assets["square"]);
+    this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(texture);
     this.color = changeColor(index);
     this.square.tint = this.color;
     this.square.anchor.set(0.5, 0.5);
