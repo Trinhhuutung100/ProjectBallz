@@ -1,6 +1,7 @@
 import TWEEN from "@tweenjs/tween.js";
 import {Container, Sprite, Ticker } from "pixi.js"
 import { GameConstants } from "./gameconstants";
+import { Game } from "./game";
 
 const ballRadius = GameConstants.ballRadius;
 
@@ -11,14 +12,13 @@ export class BallController extends Container{
         this.map = map;
         this.init();
         this.speed = GameConstants.ballSpeed;
+        // console.log(this.speed);
         this.mousePress = false;
         this.ready = false;
         this.readyAttack = false;
         this.dx = 0;
         this.dy = 0;
         this.distance = [];
-        this._dt = 0;
-        this._current = 0;
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
         }
@@ -26,15 +26,16 @@ export class BallController extends Container{
         this.oldPosition = {x:0, y: 0};
         this.needle = Sprite.from("assets/images/needle.png");
         this.needle.anchor.set(GameConstants.needleAnchor.x, GameConstants.needleAnchor.y);
-        this.needle.scale.set(GameConstants.needleScale.x, GameConstants.needleScale.y);
-        this.needle.x = GameConstants.defaultX;
-        this.needle.y = GameConstants.defaultY;
+        this.needle.width = GameConstants.needleWidth;
+        this.needle.height = GameConstants.needleHeight;
+        this.needle.x = GameConstants.defaultBallX;
+        this.needle.y = GameConstants.defaultBottomBall;
         this.echo = Sprite.from("assets/images/echo.png");
         this.echo.anchor.set(GameConstants.echoAnchor.x, GameConstants.echoAnchor.y);
-        this.echo.x = GameConstants.defaultX;
-        this.echo.y = GameConstants.defaultY;
-        this.groundPositionX = GameConstants.defaultX;
-        this.groundPositionY = GameConstants.defaultY;
+        this.echo.x = GameConstants.defaultBallX;
+        this.echo.y = GameConstants.defaultBottomBall;
+        this.groundPositionX = GameConstants.defaultBallX;
+        this.groundPositionY = GameConstants.defaultBottomBall;
         this.firstGroundedBall = false;
         this.isCreating = false;
         
@@ -45,16 +46,11 @@ export class BallController extends Container{
         window.addEventListener("pointermove", this.mouseHandler.bind(this));
         window.addEventListener("pointerup", this.mouseHandler.bind(this));
     }
-    update(dt, balls, map){
-        this.balls = balls;
-        this.map = map; 
-        //console.log(this.balls);
-        this._dt = Ticker.shared.deltaMS;
-        this._current += this._dt;
-        TWEEN.update(this._current);
+    update(dt){
+        //console.log(this.balls);\
         this.checkAllGround();
         this.moveBall(dt);
-        this.border();
+        this.border(dt);
     }
     // move balls and stare
     moveBall(dt){
@@ -62,8 +58,8 @@ export class BallController extends Container{
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
                 //console.log(i+" "+this.distance[i]);
-                if(this.distance[i]==i*GameConstants.distanceBetweenBalls) this.balls[i].readyGo=true;
-                else this.distance[i]++;
+                if(this.distance[i]>i*GameConstants.distanceBetweenBalls*dt) this.balls[i].readyGo=true;
+                else this.distance[i] +=dt;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
                     this.balls[i].ball.x +=this.balls[i].dx*dt;
@@ -71,6 +67,7 @@ export class BallController extends Container{
                 } 
             }
             if(this.allGround){
+                // this.speed = GameConstants.ballSpeed;
                 //console.log("All ground "+this.allGround);
                 for(var i = 0; i < this.balls.length; i++){
                     let ball = this.balls[i];
@@ -92,7 +89,7 @@ export class BallController extends Container{
                         this.isCreating = false;
                         
                     })
-                    tween.start(this._current);
+                    tween.start(Game._current);
                 }   
                 if(this.readyAttack){
                     this.map.createNewLine();
@@ -115,19 +112,19 @@ export class BallController extends Container{
             }
         }        
     }
-    border(){
+    border(dt){
         for(var i = 0; i< this.balls.length; i++){            
             //make border
-            if(this.balls[i].ball.x > GameConstants.screenWidth - ballRadius ) {
+            if(this.balls[i].ball.x + this.balls[i].dx*dt> GameConstants.screenWidth - ballRadius ) {
                 this.balls[i].ball.x = GameConstants.screenWidth - ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.x < ballRadius ) {
+            if(this.balls[i].ball.x + this.balls[i].dx*dt < ballRadius ) {
                 this.balls[i].ball.x = ballRadius;
                 this.balls[i].dx = -this.balls[i].dx;
             };
-            if(this.balls[i].ball.y > GameConstants.defaultY - ballRadius) {
-                this.balls[i].ball.y = GameConstants.defaultY - ballRadius;
+            if(this.balls[i].ball.y + this.balls[i].dy*dt > GameConstants.defaultBottomBall) {
+                this.balls[i].ball.y = GameConstants.defaultBottomBall;
                 this.balls[i].dx = 0;
                 this.balls[i].dy = 0; 
                 //console.log(" Ground position x " + this.balls[i].ball.x);    
@@ -139,15 +136,17 @@ export class BallController extends Container{
                     //console.log("First ball position x " + this.groundPositionX);
                 }       
             }
-            if(this.balls[i].ball.y < ballRadius + GameConstants.defaultTop) {
-                this.balls[i].ball.y = ballRadius + GameConstants.defaultTop;
+            if(this.balls[i].ball.y + this.balls[i].dy*dt < GameConstants.defaultTopBall) {
+                this.balls[i].ball.y = GameConstants.defaultTopBall;
                 this.balls[i].dy = -this.balls[i].dy;
             }            
         }
     }
     // handle mouse 
     mouseHandler(e){
-        if(!this.isCreating && !this.map.isCreating){
+        if(!Game.isWaiting && !this.map.isCreating)
+        // if( !this.map.isCreating)
+        {
             // khi nhan chuot
             if(e.type == "pointerdown"){
                 this.mousePress = true;
@@ -196,11 +195,14 @@ export class BallController extends Container{
                         }
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                         if( y < -GameConstants.echoMinNumerator ) {
+                            if(y < -GameConstants.echoMaxNumerator){
+                                Game.uiManager.igUI.removeChild(Game.uiManager.igUI.guideText);
+                            }
                             this.addChild(this.needle, this.echo);
                             this.ready = true;
                             //console.log("ready");
                         }
-                        else {
+                        if( y > -GameConstants.echoMinNumerator ) {
                             this.removeChild(this.needle, this.echo);
                             this.ready = false;
                             //console.log("not ready");

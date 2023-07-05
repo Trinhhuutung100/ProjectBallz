@@ -1,48 +1,53 @@
-const padding = 5;
 const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
-const screenWidth = (screenHeight - line*padding)/line*column + (column + 1)* padding;
-const squareEdge = (screenWidth - (column+1)*padding)/2/column;
+const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
+const squareEdge = screenWidth/16;
+const padding = squareEdge/4;
 //const edge = screenWidth/2/column;
 const ballRadius = squareEdge/3;
-const defaultY = screenHeight - 2*padding - 4*squareEdge;
-const defaultTop = 2*padding + 4*squareEdge ;
+const defaultBottom = screenHeight/2 + 5*padding + 8*squareEdge;
+const defaultTop = screenHeight/2 - 5*padding - 10*squareEdge ;
+const defaultBottomBall = defaultBottom - ballRadius;
+const defaultTopBall = defaultTop + ballRadius;
+const defaultTopMap = defaultTop + squareEdge;
 export const GameConstants = {
     //Screen
     screenWidth : screenWidth,
     screenHeight : screenHeight,
     //Default position x = screen/2,y = screen - ballradius
-    defaultX : screenWidth/2,
-    defaultY : defaultY,
+    defaultBallX : screenWidth/2,
+    defaultBottom : defaultBottom,
     defaultTop : defaultTop,
+    defaultBottomBall : defaultBottomBall,
+    defaultTopBall : defaultTopBall,
+    defaultTopMap : defaultTopMap,
     column : column, 
     line : line,   
     //Padding between square
     padding : padding,
-    //Hafl edge of a block
-    //edge : edge,
-    //Square edge = edge - padding
     squareEdge : squareEdge,
     //Anchor
     needleAnchor : {x: 0.5, y: 1.5},
     echoAnchor : {x: 0.5, y: 1.2},
     //Scale
-    minRingScale : 0.011,
-    maxRingScale : 0.0135,
-    needleScale : {x: 0.5, y: 0.5},
-    echoDenominator : 150,
-    echoMaxNumerator : 120,
-    echoMinNumerator : 20,
+    needleWidth : squareEdge/2.5,
+    needleHeight : squareEdge*1.5,
+    echoDenominator : 5*squareEdge,
+    echoMaxNumerator : 2.5*squareEdge,
+    echoMinNumerator : 0.1*squareEdge,
     //Text font
-    fontSize : 30,
+    defaultFont : "Futura PT",
+    fontSize : Math.round(squareEdge),
     ballRadius : ballRadius,
-    coinRadius : 15,
+    coinRadius : squareEdge/2,
+    minRing : squareEdge,
+    maxRing : squareEdge*1.5,
     //Ball move
-    ballSpeed : 10,
-    distanceBetweenBalls : 10,
-    fallSpeed : 10,
+    ballSpeed : squareEdge*0.5/2,
+    distanceBetweenBalls : Math.round(squareEdge/2)*1.1,
+    fallSpeed : squareEdge*0.5/2,
     //Tween animation
-    ballTweenTime : 500,
-    ringTweenTime : 5,
+    ballTweenTime : 500/2,
+    ringTweenTime : 10*2,
 }

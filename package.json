@@ -24,9 +24,13 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@pixi/particle-emitter": "^5.0.8",
+    "@pixi/sound": "^5.2.0",
+    "@pixi/ui": "^0.7.3",
     "@tweenjs/tween.js": "^20.0.3",
     "clean-webpack-plugin": "^4.0.0",
     "esbuild-loader": "^2.20.0",
+    "gsap": "^3.12.1",
     "pixi.js": "^7.2.4"
   }
 }

@@ -1,4 +1,4 @@
-import { Container, Sprite, Text, TextStyle, Ticker} from "pixi.js"
+import { Container, Sprite, Text, TextStyle, Texture, Ticker} from "pixi.js"
 import { GameConstants } from "./gameconstants";
 
 const edge = GameConstants.squareEdge;
@@ -18,12 +18,12 @@ export class Square extends Container{
         this.textStyle = new TextStyle({
             fontSize: GameConstants.fontSize,
             fill: "black",
-            fontFamily: "Arial", 
+            fontFamily: GameConstants.defaultFont, 
         })        
         this.setText();     
-    }
+    }    
     decreaseIndex(){
-        if(this.index > 0) this.index--;
+        if(this.index > 0)this.index--;
         this.color = changeColor(this.index);
         this.setText();
     }
