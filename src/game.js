@@ -12,7 +12,7 @@ import { UIManager } from "./UI/uimanager";
 import { GameOverUI } from "./UI/gameoverui";
 import { InGameUI } from "./UI/ingameui";
 import { StartUI } from "./UI/startui";
-import { manifest } from "./manifest";
+import { manifest } from "./loader";
 
 
 export class Game{
@@ -27,7 +27,7 @@ export class Game{
         this.isFirst = true;
         this.best = 0;
         this.coinScore = 0;
-        this.loadGame();
+        //this.loadGame();
         this.uiManager = new UIManager();
         
     } 

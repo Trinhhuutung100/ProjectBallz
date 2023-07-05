@@ -5,7 +5,6 @@ const edge = GameConstants.squareEdge;
 export class Square extends Container{
     constructor(x, y, index){
         super();
-        //
         this.square = Sprite.from("assets/images/square.png");
         this.color = changeColor(index);
         this.square.tint = this.color;
