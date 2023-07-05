@@ -161,7 +161,7 @@ export class CollisionHandler{
         var tmp = new Container();
         tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
         Game.app.stage.addChild(tmp);
-        let texture = Texture.from("assets/images/ball.png"); // các hạt là hình tròn quả bóng
+        let texture = Texture.from("assets/images/square.png"); // các hạt là hình tròn quả bóng
         var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
         emitter.autoUpdate = true;
         emitter.emit = true;// chạy particle
@@ -171,7 +171,7 @@ export class CollisionHandler{
         var tmp = new Container();
         tmp.position.set(ball.ball.x,ball.ball.y); // vị trí của particle ở giữa hình vuông
         Game.app.stage.addChild(tmp);
-        let texture = Texture.from("assets/images/ball.png"); // các hạt là hình tròn quả bóng
+        let texture = Texture.from("assets/images/square.png"); // các hạt là hình tròn quả bóng
         var emitter = new Emitter(tmp, upgradeConfig(settingP,[texture]));
         emitter.autoUpdate = true;
         emitter.emit = true;// chạy particle
