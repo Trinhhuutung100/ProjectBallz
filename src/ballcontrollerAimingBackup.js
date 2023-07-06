@@ -161,9 +161,9 @@ export class BallController extends Container{
             }
             //khi tha chuot
             if(e.type == "pointerup"){
-                if(this.container != null) {
-                    this.container.destroy();
-                }
+                // if(this.container != null) {
+                //     this.container.destroy();
+                // }
                 if(this.ready){                
                     this.balls.forEach(ball => {
                         ball.dx = this.dx; //van toc phuong x cua bong
