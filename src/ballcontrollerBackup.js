@@ -4,10 +4,6 @@ import { GameConstants } from "./gameconstants";
 import { Game } from "./game";
 
 const ballRadius = GameConstants.ballRadius;
-const pi = Math.PI;
-
-const gd = GameConstants.screenWidth;
-const ht = GameConstants.defaultBottom - GameConstants.defaultTop;
 
 export class BallController extends Container{
     constructor(balls, map){
@@ -38,11 +34,10 @@ export class BallController extends Container{
         this.needle.height = GameConstants.needleHeight;
         this.needle.x = GameConstants.defaultBallX;
         this.needle.y = GameConstants.defaultBottomBall;
-        this.echo = Sprite.from("assets/images/square.png");
-        this.echo.anchor.set(GameConstants.echoAnchor.x, 1);
+        this.echo = Sprite.from("assets/images/echo.png");
+        this.echo.anchor.set(GameConstants.echoAnchor.x, GameConstants.echoAnchor.y);
         this.echo.x = GameConstants.defaultBallX;
         this.echo.y = GameConstants.defaultBottomBall;
-        console.log(GameConstants.defaultBottom + " " + GameConstants.defaultTop);
         
     }
     // Add listener
@@ -161,9 +156,6 @@ export class BallController extends Container{
             }
             //khi tha chuot
             if(e.type == "pointerup"){
-                // if(this.container != null) {
-                //     this.container.destroy();
-                // }
                 if(this.ready){                
                     this.balls.forEach(ball => {
                         ball.dx = this.dx; //van toc phuong x cua bong
@@ -182,41 +174,10 @@ export class BallController extends Container{
                         // (x,y) la vector keo chuot, dinh huong cho bong
                         var x = this.oldPosition.x - e.clientX;
                         var y = this.oldPosition.y - e.clientY;
-
-                        var alpha = -Math.atan(x/y);
-                        var newPoint = this.deflect(this.groundPositionX, this.groundPositionY, alpha);
-                        this.needle.rotation = alpha;
-                        this.echo.rotation = alpha;
-                        this.echo.width = GameConstants.squareEdge*0.05;
-                        this.echo.height = newPoint.hypotenuse;
-                        
-                        if(this.container != null) {
-                            this.container.destroy();
-                        }
-                        this.container = new Container();
-                        this.addChild(this.container);
-
-                        this.echo2 = Sprite.from("assets/images/square.png");
-                        this.echo2.anchor.set(GameConstants.echoAnchor.x, 1);
-                        this.echo2.x = newPoint.x1;
-                        this.echo2.y = newPoint.y1;
-                        this.echo2.rotation = newPoint.beta;
-                        this.echo2.width = GameConstants.squareEdge*0.05;
-                        var newPoint2 = this.deflect(newPoint.x1, newPoint.y1, newPoint.beta);
-                        this.echo2.height = newPoint2.hypotenuse;
-                        // console.log(this.echo2);
-                        this.container.addChild(this.echo2);
-
-                        this.echo3 = Sprite.from("assets/images/square.png");
-                        this.echo3.anchor.set(GameConstants.echoAnchor.x, 1);
-                        this.echo3.x = newPoint2.x1;
-                        this.echo3.y = newPoint2.y1;
-                        this.echo3.rotation = newPoint2.beta;
-                        this.echo3.width = GameConstants.squareEdge*0.05;
-                        var newPoint3 = this.deflect(newPoint2.x1, newPoint2.y1, newPoint2.beta);
-                        this.echo3.height = newPoint3.hypotenuse;
-                        // console.log(this.echo2);
-                        this.container.addChild(this.echo3);
+                        this.needle.rotation = -Math.atan(x/y);
+                        this.echo.rotation = -Math.atan(x/y);
+                        if(Math.abs(y) < GameConstants.echoMaxNumerator && Math.abs(y) > GameConstants.echoMinNumerator)
+                        this.echo.scale.set(Math.abs(y)/GameConstants.echoDenominator, Math.abs(y)/GameConstants.echoDenominator);
     
                         // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
                         if(x!=0&&y!=0){                        
@@ -250,71 +211,5 @@ export class BallController extends Container{
                 }                 
             }
         }
-    }
-    deflect(x, y, alpha){      
-        var beta = -alpha;
-        var absAlpha = Math.abs(alpha);
-        var h = y - GameConstants.defaultTop - ballRadius;
-        var hypotenuse = 0;
-        var lg = x - ballRadius;
-        var rg = gd - x - ballRadius;
-        var lAlpha = Math.atan(lg/h);
-        var rAlpha = Math.atan(rg/h);
-        var x1 = 0;
-        var y1 = 0; 
-        if(alpha < 0) {
-            if(absAlpha > lAlpha) {
-                hypotenuse = lg/Math.sin(absAlpha);
-                x1 = GameConstants.ballRadius;
-                y1 = GameConstants.defaultBottomBall - hypotenuse*Math.cos(absAlpha);
-
-            }
-            else {
-                hypotenuse = h/Math.cos(absAlpha); 
-                if(alpha < -0.5*pi) {            
-                    hypotenuse = h/Math.cos(pi - absAlpha); 
-                }
-                x1 = lg - hypotenuse*Math.sin(absAlpha) + ballRadius;
-                y1 = GameConstants.defaultTopBall;
-                beta = - pi + absAlpha;
-            }                           
-        }
-        if(alpha > 0) {
-            hypotenuse = rg/Math.sin(absAlpha);
-            if(absAlpha > rAlpha) {
-                hypotenuse = rg/Math.sin(absAlpha);
-                x1 = gd - GameConstants.ballRadius;
-                y1 = GameConstants.defaultBottomBall - hypotenuse*Math.cos(absAlpha);
-            }
-            else {
-                hypotenuse = h/Math.cos(absAlpha);  
-                //console.log(hypotenuse);
-                x1 = lg + hypotenuse*Math.sin(absAlpha) + ballRadius;
-                y1 = GameConstants.defaultTopBall;
-                beta = pi - absAlpha;
-            }
-        }  
-        if(alpha == 0) {
-            hypotenuse = h;
-            //console.log(hypotenuse);
-            x1 = lg;
-            y1 = GameConstants.defaultTopBall;
-        }  
-        if(alpha/pi > 0.5) {   
-            console.log(alpha/pi);           
-            hypotenuse = (ht - 2*ballRadius)/Math.cos(pi - absAlpha); 
-        } 
-        if(alpha/pi < -0.5) {   
-            console.log(alpha/pi);           
-            hypotenuse = (ht - 2*ballRadius)/Math.cos(pi - absAlpha); 
-        } 
-        //console.log(x1 + " " + y1 + " " + beta/pi);
-        if(this.test){
-            this.test = false;
-
-        }
-        return {hypotenuse, x1, y1, beta};
-        
-                        
     }
 }
