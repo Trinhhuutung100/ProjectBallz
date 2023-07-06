@@ -28,6 +28,7 @@ export class Game{
         this.coinScore = 0;
         //this.loadGame();
         this.uiManager = new UIManager();
+        console.log("Start");
         
     } 
     // static async loadGame(){

@@ -16,5 +16,8 @@ export class Ball extends Container{
         this.isBall = true;
         this.addChild(this.ball);
     }
+    changeColor(color){
+        this.ball.tint = color;
+    }
 
 }
