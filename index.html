@@ -4925,6 +4925,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const ballRadius = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballRadius;
+const pi = Math.PI;
+const gd = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth;
+const ht = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop;
 class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   constructor(balls, map) {
     super();
@@ -4953,10 +4956,11 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.needle.height = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleHeight;
     this.needle.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
     this.needle.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
-    this.echo = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/echo.png");
-    this.echo.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.y);
+    this.echo = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/square.png");
+    this.echo.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, 1);
     this.echo.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
     this.echo.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
+    console.log(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottom + " " + _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop);
   }
   // Add listener
   init() {
@@ -5073,10 +5077,35 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           if (this.mousePress) {
             var x = this.oldPosition.x - e.clientX;
             var y = this.oldPosition.y - e.clientY;
-            this.needle.rotation = -Math.atan(x / y);
-            this.echo.rotation = -Math.atan(x / y);
-            if (Math.abs(y) < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMaxNumerator && Math.abs(y) > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator)
-              this.echo.scale.set(Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator, Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator);
+            var alpha = -Math.atan(x / y);
+            var newPoint = this.deflect(this.groundPositionX, this.groundPositionY, alpha);
+            this.needle.rotation = alpha;
+            this.echo.rotation = alpha;
+            this.echo.width = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.squareEdge * 0.05;
+            this.echo.height = newPoint.hypotenuse;
+            if (this.container != null) {
+              this.container.destroy();
+            }
+            this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+            this.addChild(this.container);
+            this.echo2 = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/square.png");
+            this.echo2.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, 1);
+            this.echo2.x = newPoint.x1;
+            this.echo2.y = newPoint.y1;
+            this.echo2.rotation = newPoint.beta;
+            this.echo2.width = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.squareEdge * 0.05;
+            var newPoint2 = this.deflect(newPoint.x1, newPoint.y1, newPoint.beta);
+            this.echo2.height = newPoint2.hypotenuse;
+            this.container.addChild(this.echo2);
+            this.echo3 = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/square.png");
+            this.echo3.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, 1);
+            this.echo3.x = newPoint2.x1;
+            this.echo3.y = newPoint2.y1;
+            this.echo3.rotation = newPoint2.beta;
+            this.echo3.width = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.squareEdge * 0.05;
+            var newPoint3 = this.deflect(newPoint2.x1, newPoint2.y1, newPoint2.beta);
+            this.echo3.height = newPoint3.hypotenuse;
+            this.container.addChild(this.echo3);
             if (x != 0 && y != 0) {
               this.dx = this.speed * x / Math.sqrt(x * x + y * y);
               this.dy = this.speed * y / Math.sqrt(x * x + y * y);
@@ -5104,6 +5133,63 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         }
       }
     }
+  }
+  deflect(x, y, alpha) {
+    var beta = -alpha;
+    var absAlpha = Math.abs(alpha);
+    var h = y - _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop - ballRadius;
+    var hypotenuse = 0;
+    var lg = x - ballRadius;
+    var rg = gd - x - ballRadius;
+    var lAlpha = Math.atan(lg / h);
+    var rAlpha = Math.atan(rg / h);
+    var x1 = 0;
+    var y1 = 0;
+    if (alpha < 0) {
+      if (absAlpha > lAlpha) {
+        hypotenuse = lg / Math.sin(absAlpha);
+        x1 = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballRadius;
+        y1 = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall - hypotenuse * Math.cos(absAlpha);
+      } else {
+        hypotenuse = h / Math.cos(absAlpha);
+        if (alpha < -0.5 * pi) {
+          hypotenuse = h / Math.cos(pi - absAlpha);
+        }
+        x1 = lg - hypotenuse * Math.sin(absAlpha) + ballRadius;
+        y1 = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
+        beta = -pi + absAlpha;
+      }
+    }
+    if (alpha > 0) {
+      hypotenuse = rg / Math.sin(absAlpha);
+      if (absAlpha > rAlpha) {
+        hypotenuse = rg / Math.sin(absAlpha);
+        x1 = gd - _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballRadius;
+        y1 = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall - hypotenuse * Math.cos(absAlpha);
+      } else {
+        hypotenuse = h / Math.cos(absAlpha);
+        x1 = lg + hypotenuse * Math.sin(absAlpha) + ballRadius;
+        y1 = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
+        beta = pi - absAlpha;
+      }
+    }
+    if (alpha == 0) {
+      hypotenuse = h;
+      x1 = lg;
+      y1 = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
+    }
+    if (alpha / pi > 0.5) {
+      console.log(alpha / pi);
+      hypotenuse = (ht - 2 * ballRadius) / Math.cos(pi - absAlpha);
+    }
+    if (alpha / pi < -0.5) {
+      console.log(alpha / pi);
+      hypotenuse = (ht - 2 * ballRadius) / Math.cos(pi - absAlpha);
+    }
+    if (this.test) {
+      this.test = false;
+    }
+    return { hypotenuse, x1, y1, beta };
   }
 }
 
@@ -5552,7 +5638,7 @@ const GameConstants = {
   minRing: squareEdge,
   maxRing: squareEdge * 1.5,
   //Ball move
-  ballSpeed: squareEdge * 0.5 / 2,
+  ballSpeed: squareEdge * 0.5 / 5,
   distanceBetweenBalls: Math.round(squareEdge / 2) * 1.1,
   fallSpeed: squareEdge * 0.5 / 2,
   //Tween animation
