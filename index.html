@@ -4897,6 +4897,9 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.isBall = true;
     this.addChild(this.ball);
   }
+  changeColor(color) {
+    this.ball.tint = color;
+  }
 }
 
 
@@ -5204,6 +5207,7 @@ class CollisionHandler {
           var rightBottom = { x: square.right, y: square.bottom };
           var rightTop = { x: square.right, y: square.top };
           var bp = { x: bx, y: by };
+          var color = Math.abs(16777215 - this.squares[s].color + 4096 * b);
           if (this.squares[s].index == 0) {
             this.emitSquareParticale(this.squares[s]);
             this.squares[s].destroy();
@@ -5211,6 +5215,7 @@ class CollisionHandler {
           }
           if (this.vectorDistance(bp, leftBottom) < ballRadius) {
             this.ballSound.play();
+            this.balls[b].changeColor(color);
             if (bc.dx > 0)
               bc.dx = -bc.dx;
             if (bc.dy < 0)
@@ -5220,6 +5225,7 @@ class CollisionHandler {
           }
           if (this.vectorDistance(bp, leftTop) < ballRadius) {
             this.ballSound.play();
+            this.balls[b].changeColor(color);
             if (bc.dx > 0)
               bc.dx = -bc.dx;
             if (bc.dy > 0)
@@ -5229,6 +5235,7 @@ class CollisionHandler {
           }
           if (this.vectorDistance(bp, rightBottom) < ballRadius) {
             this.ballSound.play();
+            this.balls[b].changeColor(color);
             if (bc.dx < 0)
               bc.dx = -bc.dx;
             if (bc.dy < 0)
@@ -5238,6 +5245,7 @@ class CollisionHandler {
           }
           if (this.vectorDistance(bp, rightTop) < ballRadius) {
             this.ballSound.play();
+            this.balls[b].changeColor(color);
             if (bc.dx < 0)
               bc.dx = -bc.dx;
             if (bc.dy > 0)
@@ -5248,12 +5256,14 @@ class CollisionHandler {
           if (dx > dy) {
             if (dx < ballRadius + edge && dy < edge) {
               this.ballSound.play();
+              this.balls[b].changeColor(color);
               bc.dx = -bc.dx;
               this.squares[s].decreaseIndex();
             }
           } else {
             if (dy < ballRadius + edge && dx < edge) {
               this.ballSound.play();
+              this.balls[b].changeColor(color);
               bc.dy = -bc.dy;
               this.squares[s].decreaseIndex();
             }
@@ -5383,6 +5393,7 @@ class Game {
     this.best = 0;
     this.coinScore = 0;
     this.uiManager = new _UI_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
+    console.log("Start");
   }
   // static async loadGame(){
   //     await Assets.init({manifest: manifest});
@@ -5875,11 +5886,9 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
 }
 function changeColor(score) {
-  var baseColor = "f29305";
-  var tmp = parseInt(baseColor, 16);
-  tmp += (score - 1) * 2048;
-  var res = tmp.toString(16);
-  return res;
+  var baseColor = 15897349;
+  baseColor += score * 2048;
+  return baseColor;
 }
 
 
