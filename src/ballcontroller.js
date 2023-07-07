@@ -254,7 +254,8 @@ export class BallController extends Container{
         var x1 = 0;
         var y1 = 0; 
         var alpha1 = 0; 
-
+        
+        //Bounds
         var lb = ballRadius;
         var rb = GameConstants.screenWidth - ballRadius;
         var tb = GameConstants.defaultTopBall;
