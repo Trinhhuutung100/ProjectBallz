@@ -5176,6 +5176,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     }
     var pre = { hypo, x: x1, y: y1, alpha: alpha1 };
     this.predict.push(pre);
+    if (this.predict.length == 6)
+      return;
     if (y1 == bb) {
       return;
     }
