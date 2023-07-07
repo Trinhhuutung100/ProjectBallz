@@ -296,7 +296,8 @@ export class BallController extends Container{
             alpha1 = alpha0 < 0 ? Math.abs(alpha0) - pi : pi - alpha0;
         }
         var pre = {hypo : hypo, x: x1, y : y1, alpha : alpha1}
-        this.predict.push(pre);     
+        this.predict.push(pre);  
+        if(this.predict.length == 6) return;   
         if(y1 == bb) {
             //console.log("cham day " + this.predict.length);
             return
