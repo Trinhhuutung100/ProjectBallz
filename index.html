@@ -4925,6 +4925,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const ballRadius = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballRadius;
+const pi = Math.PI;
+const gd = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth;
+const ht = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTop;
 class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   constructor(balls, map) {
     super();
@@ -4953,10 +4956,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.needle.height = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleHeight;
     this.needle.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
     this.needle.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
-    this.echo = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/echo.png");
-    this.echo.anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.y);
-    this.echo.x = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBallX;
-    this.echo.y = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
+    this.predict = [];
+    this.beams = [];
+    this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+    this.addChild(this.container);
   }
   // Add listener
   init() {
@@ -5003,8 +5006,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         }
         this.needle.x = this.groundPositionX;
         this.needle.y = this.groundPositionY;
-        this.echo.x = this.groundPositionX;
-        this.echo.y = this.groundPositionY;
         this.readyAttack = false;
       }
     }
@@ -5057,6 +5058,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         this.oldPosition.y = e.clientY;
       }
       if (e.type == "pointerup") {
+        this.removeChild(this.container);
+        delete this.container;
+        delete this.predict;
+        delete this.beams;
         if (this.ready) {
           this.balls.forEach((ball) => {
             ball.dx = this.dx;
@@ -5073,10 +5078,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           if (this.mousePress) {
             var x = this.oldPosition.x - e.clientX;
             var y = this.oldPosition.y - e.clientY;
-            this.needle.rotation = -Math.atan(x / y);
-            this.echo.rotation = -Math.atan(x / y);
-            if (Math.abs(y) < _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMaxNumerator && Math.abs(y) > _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator)
-              this.echo.scale.set(Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator, Math.abs(y) / _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoDenominator);
+            var alpha = -Math.atan(x / y);
+            this.needle.rotation = alpha;
             if (x != 0 && y != 0) {
               this.dx = this.speed * x / Math.sqrt(x * x + y * y);
               this.dy = this.speed * y / Math.sqrt(x * x + y * y);
@@ -5093,17 +5096,90 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
               if (y < -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMaxNumerator) {
                 _game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.removeChild(_game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.guideText);
               }
-              this.addChild(this.needle, this.echo);
+              this.removeChild(this.container);
+              delete this.container;
+              delete this.predict;
+              delete this.beams;
+              this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+              this.addChild(this.container);
+              this.predict = [];
+              this.beams = [];
+              var pre = { hypo: 0, x: this.groundPositionX, y: this.groundPositionY, alpha };
+              this.predict.push(pre);
+              this.deflect(this.groundPositionX, this.groundPositionY, alpha);
+              for (var i = 0; i < this.predict.length - 1; i++) {
+                this.beams[i] = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/square.png");
+                this.beams[i].anchor.set(_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoAnchor.x, 1);
+                this.beams[i].x = this.predict[i].x;
+                this.beams[i].y = this.predict[i].y;
+                this.beams[i].rotation = this.predict[i].alpha;
+                this.beams[i].width = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.squareEdge * 0.05;
+                this.beams[i].height = this.predict[i + 1].hypo;
+                this.container.addChild(this.beams[i]);
+              }
+              this.addChild(this.needle);
               this.ready = true;
             }
             if (y > -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator) {
-              this.removeChild(this.needle, this.echo);
+              this.removeChild(this.container);
+              delete this.container;
+              delete this.predict;
+              delete this.beams;
+              this.removeChild(this.needle);
               this.ready = false;
             }
           }
         }
       }
     }
+  }
+  deflect(x0, y0, alpha0) {
+    var hypo = 0;
+    var x1 = 0;
+    var y1 = 0;
+    var alpha1 = 0;
+    var lb = ballRadius;
+    var rb = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius;
+    var tb = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
+    var bb = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
+    var l = x0 - lb;
+    var r = rb - x0;
+    var t = y0 - tb;
+    var b = bb - y0;
+    var b1 = -Math.atan(l / t);
+    var b2 = -pi + Math.atan(l / b);
+    var g1 = Math.atan(r / t);
+    var g2 = pi - Math.atan(r / b);
+    if (b1 < alpha0 && alpha0 < g1) {
+      hypo = t / Math.cos(alpha0);
+      x1 = x0 + hypo * Math.sin(alpha0);
+      y1 = tb;
+      alpha1 = alpha0 < 0 ? -pi - alpha0 : pi - alpha0;
+    }
+    if (b1 > alpha0 && alpha0 > b2) {
+      hypo = l / Math.abs(Math.sin(alpha0));
+      x1 = lb;
+      y1 = y0 - hypo * Math.cos(alpha0);
+      alpha1 = Math.abs(alpha0);
+    }
+    if (g1 < alpha0 && alpha0 < g2) {
+      hypo = r / Math.abs(Math.sin(alpha0));
+      x1 = rb;
+      y1 = y0 - hypo * Math.cos(alpha0);
+      alpha1 = -Math.abs(alpha0);
+    }
+    if (alpha0 < b2 || alpha0 > g2) {
+      hypo = b / Math.cos(pi - Math.abs(alpha0));
+      x1 = x0 + hypo * Math.sin(alpha0);
+      y1 = bb;
+      alpha1 = alpha0 < 0 ? Math.abs(alpha0) - pi : pi - alpha0;
+    }
+    var pre = { hypo, x: x1, y: y1, alpha: alpha1 };
+    this.predict.push(pre);
+    if (y1 == bb) {
+      return;
+    }
+    this.deflect(x1, y1, alpha1);
   }
 }
 
@@ -5510,7 +5586,7 @@ __webpack_require__.r(__webpack_exports__);
 const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
-const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line * column;
+const screenWidth = innerHeight / line * column;
 const squareEdge = screenWidth / 16;
 const padding = squareEdge / 4;
 const ballRadius = squareEdge / 3;
