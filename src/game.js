@@ -93,7 +93,7 @@ export class Game{
 
         //Back yard
         this.backYard = Sprite.from("assets/images/square.png");
-        this.backYard.tint = 0x000000;
+        this.backYard.tint = 0x333333;
         this.backYard.width = GameConstants.screenWidth;
         this.backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
         this.backYard.x = 0.5;

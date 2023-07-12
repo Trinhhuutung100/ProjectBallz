@@ -40,6 +40,9 @@ export class BallController extends Container{
         this.needle.y = GameConstants.defaultBottomBall;
         this.predict = [];
         this.beams = [];
+        this.cutLines = [];
+        this.verLines =[];
+        this.horLines = [];
         this.container = new Container();
         this.addChild(this.container);
         
@@ -163,6 +166,9 @@ export class BallController extends Container{
                 delete this.container;
                 delete this.predict;
                 delete this.beams;
+                delete this.verLines;
+                delete this.horLines;
+                delete this.cutLines;
 
                 if(this.ready){                
                     this.balls.forEach(ball => {
@@ -211,18 +217,25 @@ export class BallController extends Container{
                             delete this.container;
                             delete this.predict;
                             delete this.beams;
+                            delete this.verLines;
+                            delete this.horLines;
+                            delete this.cutLines;
     
                             this.container = new Container();
                             this.addChild(this.container);
                             this.predict = [];
                             this.beams = [];
+                            this.verLines =[];
+                            this.horLines = [];
+                            this.cutLines = [];
     
-                            var pre = {hypo : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha};
+                            var pre = {hypo : 0, x0 : 0, y0 : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha,};
                             this.predict.push(pre);
-                            this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
+                            // this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
+                            this.deflectB(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
                             for( var i = 0; i < this.predict.length -1; i++){
                                 this.beams[i] = Sprite.from("assets/images/square.png");
-                                this.beams[i].anchor.set(GameConstants.echoAnchor.x, 1);
+                                this.beams[i].anchor.set(0.5, 1);
                                 this.beams[i].x = this.predict[i].x;
                                 this.beams[i].y = this.predict[i].y;
                                 this.beams[i].rotation = this.predict[i].alpha
@@ -230,11 +243,12 @@ export class BallController extends Container{
                                 this.beams[i].height = this.predict[i+1].hypo;
                                 this.container.addChild( this.beams[i]);
                             }
+                            console.log(this.predict);
                             this.addChild(this.needle);
                             this.ready = true;
                             //console.log("ready");
                         }
-                        if( y > -GameConstants.echoMinNumerator ) {
+                        if( y > 0 ) {
                             this.removeChild(this.container);
                             delete this.container;
                             delete this.predict;
@@ -303,5 +317,149 @@ export class BallController extends Container{
             return
         }
         this.deflect(x1, y1, alpha1);
+    }
+    deflectB(x0, y0, alpha0, squares){ 
+         //Bounds
+        var lb = ballRadius;
+        var rb = GameConstants.screenWidth - ballRadius;
+        var tb = GameConstants.defaultTopBall;
+        var bb = GameConstants.defaultBottomBall;
+
+        // Wall bound
+        {
+            var leftLine = {x1: lb, y1: tb, 
+                            x2: lb, y2: bb, 
+                            x: lb, y: 0, 
+                            len : 0, i: -1, direct : 1};
+            if(!(x0 == leftLine.x && leftLine.y1 < y0 && y0 < leftLine.y2 ))  this.verLines.push(leftLine);
+    
+            var rightLine = {x1: rb, y1: tb, 
+                            x2: rb, y2: bb, 
+                            x: rb, y: 0, 
+                            len : 0, i: -1, direct : 1};
+            if(!(x0 == rightLine.x && rightLine.y1 < y0 && y0 < rightLine.y2 ))  this.verLines.push(rightLine);
+    
+            var topLine   = {x1: lb, y1: tb, 
+                            x2: rb, y2: tb, 
+                            x: 0, y: tb, 
+                            len : 0, i: -1, direct : 0};
+            if(!(y0 == topLine.y && topLine.x1 < x0 && x0 < topLine.x2 )) this.horLines.push(topLine);
+    
+            var bottomLine ={x1: lb, y1: bb, 
+                            x2: rb, y2: bb, 
+                            x: 0, y: bb, 
+                            len : 0, i: -1, direct : 0};
+            if(!(y0 == bottomLine.y && bottomLine.x1 < x0 && x0 < bottomLine.x2 )) this.horLines.push(bottomLine);
+        }
+
+        //Square bound
+        {
+            for(var i = 0; i < squares.length; i++){
+                var bound = squares[i].square.getBounds();
+                var bdl = bound.left;
+                var bdr = bound.right;
+                var bdt = bound.top;
+                var bdb = bound.bottom
+                
+                //left vertical bound
+                var lVerLine = {x1: bdl, y1: bdt, 
+                                x2: bdl, y2: bdb, 
+                                x: bdl, y: 0, 
+                                len : 0, i: i, direct : 1};
+                this.verLines.push(lVerLine);
+
+                //right vertical bound
+                var rVerLine = {x1: bdr, y1: bdt, 
+                                x2: bdr, y2: bdb, 
+                                x: bdr, y: 0, 
+                                len : 0, i: i, direct : 1};
+                this.verLines.push(rVerLine);
+
+                //top horizontal bound
+                var tHorLine = {x1: bdl, y1: bdt, 
+                                x2: bdr, y2: bdt, 
+                                x: 0, y: bdt, 
+                                len : 0, i: i, direct : 0};              
+                this.horLines.push(tHorLine);
+                
+                //bottom horizoltal bound
+                var bHorLine = {x1: bdl, y1: bdb, 
+                                x2: bdr, y2: bdb, 
+                                x: 0, y: bdb, 
+                                len : 0, i: i, direct : 0};
+                this.horLines.push(bHorLine);
+            }
+        }
+        
+        // vertical line array to cut array
+        this.verLines.forEach( verLine => {
+            verLine.y = (verLine.x - x0)/Math.tan(-alpha0) + y0;
+            if(verLine.y1 < verLine.y && verLine.y < verLine.y2){
+                verLine.len = this.vectorDistance({x: verLine.x, y: verLine.y}, {x: x0, y: y0});
+                if( verLine.len != 0) this.cutLines.push(verLine);
+                // console.log("ver" + verLine.i);
+            }
+        })
+
+        //horizontal line array to cut array
+        this.horLines.forEach( horLine => {
+            horLine.x = (horLine.y - y0)*Math.tan(-alpha0) + x0;
+            if(horLine.x1 < horLine.x && horLine.x < horLine.x2){
+                horLine.len = this.vectorDistance({x: horLine.x, y: horLine.y}, {x: x0, y: y0});
+                if( horLine.len != 0) this.cutLines.push(horLine);
+                // console.log("hor" + horLine.i);
+            }
+
+        })
+        
+        // find cut point that has min distance to {x0, y0}
+        var cutPoint = {x: 0, y: 0, len : GameConstants.screenHeight*10, i: 0, direct : 0}
+        for(var i = 0; i < this.cutLines.length; i++){
+            var cutLine = this.cutLines[i];
+            if(cutLine.x == x0 && cutLine.y == y0) continue;
+            if(cutPoint.len > cutLine.len) {
+                cutPoint.x = cutLine.x;
+                cutPoint.y = cutLine.y;
+                cutPoint.len = cutLine.len;
+                cutPoint.i = cutLine.i;
+                cutPoint.direct = cutLine.direct;
+            }
+        }
+
+        // console.log(cutPoint);
+        
+        // push into predict array 
+        {
+            var hypo = cutPoint.len;
+            var x1 = cutPoint.x;
+            var y1 = cutPoint.y; 
+            var alpha1 = 0;     
+            
+            if(cutPoint.direct == 1){
+                alpha1 = -alpha0;
+            }
+            if(cutPoint.direct == 0){
+                if(alpha0 > 0) {
+                    alpha1 = pi - alpha0;
+                }
+                else {
+                    alpha1 = -pi - alpha0;
+                }
+            }
+            var pre = {hypo : hypo, x0 : x0, y0 : y0, x: x1, y : y1, alpha : alpha1,}
+            this.predict.push(pre);
+        }  
+
+        //Dequeue
+        {
+            if(this.predict.length == 11) return;   
+            if(y1 == GameConstants.defaultBottomBall) {
+                return
+            }
+            this.deflectB(x1, y1, alpha1, squares); 
+        }
+    }
+    vectorDistance(objA, objB){
+        return Math.sqrt((objA.x- objB.x)*(objA.x- objB.x)+(objA.y- objB.y)*(objA.y- objB.y));
     }
 }
