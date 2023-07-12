@@ -229,7 +229,7 @@ export class BallController extends Container{
                             this.horLines = [];
                             this.cutLines = [];
     
-                            var pre = {hypo : 0, x0 : 0, y0 : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha,};
+                            var pre = {x0 : 0, y0 : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha,hypo : 0, };
                             this.predict.push(pre);
                             // this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
                             this.deflectB(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
@@ -238,7 +238,7 @@ export class BallController extends Container{
                                 this.beams[i].anchor.set(0.5, 1);
                                 this.beams[i].x = this.predict[i].x;
                                 this.beams[i].y = this.predict[i].y;
-                                this.beams[i].rotation = this.predict[i].alpha
+                                this.beams[i].rotation = this.predict[i].alpha;
                                 this.beams[i].width = GameConstants.squareEdge*0.05;
                                 this.beams[i].height = this.predict[i+1].hypo;
                                 this.container.addChild( this.beams[i]);
@@ -446,16 +446,15 @@ export class BallController extends Container{
                     alpha1 = -pi - alpha0;
                 }
             }
-            var pre = {hypo : hypo, x0 : x0, y0 : y0, x: x1, y : y1, alpha : alpha1,}
+            var pre = {x0 : x0, y0 : y0, x: x1, y : y1, alpha : alpha1,hypo : hypo, }
             this.predict.push(pre);
         }  
 
         //recursive
         {
+            // if(cutPoint.i != -1) return;
             if(this.predict.length == 11) return;   
-            if(y1 == GameConstants.defaultBottomBall) {
-                return
-            }
+            if(y1 == GameConstants.defaultBottomBall) return
             this.deflectB(x1, y1, alpha1, squares); 
         }
     }
