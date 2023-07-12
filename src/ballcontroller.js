@@ -427,7 +427,7 @@ export class BallController extends Container{
         }
 
         // console.log(cutPoint);
-        
+
         // push into predict array 
         {
             var hypo = cutPoint.len;
@@ -450,7 +450,7 @@ export class BallController extends Container{
             this.predict.push(pre);
         }  
 
-        //Dequeue
+        //recursive
         {
             if(this.predict.length == 11) return;   
             if(y1 == GameConstants.defaultBottomBall) {
