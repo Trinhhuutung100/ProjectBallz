@@ -232,7 +232,7 @@ export class BallController extends Container{
                             var pre = {x0 : 0, y0 : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha,hypo : 0, };
                             this.predict.push(pre);
                             // this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
-                            this.deflectB(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
+                            this.deflectC(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
                             for( var i = 0; i < this.predict.length -1; i++){
                                 this.beams[i] = Sprite.from("assets/images/square.png");
                                 this.beams[i].anchor.set(0.5, 1);
@@ -452,10 +452,147 @@ export class BallController extends Container{
 
         //recursive
         {
-            // if(cutPoint.i != -1) return;
+            if(cutPoint.i != -1) return;
             if(this.predict.length == 11) return;   
             if(y1 == GameConstants.defaultBottomBall) return
             this.deflectB(x1, y1, alpha1, squares); 
+        }
+    }
+    deflectC(x0, y0, alpha0, squares){ 
+         //Bounds
+        var lb = ballRadius;
+        var rb = GameConstants.screenWidth - ballRadius;
+        var tb = GameConstants.defaultTopBall;
+        var bb = GameConstants.defaultBottomBall;
+
+        // Wall bound
+        {
+            var leftLine = {x1: lb, y1: tb, 
+                            x2: lb, y2: bb, 
+                            x: lb, y: 0, 
+                            len : 0, i: -1, direct : 1};
+            this.verLines.push(leftLine);
+    
+            var rightLine = {x1: rb, y1: tb, 
+                            x2: rb, y2: bb, 
+                            x: rb, y: 0, 
+                            len : 0, i: -1, direct : 1};
+            this.verLines.push(rightLine);
+    
+            var topLine   = {x1: lb, y1: tb, 
+                            x2: rb, y2: tb, 
+                            x: 0, y: tb, 
+                            len : 0, i: -1, direct : 0};
+            this.horLines.push(topLine);
+    
+            var bottomLine ={x1: lb, y1: bb, 
+                            x2: rb, y2: bb, 
+                            x: 0, y: bb, 
+                            len : 0, i: -1, direct : 0};
+            this.horLines.push(bottomLine);
+        }
+
+        //Square bound
+        {
+            for(var i = 0; i < squares.length; i++){
+                var bound = squares[i].square.getBounds();
+                var bdl = bound.left;
+                var bdr = bound.right;
+                var bdt = bound.top;
+                var bdb = bound.bottom
+                
+                //left vertical bound
+                var lVerLine = {x1: bdl, y1: bdt, 
+                                x2: bdl, y2: bdb, 
+                                x: bdl, y: 0, 
+                                len : 0, i: i, direct : 1};
+                this.verLines.push(lVerLine);
+
+                //right vertical bound
+                var rVerLine = {x1: bdr, y1: bdt, 
+                                x2: bdr, y2: bdb, 
+                                x: bdr, y: 0, 
+                                len : 0, i: i, direct : 1};
+                this.verLines.push(rVerLine);
+
+                //top horizontal bound
+                var tHorLine = {x1: bdl, y1: bdt, 
+                                x2: bdr, y2: bdt, 
+                                x: 0, y: bdt, 
+                                len : 0, i: i, direct : 0};              
+                this.horLines.push(tHorLine);
+                
+                //bottom horizoltal bound
+                var bHorLine = {x1: bdl, y1: bdb, 
+                                x2: bdr, y2: bdb, 
+                                x: 0, y: bdb, 
+                                len : 0, i: i, direct : 0};
+                this.horLines.push(bHorLine);
+            }
+        }
+        
+        // vertical line array to cut array
+        this.verLines.forEach( verLine => {
+            verLine.y = (verLine.x - x0)/Math.tan(-alpha0) + y0;
+            if(verLine.y1 <= verLine.y && verLine.y <= verLine.y2){
+                verLine.len = this.vectorDistance({x: verLine.x, y: verLine.y}, {x: x0, y: y0});
+                if( verLine.len != 0) this.cutLines.push(verLine);
+            }
+        })
+
+        //horizontal line array to cut array
+        this.horLines.forEach( horLine => {
+            horLine.x = (horLine.y - y0)*Math.tan(-alpha0) + x0;
+            if(horLine.x1 <= horLine.x && horLine.x <= horLine.x2){
+                horLine.len = this.vectorDistance({x: horLine.x, y: horLine.y}, {x: x0, y: y0});
+                if( horLine.len != 0) this.cutLines.push(horLine);
+            }
+
+        })
+        
+        // find cut point that has min distance to {x0, y0}
+        var index = -1;
+        var len = GameConstants.screenHeight*10;
+        for(var i = 0; i < this.cutLines.length; i++){
+            var cutLine = this.cutLines[i];
+            if(cutLine.x == x0 && cutLine.y == y0) continue;
+            if(len >= cutLine.len) {
+                len = cutLine.len;
+                index = i;
+            }
+        }
+
+        // console.log(cutPoint);
+
+        // push into predict array 
+        {
+            var cutPoint = this.cutLines[index];
+            var hypo = cutPoint.len;
+            var x1 = cutPoint.x;
+            var y1 = cutPoint.y; 
+            var alpha1 = 0;     
+            
+            if(cutPoint.direct == 1){
+                alpha1 = -alpha0;
+            }
+            if(cutPoint.direct == 0){
+                if(alpha0 > 0) {
+                    alpha1 = pi - alpha0;
+                }
+                else {
+                    alpha1 = -pi - alpha0;
+                }
+            }
+            var pre = {x0 : x0, y0 : y0, x: x1, y : y1, alpha : alpha1,hypo : hypo, }
+            this.predict.push(pre);
+        }  
+
+        //recursive
+        {
+            if(cutPoint.i != -1) return;
+            if(this.predict.length == 11) return;   
+            if(y1 == GameConstants.defaultBottomBall) return
+            this.deflectC(x1, y1, alpha1, squares); 
         }
     }
     vectorDistance(objA, objB){

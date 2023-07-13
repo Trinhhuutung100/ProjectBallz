@@ -5,7 +5,7 @@ import { GameConstants } from "./gameconstants";
 import { Sound } from "@pixi/sound";
 import *as setting from "../assets/particle/emitter.json";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
-import *as settingS from "../assets/particle/emitter.json";
+import *as settingS from "./emitter.json";
 import *as settingP from "../assets/particle/emitter2.json";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
@@ -169,7 +169,7 @@ export class CollisionHandler{
         var tmp = new Container();
         tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
         Game.app.stage.addChild(tmp);
-        let texture = Texture.from("assets/images/square.png"); // các hạt là hình tròn quả bóng
+        let texture = Texture.from("assets/images/square.png"); // các hạt là hình vuông
         var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
         emitter.autoUpdate = true;
         emitter.emit = true;// chạy particle
