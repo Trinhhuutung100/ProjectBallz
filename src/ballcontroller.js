@@ -556,6 +556,7 @@ export class BallController extends Container{
         for(var i = 0; i < this.cutLines.length; i++){
             var cutLine = this.cutLines[i];
             if(cutLine.x == x0 && cutLine.y == y0) continue;
+            if( cutLine.x < lb || cutLine.x > rb || cutLine.y <tb || cutLine.y > bb) continue;
             if(len >= cutLine.len) {
                 len = cutLine.len;
                 index = i;
