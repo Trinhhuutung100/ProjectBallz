@@ -1,5 +1,5 @@
 import TWEEN from "@tweenjs/tween.js";
-import {Container, Sprite, Ticker } from "pixi.js"
+import {Container, Sprite, Text, Ticker } from "pixi.js"
 import { GameConstants } from "./gameconstants";
 import { Game } from "./game";
 
@@ -28,6 +28,7 @@ export class BallController extends Container{
         this.groundPositionY = GameConstants.defaultBottomBall;
         this.firstGroundedBall = false;
         this.isCreating = false;
+        this.ballText = false;
         this.distance = [];
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
@@ -56,12 +57,15 @@ export class BallController extends Container{
     update(dt){
         //console.log(this.balls);\
         this.checkAllGround();
+        this.showBallNum();
         this.moveBall(dt);
         this.border(dt);
     }
     // move balls and stare
     moveBall(dt){
         if(this.readyAttack){
+            this.removeChild(this.ballNum)
+            this.ballText = false;
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
                 //console.log(i+" "+this.distance[i]);
@@ -86,15 +90,26 @@ export class BallController extends Container{
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
                         this.isCreating = true;
-                        //this.mousePress = false;
-                        // this.dx = 0;
-                        // this.dy = 0;
-                        //this.removeChild(this.needle, this.echo);
                     })
                     .onComplete(() => {
                         ball.ball.tint = "white";
                         this.isCreating = false;
-                        
+                        var textTween = new TWEEN.Tween({ time: 100})
+                        .to({x: 200 }, GameConstants.ballTweenTime*dt*3)
+                        .onUpdate(() => {
+                            // console.log("gain");
+                            if(Game.collision.ballGainNum > 0){
+                                this.showBallGain();
+                                this.ballText = true;
+                            }
+                        })
+                        .onComplete(() => {
+                            // console.log("finish gain");  
+                            this.removeChild(this.ballGain);    
+                            this.ballText = false;
+                            Game.collision.ballGainNum = 0;                      
+                        })
+                        .start(Game._current);                        
                     })
                     tween.start(Game._current);
                 }   
@@ -106,6 +121,35 @@ export class BallController extends Container{
                 this.readyAttack = false;
             }
         }
+    }
+    showBallNum(){
+        // console.log(this.allGround + " " + this.isCreating);
+        if(this.allGround && !this.isCreating){
+            // console.log("show");
+            if(this.ballText) return;
+            this.removeChild(this.ballNum)
+            this.ballNum = new Text("x" + this.balls.length, {
+                fontSize: GameConstants.fontSize,
+                fill: "white",
+                fontFamily: GameConstants.defaultFont, 
+            });
+            this.ballNum.anchor.set(1, 1);
+            this.ballNum.x = this.groundPositionX - ballRadius;
+            this.ballNum.y = this.groundPositionY - ballRadius;
+            this.addChild(this.ballNum);
+        }
+    }
+    showBallGain(){
+            this.removeChild(this.ballGain)
+            this.ballGain = new Text("+" + Game.collision.ballGainNum, {
+                fontSize: GameConstants.fontSize,
+                fill: "green",
+                fontFamily: GameConstants.defaultFont, 
+            });
+            this.ballGain.anchor.set(1, 1);
+            this.ballGain.x = this.groundPositionX - ballRadius;
+            this.ballGain.y = this.groundPositionY - ballRadius;
+            this.addChild(this.ballGain);
     }
     //check if all the balls are on ground
     checkAllGround(){
@@ -175,7 +219,7 @@ export class BallController extends Container{
                         ball.dx = this.dx; //van toc phuong x cua bong
                         ball.dy = this.dy; // van toc phuong y cua bong
                     })
-                    this.removeChild(this.needle, this.echo);      
+                    this.removeChild(this.needle);      
                     this.readyAttack = true;
                     this.firstGroundedBall = false;
                 }
@@ -209,8 +253,8 @@ export class BallController extends Container{
                             this.dy = 0;
                         }
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban
-                        if( y < -GameConstants.echoMinNumerator ) {
-                            if(y < -GameConstants.echoMaxNumerator){
+                        if( y < 0 ) {
+                            if(y < 0){
                                 Game.uiManager.igUI.removeChild(Game.uiManager.igUI.guideText);
                             }
                             this.removeChild(this.container);
@@ -243,7 +287,7 @@ export class BallController extends Container{
                                 this.beams[i].height = this.predict[i+1].hypo;
                                 this.container.addChild( this.beams[i]);
                             }
-                            console.log(this.predict);
+                            // console.log(this.predict);
                             this.addChild(this.needle);
                             this.ready = true;
                             //console.log("ready");

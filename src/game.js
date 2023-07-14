@@ -19,7 +19,7 @@ export class Game{
         this.app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
-            background: 0x222222
+            background: 0x111111
         })
         document.body.appendChild(this.app.view);
         this.isWaiting = true;
@@ -93,7 +93,7 @@ export class Game{
 
         //Back yard
         this.backYard = Sprite.from("assets/images/square.png");
-        this.backYard.tint = 0x333333;
+        this.backYard.tint = 0x222222;
         this.backYard.width = GameConstants.screenWidth;
         this.backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
         this.backYard.x = 0.5;

@@ -20,6 +20,7 @@ export class CollisionHandler{
         this.preBalls = preBalls;
         this.ballSound = Sound.from("assets/sounds/Ball.wav");
         this.coinSound = Sound.from("assets/sounds/Coin.wav");
+        this.ballGainNum = 0;
     }
     update(dt){
         this.squareCollision(dt);
@@ -156,6 +157,7 @@ export class CollisionHandler{
                         this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
                         this.balls[this.balls.length-1].readyGo = true;                          
                         this.ballSound.play();
+                        this.ballGainNum++;
                     }
                 }
             }
