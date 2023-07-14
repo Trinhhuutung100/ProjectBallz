@@ -38,9 +38,7 @@ export class Square extends Container{
     }
 }
 function changeColor(score){// hàm đổi màu theo điểm
-    var baseColor = "f29305";
-    var tmp = parseInt(baseColor,16);
-    tmp+=(score-1)*2048;
-    var res= tmp.toString(16);
-    return res;
+    var baseColor = 0xf29305;
+    baseColor +=score*2048;
+    return baseColor;
 }

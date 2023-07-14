@@ -10,11 +10,14 @@ export class Ball extends Container{
         this.ball.anchor.set(0.5, 0.5);
         this.ball.x = x;
         this.ball.y = y;
-        this.ball.dx = 0;
-        this.ball.dy = 0;
+        this.dx = 0;
+        this.dy = 0;
         this.readyGo = false;
         this.isBall = true;
         this.addChild(this.ball);
+    }
+    changeColor(color){
+        this.ball.tint = color;
     }
 
 }

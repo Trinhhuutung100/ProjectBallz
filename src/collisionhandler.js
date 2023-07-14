@@ -5,7 +5,7 @@ import { GameConstants } from "./gameconstants";
 import { Sound } from "@pixi/sound";
 import *as setting from "../assets/particle/emitter.json";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
-import *as settingS from "../assets/particle/emitter.json";
+import *as settingS from "./emitter.json";
 import *as settingP from "../assets/particle/emitter2.json";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
@@ -20,6 +20,7 @@ export class CollisionHandler{
         this.preBalls = preBalls;
         this.ballSound = Sound.from("assets/sounds/Ball.wav");
         this.coinSound = Sound.from("assets/sounds/Coin.wav");
+        this.ballGainNum = 0;
     }
     update(dt){
         this.squareCollision(dt);
@@ -49,6 +50,8 @@ export class CollisionHandler{
                     var rightBottom = {x: square.right, y: square.bottom};
                     var rightTop = {x: square.right, y: square.top};
                     var bp = {x: bx, y: by}
+                    //ChangeBallCorlor
+                    var color = Math.abs(0xffffff - this.squares[s].color + 4096*b);
                     //Destroy square
                     if(this.squares[s].index == 0) {
                         this.emitSquareParticale(this.squares[s]);
@@ -58,6 +61,7 @@ export class CollisionHandler{
                     //Corner collision
                     if(this.vectorDistance(bp, leftBottom)<ballRadius){
                         this.ballSound.play(); 
+                        this.balls[b].changeColor(color);
                         if(bc.dx>0) bc.dx = -bc.dx;
                         if(bc.dy<0) bc.dy = -bc.dy;
                         this.squares[s].decreaseIndex();
@@ -66,6 +70,7 @@ export class CollisionHandler{
                     //Corner collision
                     if(this.vectorDistance(bp, leftTop)<ballRadius){
                         this.ballSound.play(); 
+                        this.balls[b].changeColor(color);
                         if(bc.dx>0) bc.dx = -bc.dx;
                         if(bc.dy>0) bc.dy = -bc.dy;
                         this.squares[s].decreaseIndex();
@@ -74,6 +79,7 @@ export class CollisionHandler{
                     //Corner collision
                     if(this.vectorDistance(bp, rightBottom)<ballRadius){
                         this.ballSound.play(); 
+                        this.balls[b].changeColor(color);
                         if(bc.dx<0) bc.dx = -bc.dx;
                         if(bc.dy<0) bc.dy = -bc.dy;
                         this.squares[s].decreaseIndex();
@@ -82,6 +88,7 @@ export class CollisionHandler{
                     //Corner collision
                     if(this.vectorDistance(bp, rightTop)<ballRadius){
                         this.ballSound.play(); 
+                        this.balls[b].changeColor(color);
                         if(bc.dx<0) bc.dx = -bc.dx;
                         if(bc.dy>0) bc.dy = -bc.dy;
                         this.squares[s].decreaseIndex();
@@ -91,6 +98,7 @@ export class CollisionHandler{
                         //Horizontal collision     
                         if( dx < ballRadius + edge && dy < edge ) { 
                             this.ballSound.play();
+                            this.balls[b].changeColor(color);
                             //this.balls[b].ball.x -=bc.dx*dt;
                             bc.dx = -bc.dx;   
                             this.squares[s].decreaseIndex();      
@@ -100,6 +108,7 @@ export class CollisionHandler{
                         //Vertical collision
                         if( dy < ballRadius + edge && dx < edge) {       
                             this.ballSound.play();  
+                            this.balls[b].changeColor(color);
                             //this.balls[b].ball.y -=bc.dy*dt;
                             bc.dy = -bc.dy;  
                             this.squares[s].decreaseIndex(); 
@@ -148,6 +157,7 @@ export class CollisionHandler{
                         this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
                         this.balls[this.balls.length-1].readyGo = true;                          
                         this.ballSound.play();
+                        this.ballGainNum++;
                     }
                 }
             }
@@ -161,7 +171,7 @@ export class CollisionHandler{
         var tmp = new Container();
         tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
         Game.app.stage.addChild(tmp);
-        let texture = Texture.from("assets/images/ball.png"); // các hạt là hình tròn quả bóng
+        let texture = Texture.from("assets/images/square.png"); // các hạt là hình vuông
         var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
         emitter.autoUpdate = true;
         emitter.emit = true;// chạy particle
@@ -171,7 +181,7 @@ export class CollisionHandler{
         var tmp = new Container();
         tmp.position.set(ball.ball.x,ball.ball.y); // vị trí của particle ở giữa hình vuông
         Game.app.stage.addChild(tmp);
-        let texture = Texture.from("assets/images/ball.png"); // các hạt là hình tròn quả bóng
+        let texture = Texture.from("assets/images/square.png"); // các hạt là hình tròn quả bóng
         var emitter = new Emitter(tmp, upgradeConfig(settingP,[texture]));
         emitter.autoUpdate = true;
         emitter.emit = true;// chạy particle

@@ -21,13 +21,14 @@ export class Row {
     }
     createNewRow(){
         // if(this.count>0){
-        //     this.data[0] = 10;
-        //     this.data[1] = 10;
-        //     this.data[2] = 10;
-        //     this.data[3] = 10;
-        //     this.data[4] = 10;
-        //     this.data[5] = 10;
-        //     this.data[6] = 10;
+        //     var value = -2;
+        //     this.data[0] = value;
+        //     this.data[1] = value;
+        //     this.data[2] = value;
+        //     this.data[3] = value;
+        //     this.data[4] = value;
+        //     this.data[5] = value;
+        //     this.data[6] = value;
         //     return;
         // }
         if(this.count>1){ // ring và bonus không xuất hiện ở hàng đầu tiên, chỉ xuất hiện từ hàng thứ 2 trở đi

@@ -1,4 +1,4 @@
-import { Application, Sprite, Ticker } from "pixi.js"
+import { Application, Assets, Sprite, Ticker } from "pixi.js"
 import { ActiveBall } from "./activeball";
 import { PreBall } from "./preball";
 import { BallController } from "./ballcontroller";
@@ -19,16 +19,24 @@ export class Game{
         this.app =  new Application({
             width: GameConstants.screenWidth,
             height: GameConstants.screenHeight,
-            background: 0x222222
+            background: 0x111111
         })
         document.body.appendChild(this.app.view);
         this.isWaiting = true;
         this.isFirst = true;
         this.best = 0;
         this.coinScore = 0;
+        //this.loadGame();
         this.uiManager = new UIManager();
+        console.log("Start");
         
-    }
+    } 
+    // static async loadGame(){
+    //     await Assets.init({manifest: manifest});
+    //     const bundleIDs = manifest.bundles.map(bundle => bundle.name);
+    //     console.log(bundleIDs);
+    //     await Assets.loadBundle(bundleIDs);
+    // }
     static play(){
         //Remove start-game ui
         Game.app.stage.removeChild(this.uiManager.stUI);
@@ -42,23 +50,37 @@ export class Game{
         //Remove start-game ui   
         Game.app.stage.removeChild(this.uiManager.goUI);
         this.uiManager.goUI.destroy(); 
-        this.uiManager.igUI = new InGameUI();
-        Game.app.stage.addChild(this.uiManager.igUI);
-        this.map.createNewLine();
-        for(var i = 0; i<1; i++){
-            var ball = new ActiveBall();
-            this.balls.push(ball);
-        }
-        this.ballController.echo.x = this.balls[0].ball.x;
-        this.ballController.needle.x = this.balls[0].ball.x;
-        this.balls.forEach(ball => {
-            this.app.stage.addChild(ball);
-        });
+        
+        Game.app.stage.removeChild(Game.backYard);
+        Game.backYard.destroy();
+
+        Game.app.stage.removeChild(this.ballController);
+        this.ballController.destroy();
+
         this.isWaiting = false;
+        
+        this.startGame();
+    }
+    static reStart(){
+        Game.app.stage.removeChild(this.uiManager.psUI);
+        this.uiManager.psUI.destroy(); 
+        
+        Game.app.stage.removeChild(Game.backYard);
+        Game.backYard.destroy();
+
+        Game.app.stage.removeChild(this.ballController);
+        this.ballController.destroy();
+
+        this.map.resetMap();
+
+        this.isWaiting = false;
+
+        this.startGame();
+        
     }
     static menu(){
-        this.app.stage.removeChild(this.backYard);
-        this.backYard.destroy();
+        Game.app.stage.removeChild(Game.backYard);
+        Game.backYard.destroy();
         Game.app.stage.removeChild(this.ballController);
         this.ballController.destroy();
         Game.app.stage.removeChild(this.uiManager.goUI);
@@ -71,7 +93,7 @@ export class Game{
 
         //Back yard
         this.backYard = Sprite.from("assets/images/square.png");
-        this.backYard.tint = 0x000000;
+        this.backYard.tint = 0x222222;
         this.backYard.width = GameConstants.screenWidth;
         this.backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
         this.backYard.x = 0.5;
@@ -114,6 +136,7 @@ export class Game{
     }
     static update(dt){    
         if(this.map.bottom>GameConstants.defaultBottom - GameConstants.ballRadius*3) {
+            console.log("Lose");
             this.map.resetMap();
             this.uiManager.goUI = new GameOverUI();
             this.app.stage.addChild(this.uiManager.goUI);

@@ -65,17 +65,22 @@ export class GenMap extends Container{
         var dt = delta*1.55;
         this.bottom = 0;
         this.isCreatingMap = false;
+        var bot = GameConstants.defaultBottom - GameConstants.ballRadius*3;
         if(this.squares.length>0){
             if(this.bottom < this.squares[0].getBounds().bottom)
             this.bottom = this.squares[0].getBounds().bottom;
         }
         if(this.coins.length>0){
-            if(this.bottom < this.coins[0].getBounds().bottom)
-            this.bottom = this.coins[0].getBounds().bottom;
+            if(this.coins[0].getBounds().bottom > bot){
+                this.coins[0].destroy();
+                this.coins.splice(0, 1);
+            }
         }
         if(this.preBalls.length>0){
-            if(this.bottom < this.preBalls[0].getBounds().bottom)
-            this.bottom = this.preBalls[0].getBounds().bottom;
+            if(this.preBalls[0].getBounds().bottom > bot){
+                this.preBalls[0].destroy();
+                this.preBalls.splice(0, 1);
+            }
         }
         if(this.count > 0){
             for(var i = 0; i < this.squares.length; i++){
@@ -129,6 +134,8 @@ export class GenMap extends Container{
         // }
         this.bottom = 0;
         this.line = 1;
+        Game.ballController.removeChild(Game.ballController.ballGain,  Game.ballController.ballNum)
+        Game.ballController.ballText = true;
         // this.createNewLine();          
         Game.app.stage.removeChild(Game.uiManager.igUI);
         Game.uiManager.igUI.destroy();   
