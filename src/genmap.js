@@ -134,6 +134,7 @@ export class GenMap extends Container{
         // }
         this.bottom = 0;
         this.line = 1;
+        Game.ballController.removeChild(Game.ballController.ballGain,  Game.ballController.ballNum)
         // this.createNewLine();          
         Game.app.stage.removeChild(Game.uiManager.igUI);
         Game.uiManager.igUI.destroy();   
