@@ -5050,8 +5050,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       fill: "green",
       fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultFont
     });
-    this.ballGain.anchor.set(1, 1);
-    this.ballGain.x = this.groundPositionX - ballRadius;
+    this.ballGain.anchor.set(0, 1);
+    this.ballGain.x = this.groundPositionX;
     this.ballGain.y = this.groundPositionY - ballRadius;
     this.addChild(this.ballGain);
   }
@@ -5128,39 +5128,45 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
             var y = this.oldPosition.y - e.clientY;
             var alpha = -Math.atan(x / y);
             this.needle.rotation = alpha;
-            if (x != 0 && y != 0) {
-              this.dx = this.speed * x / Math.sqrt(x * x + y * y);
-              this.dy = this.speed * y / Math.sqrt(x * x + y * y);
-            }
-            if (x == 0) {
-              this.dx = 0;
-              this.dy = this.speed;
-            }
-            if (y == 0) {
-              this.dx = this.speed;
-              this.dy = 0;
+            this.addChild(this.needle);
+            this.ready = true;
+            {
+              if (x != 0 && y != 0) {
+                this.dx = this.speed * x / Math.sqrt(x * x + y * y);
+                this.dy = this.speed * y / Math.sqrt(x * x + y * y);
+              }
+              if (x == 0) {
+                this.dx = 0;
+                this.dy = this.speed;
+              }
+              if (y == 0) {
+                this.dx = this.speed;
+                this.dy = 0;
+              }
             }
             if (y < 0) {
               if (y < 0) {
                 _game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.removeChild(_game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.guideText);
               }
-              this.removeChild(this.container);
-              delete this.container;
-              delete this.predict;
-              delete this.beams;
-              delete this.verLines;
-              delete this.horLines;
-              delete this.cutLines;
-              this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
-              this.addChild(this.container);
-              this.predict = [];
-              this.beams = [];
-              this.verLines = [];
-              this.horLines = [];
-              this.cutLines = [];
-              var pre = { x0: 0, y0: 0, x: this.groundPositionX, y: this.groundPositionY, alpha, hypo: 0 };
-              this.predict.push(pre);
-              this.deflectC(this.groundPositionX, this.groundPositionY, alpha, _game__WEBPACK_IMPORTED_MODULE_3__.Game.map.squares);
+              {
+                this.removeChild(this.container);
+                delete this.container;
+                delete this.predict;
+                delete this.beams;
+                delete this.verLines;
+                delete this.horLines;
+                delete this.cutLines;
+                this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+                this.addChild(this.container);
+                this.predict = [];
+                this.beams = [];
+                this.verLines = [];
+                this.horLines = [];
+                this.cutLines = [];
+                var pre = { x0: 0, y0: 0, x: this.groundPositionX, y: this.groundPositionY, alpha, hypo: 0 };
+                this.predict.push(pre);
+                this.deflectC(this.groundPositionX, this.groundPositionY, alpha, _game__WEBPACK_IMPORTED_MODULE_3__.Game.map.squares);
+              }
               for (var i = 0; i < this.predict.length - 1; i++) {
                 this.beams[i] = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from("assets/images/square.png");
                 this.beams[i].anchor.set(0.5, 1);
@@ -5171,8 +5177,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
                 this.beams[i].height = this.predict[i + 1].hypo;
                 this.container.addChild(this.beams[i]);
               }
-              this.addChild(this.needle);
-              this.ready = true;
             }
             if (y > 0) {
               this.removeChild(this.container);
@@ -6033,7 +6037,7 @@ const GameConstants = {
   minRing: squareEdge,
   maxRing: squareEdge * 1.5,
   //Ball move
-  ballSpeed: squareEdge * 0.5 / 2,
+  ballSpeed: squareEdge * 0.25,
   distanceBetweenBalls: Math.round(squareEdge / 2) * 1.1,
   fallSpeed: squareEdge * 0.5 / 2,
   //Tween animation
