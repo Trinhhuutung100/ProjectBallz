@@ -213,12 +213,15 @@ export class BallController extends Container{
                 delete this.verLines;
                 delete this.horLines;
                 delete this.cutLines;
+                // console.log(this.readyAttack + " " + this.needle.rotation);
 
                 if(this.ready){                
                     this.balls.forEach(ball => {
                         ball.dx = this.dx; //van toc phuong x cua bong
                         ball.dy = this.dy; // van toc phuong y cua bong
+                        // console.log(ball.dy);
                     })
+                    // console.log(this.dy);
                     this.removeChild(this.needle);      
                     this.readyAttack = true;
                     this.firstGroundedBall = false;
@@ -242,25 +245,26 @@ export class BallController extends Container{
                             if(x!=0&&y!=0){                        
                                 this.dx = this.speed*x/Math.sqrt((x*x+y*y));
                                 this.dy = this.speed*y/Math.sqrt((x*x+y*y));
-                                //console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
+                                // console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
                             }
                             if(x==0){
                                 this.dx = 0;
-                                this.dy = this.speed;
+                                this.dy = -this.speed;
                             }
-                            if(y==0){
-                                this.dx = this.speed;
-                                this.dy = 0;
-                            }
+                            // if(y==0){
+                            //     this.dx = this.speed;
+                            //     this.dy = 0;
+                            // }
+                            console.log(alpha + " " + this.dx + " " + this.dy);
                         }
                         
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                         if( y < 0 ) {
-                            if(y < 0){
+                            if(y <= 0){
                                 Game.uiManager.igUI.removeChild(Game.uiManager.igUI.guideText);
                             }
 
-                            // reset property
+                            // // reset property
                             {
                                 this.removeChild(this.container);
                                 delete this.container;
@@ -284,7 +288,7 @@ export class BallController extends Container{
                                 this.deflectC(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
                             }
                             
-                            // Gen predict
+                            // // Gen predict
                             for( var i = 0; i < this.predict.length -1; i++){
                                 this.beams[i] = Sprite.from("assets/images/square.png");
                                 this.beams[i].anchor.set(0.5, 1);
