@@ -5137,15 +5137,12 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
               }
               if (x == 0) {
                 this.dx = 0;
-                this.dy = this.speed;
+                this.dy = -this.speed;
               }
-              if (y == 0) {
-                this.dx = this.speed;
-                this.dy = 0;
-              }
+              console.log(alpha + " " + this.dx + " " + this.dy);
             }
             if (y < 0) {
-              if (y < 0) {
+              if (y <= 0) {
                 _game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.removeChild(_game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.guideText);
               }
               {
