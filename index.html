@@ -4891,8 +4891,8 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.ball.anchor.set(0.5, 0.5);
     this.ball.x = x;
     this.ball.y = y;
-    this.ball.dx = 0;
-    this.ball.dy = 0;
+    this.dx = 0;
+    this.dy = 0;
     this.readyGo = false;
     this.isBall = true;
     this.addChild(this.ball);
@@ -4946,6 +4946,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.groundPositionY = _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
     this.firstGroundedBall = false;
     this.isCreating = false;
+    this.ballText = false;
     this.distance = [];
     for (var i = 0; i < this.balls.length; i++) {
       this.distance[i] = 0;
@@ -4972,12 +4973,15 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   }
   update(dt) {
     this.checkAllGround();
+    this.showBallNum();
     this.moveBall(dt);
     this.border(dt);
   }
   // move balls and stare
   moveBall(dt) {
     if (this.readyAttack) {
+      this.removeChild(this.ballNum);
+      this.ballText = false;
       this.ready = false;
       for (var i = 0; i < this.balls.length; i++) {
         if (this.distance[i] > i * _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls * dt)
@@ -5001,6 +5005,16 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           }).onComplete(() => {
             ball.ball.tint = "white";
             this.isCreating = false;
+            var textTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ time: 100 }).to({ x: 200 }, _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * dt * 3).onUpdate(() => {
+              if (_game__WEBPACK_IMPORTED_MODULE_3__.Game.collision.ballGainNum > 0) {
+                this.showBallGain();
+                this.ballText = true;
+              }
+            }).onComplete(() => {
+              this.removeChild(this.ballGain);
+              this.ballText = false;
+              _game__WEBPACK_IMPORTED_MODULE_3__.Game.collision.ballGainNum = 0;
+            }).start(_game__WEBPACK_IMPORTED_MODULE_3__.Game._current);
           });
           tween.start(_game__WEBPACK_IMPORTED_MODULE_3__.Game._current);
         }
@@ -5012,6 +5026,34 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         this.readyAttack = false;
       }
     }
+  }
+  showBallNum() {
+    if (this.allGround && !this.isCreating) {
+      if (this.ballText)
+        return;
+      this.removeChild(this.ballNum);
+      this.ballNum = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Text("x" + this.balls.length, {
+        fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.fontSize,
+        fill: "white",
+        fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultFont
+      });
+      this.ballNum.anchor.set(1, 1);
+      this.ballNum.x = this.groundPositionX - ballRadius;
+      this.ballNum.y = this.groundPositionY - ballRadius;
+      this.addChild(this.ballNum);
+    }
+  }
+  showBallGain() {
+    this.removeChild(this.ballGain);
+    this.ballGain = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Text("+" + _game__WEBPACK_IMPORTED_MODULE_3__.Game.collision.ballGainNum, {
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.fontSize,
+      fill: "green",
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultFont
+    });
+    this.ballGain.anchor.set(1, 1);
+    this.ballGain.x = this.groundPositionX - ballRadius;
+    this.ballGain.y = this.groundPositionY - ballRadius;
+    this.addChild(this.ballGain);
   }
   //check if all the balls are on ground
   checkAllGround() {
@@ -5073,7 +5115,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
             ball.dx = this.dx;
             ball.dy = this.dy;
           });
-          this.removeChild(this.needle, this.echo);
+          this.removeChild(this.needle);
           this.readyAttack = true;
           this.firstGroundedBall = false;
         }
@@ -5098,8 +5140,8 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
               this.dx = this.speed;
               this.dy = 0;
             }
-            if (y < -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMinNumerator) {
-              if (y < -_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.echoMaxNumerator) {
+            if (y < 0) {
+              if (y < 0) {
                 _game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.removeChild(_game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.guideText);
               }
               this.removeChild(this.container);
@@ -5129,7 +5171,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
                 this.beams[i].height = this.predict[i + 1].hypo;
                 this.container.addChild(this.beams[i]);
               }
-              console.log(this.predict);
               this.addChild(this.needle);
               this.ready = true;
             }
@@ -5621,6 +5662,7 @@ class CollisionHandler {
     this.preBalls = preBalls;
     this.ballSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.Sound.from("assets/sounds/Ball.wav");
     this.coinSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.Sound.from("assets/sounds/Coin.wav");
+    this.ballGainNum = 0;
   }
   update(dt) {
     this.squareCollision(dt);
@@ -5748,6 +5790,7 @@ class CollisionHandler {
             this.balls[this.balls.length - 1].dy = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.fallSpeed * dt;
             this.balls[this.balls.length - 1].readyGo = true;
             this.ballSound.play();
+            this.ballGainNum++;
           }
         }
       }
@@ -5823,7 +5866,7 @@ class Game {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
       width: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth,
       height: _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight,
-      background: 2236962
+      background: 1118481
     });
     document.body.appendChild(this.app.view);
     this.isWaiting = true;
@@ -5881,7 +5924,7 @@ class Game {
   }
   static startGame() {
     this.backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
-    this.backYard.tint = 3355443;
+    this.backYard.tint = 2236962;
     this.backYard.width = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
     this.backYard.height = _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
     this.backYard.x = 0.5;
