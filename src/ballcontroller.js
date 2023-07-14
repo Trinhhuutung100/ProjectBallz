@@ -146,8 +146,8 @@ export class BallController extends Container{
                 fill: "green",
                 fontFamily: GameConstants.defaultFont, 
             });
-            this.ballGain.anchor.set(1, 1);
-            this.ballGain.x = this.groundPositionX - ballRadius;
+            this.ballGain.anchor.set(0, 1);
+            this.ballGain.x = this.groundPositionX;
             this.ballGain.y = this.groundPositionY - ballRadius;
             this.addChild(this.ballGain);
     }
@@ -232,51 +232,59 @@ export class BallController extends Container{
                         // (x,y) la vector keo chuot, dinh huong cho bong
                         var x = this.oldPosition.x - e.clientX;
                         var y = this.oldPosition.y - e.clientY;
-
                         var alpha = -Math.atan(x/y);
                         this.needle.rotation = alpha;
-                        // this.echo.rotation = alpha;
-                        
+                        this.addChild(this.needle);
+                        this.ready = true;                      
     
                         // (dx, dy) la vector song song voi (x, y) nhung co do dai = speed
-                        if(x!=0&&y!=0){                        
-                            this.dx = this.speed*x/Math.sqrt((x*x+y*y));
-                            this.dy = this.speed*y/Math.sqrt((x*x+y*y));
-                            //console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
+                        {
+                            if(x!=0&&y!=0){                        
+                                this.dx = this.speed*x/Math.sqrt((x*x+y*y));
+                                this.dy = this.speed*y/Math.sqrt((x*x+y*y));
+                                //console.log(this.dx + " " + this.dy + " " + (Math.sqrt((this.dx)^2+(this.dy^2))));
+                            }
+                            if(x==0){
+                                this.dx = 0;
+                                this.dy = this.speed;
+                            }
+                            if(y==0){
+                                this.dx = this.speed;
+                                this.dy = 0;
+                            }
                         }
-                        if(x==0){
-                            this.dx = 0;
-                            this.dy = this.speed;
-                        }
-                        if(y==0){
-                            this.dx = this.speed;
-                            this.dy = 0;
-                        }
+                        
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban
                         if( y < 0 ) {
                             if(y < 0){
                                 Game.uiManager.igUI.removeChild(Game.uiManager.igUI.guideText);
                             }
-                            this.removeChild(this.container);
-                            delete this.container;
-                            delete this.predict;
-                            delete this.beams;
-                            delete this.verLines;
-                            delete this.horLines;
-                            delete this.cutLines;
-    
-                            this.container = new Container();
-                            this.addChild(this.container);
-                            this.predict = [];
-                            this.beams = [];
-                            this.verLines =[];
-                            this.horLines = [];
-                            this.cutLines = [];
-    
-                            var pre = {x0 : 0, y0 : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha,hypo : 0, };
-                            this.predict.push(pre);
-                            // this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
-                            this.deflectC(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
+
+                            // reset property
+                            {
+                                this.removeChild(this.container);
+                                delete this.container;
+                                delete this.predict;
+                                delete this.beams;
+                                delete this.verLines;
+                                delete this.horLines;
+                                delete this.cutLines;
+        
+                                this.container = new Container();
+                                this.addChild(this.container);
+                                this.predict = [];
+                                this.beams = [];
+                                this.verLines =[];
+                                this.horLines = [];
+                                this.cutLines = [];
+        
+                                var pre = {x0 : 0, y0 : 0, x: this.groundPositionX, y : this.groundPositionY, alpha : alpha,hypo : 0, };
+                                this.predict.push(pre);
+                                // this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
+                                this.deflectC(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
+                            }
+                            
+                            // Gen predict
                             for( var i = 0; i < this.predict.length -1; i++){
                                 this.beams[i] = Sprite.from("assets/images/square.png");
                                 this.beams[i].anchor.set(0.5, 1);
@@ -288,9 +296,6 @@ export class BallController extends Container{
                                 this.container.addChild( this.beams[i]);
                             }
                             // console.log(this.predict);
-                            this.addChild(this.needle);
-                            this.ready = true;
-                            //console.log("ready");
                         }
                         if( y > 0 ) {
                             this.removeChild(this.container);
