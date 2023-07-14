@@ -57,6 +57,7 @@ export class CollisionHandler{
                         this.emitSquareParticale(this.squares[s]);
                         this.squares[s].destroy();
                         this.squares.splice(s, 1);
+                        break;
                     }
                     //Corner collision
                     if(this.vectorDistance(bp, leftBottom)<ballRadius){
