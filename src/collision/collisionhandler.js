@@ -23,7 +23,8 @@ export class CollisionHandler{
         this.ballGainNum = 0;
     }
     update(dt){
-        this.squareCollision(dt);
+        // this.squareCollision(dt);
+        this.squareCollision2(dt);
         this.coinCollision(dt);
         this.preBallCollision(dt);
     }
@@ -126,6 +127,11 @@ export class CollisionHandler{
                     } 
                 }
             }
+        }
+    }
+    squareCollision2(dt){
+        for(var b = 0; b< this.balls.length; b++){
+            this.balls[b].squareCollision(dt, b);
         }
     }
     coinCollision(dt){

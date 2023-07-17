@@ -40,6 +40,7 @@ export class Game{
         const bundleIDs = manifest.bundles.map(bundle => bundle.name);
         // console.log(bundleIDs);
         await Assets.loadBundle(bundleIDs);
+        console.log(Assets.cache);
     }
     static play(){
         //Remove start-game ui
