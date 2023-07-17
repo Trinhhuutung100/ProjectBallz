@@ -213,6 +213,8 @@ export class BallController extends Container{
                 delete this.verLines;
                 delete this.horLines;
                 delete this.cutLines;
+                this.removeChild(this.needle);
+
                 // console.log(this.readyAttack + " " + this.needle.rotation);
 
                 if(this.ready){                
@@ -306,7 +308,11 @@ export class BallController extends Container{
                             delete this.container;
                             delete this.predict;
                             delete this.beams;
+                            delete this.verLines;
+                            delete this.horLines;
+                            delete this.cutLines;
                             this.removeChild(this.needle);
+
                             this.ready = false;
                             //console.log("not ready");
                         }

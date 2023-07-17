@@ -135,6 +135,15 @@ export class GenMap extends Container{
         this.bottom = 0;
         this.line = 1;
         Game.ballController.removeChild(Game.ballController.ballGain,  Game.ballController.ballNum)
+                     
+        Game.ballController.removeChild(Game.ballController.container);
+        delete Game.ballController.container;
+        delete Game.ballController.predict;
+        delete Game.ballController.beams;
+        delete Game.ballController.verLines;
+        delete Game.ballController.horLines;
+        delete Game.ballController.cutLines;
+        Game.ballController.removeChild(Game.ballController.needle);
         Game.ballController.ballText = true;
         // this.createNewLine();          
         Game.app.stage.removeChild(Game.uiManager.igUI);
