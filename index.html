@@ -4352,26 +4352,46 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor() {
+  constructor(score) {
     super();
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Arial",
-      fontSize: 24,
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont,
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 3,
       fill: "white",
       align: "center"
     });
+    this.score = score;
     this.drawReplayButton();
     this.drawMainMenuButton();
     this.drawChartButton();
     this.drawLikeButton();
     this.drawAdsButton();
+    this.showScore();
+    this.showBest();
+  }
+  showScore() {
+    var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.score, this.style);
+    tmp.anchor.set(0.5, 0.5);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.2);
+    this.addChild(tmp);
+  }
+  showBest() {
+    var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("BEST " + _game__WEBPACK_IMPORTED_MODULE_2__.Game.best, {
+      fontFamily: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont,
+      fontSize: _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 2,
+      fill: "white",
+      align: "center"
+    });
+    tmp.anchor.set(0.5, 0.5);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
+    this.addChild(tmp);
   }
   drawReplayButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/replay.png");
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 8;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4);
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Replay");
@@ -4384,7 +4404,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 8;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.42);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.52);
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Mainmenu");
@@ -4397,7 +4417,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.3, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.3, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
   drawLikeButton() {
@@ -4405,7 +4425,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2.25;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
   drawAdsButton() {
@@ -4413,7 +4433,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.anchor.set(0.5, 0.5);
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.7, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.6);
+    tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.7, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
     this.addChild(tmp);
   }
 }
@@ -4679,6 +4699,21 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.3, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.68);
+    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
+      tmp.tint = 16777215;
+    } else {
+      tmp.tint = 4473924;
+    }
+    tmp.eventMode = "static";
+    tmp.on("pointerup", () => {
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.music = !_game__WEBPACK_IMPORTED_MODULE_2__.Game.music;
+      console.log("Music " + _game__WEBPACK_IMPORTED_MODULE_2__.Game.music);
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
+        tmp.tint = 16777215;
+      } else {
+        tmp.tint = 4473924;
+      }
+    });
     this.addChild(tmp);
   }
   drawLikeButton() {
@@ -4775,6 +4810,21 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.width = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.height = _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
     tmp.position.set(_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.2, _gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.7);
+    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
+      tmp.tint = 16777215;
+    } else {
+      tmp.tint = 4473924;
+    }
+    tmp.eventMode = "static";
+    tmp.on("pointerup", () => {
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.music = !_game__WEBPACK_IMPORTED_MODULE_2__.Game.music;
+      console.log("Music " + _game__WEBPACK_IMPORTED_MODULE_2__.Game.music);
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
+        tmp.tint = 16777215;
+      } else {
+        tmp.tint = 4473924;
+      }
+    });
     this.addChild(tmp);
   }
   drawChartButton() {
@@ -5139,7 +5189,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
                 this.dx = 0;
                 this.dy = -this.speed;
               }
-              console.log(alpha + " " + this.dx + " " + this.dy);
             }
             if (y < 0) {
               if (y <= 0) {
@@ -5670,6 +5719,14 @@ class CollisionHandler {
     this.coinCollision(dt);
     this.preBallCollision(dt);
   }
+  playSquareMusic() {
+    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+      this.ballSound.play();
+  }
+  playCoinMusic() {
+    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+      this.coinSound.play();
+  }
   squareCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
       if (this.balls[b].isBall) {
@@ -5696,7 +5753,7 @@ class CollisionHandler {
             break;
           }
           if (this.vectorDistance(bp, leftBottom) < ballRadius) {
-            this.ballSound.play();
+            this.playSquareMusic();
             this.balls[b].changeColor(color);
             if (bc.dx > 0)
               bc.dx = -bc.dx;
@@ -5706,7 +5763,7 @@ class CollisionHandler {
             continue;
           }
           if (this.vectorDistance(bp, leftTop) < ballRadius) {
-            this.ballSound.play();
+            this.playSquareMusic();
             this.balls[b].changeColor(color);
             if (bc.dx > 0)
               bc.dx = -bc.dx;
@@ -5716,7 +5773,7 @@ class CollisionHandler {
             continue;
           }
           if (this.vectorDistance(bp, rightBottom) < ballRadius) {
-            this.ballSound.play();
+            this.playSquareMusic();
             this.balls[b].changeColor(color);
             if (bc.dx < 0)
               bc.dx = -bc.dx;
@@ -5726,7 +5783,7 @@ class CollisionHandler {
             continue;
           }
           if (this.vectorDistance(bp, rightTop) < ballRadius) {
-            this.ballSound.play();
+            this.playSquareMusic();
             this.balls[b].changeColor(color);
             if (bc.dx < 0)
               bc.dx = -bc.dx;
@@ -5737,14 +5794,14 @@ class CollisionHandler {
           }
           if (dx > dy) {
             if (dx < ballRadius + edge && dy < edge) {
-              this.ballSound.play();
+              this.playSquareMusic();
               this.balls[b].changeColor(color);
               bc.dx = -bc.dx;
               this.squares[s].decreaseIndex();
             }
           } else {
             if (dy < ballRadius + edge && dx < edge) {
-              this.ballSound.play();
+              this.playSquareMusic();
               this.balls[b].changeColor(color);
               bc.dy = -bc.dy;
               this.squares[s].decreaseIndex();
@@ -5765,7 +5822,7 @@ class CollisionHandler {
           if (this.vectorDistance({ x: ballX, y: ballY }, coin) < ballRadius + coinRadius) {
             this.coins[c].destroy();
             this.coins.splice(c, 1);
-            this.coinSound.play();
+            this.playCoinMusic();
             _game__WEBPACK_IMPORTED_MODULE_2__.Game.coinScore++;
             _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.igUI.drawCoinScore();
           }
@@ -5791,7 +5848,7 @@ class CollisionHandler {
             this.balls[this.balls.length - 1].dx = 0;
             this.balls[this.balls.length - 1].dy = _gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.fallSpeed * dt;
             this.balls[this.balls.length - 1].readyGo = true;
-            this.ballSound.play();
+            this.playSquareMusic();
             this.ballGainNum++;
           }
         }
@@ -5875,6 +5932,7 @@ class Game {
     this.isFirst = true;
     this.best = 0;
     this.coinScore = 0;
+    this.music = true;
     this.uiManager = new _UI_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
     console.log("Start");
   }
@@ -5957,8 +6015,9 @@ class Game {
   static update(dt) {
     if (this.map.bottom > _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.ballRadius * 3) {
       console.log("Lose");
+      var score = this.map.line - 1;
       this.map.resetMap();
-      this.uiManager.goUI = new _UI_gameoverui__WEBPACK_IMPORTED_MODULE_11__.GameOverUI();
+      this.uiManager.goUI = new _UI_gameoverui__WEBPACK_IMPORTED_MODULE_11__.GameOverUI(score);
       this.app.stage.addChild(this.uiManager.goUI);
       return;
     }
@@ -5993,7 +6052,7 @@ __webpack_require__.r(__webpack_exports__);
 const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
-const screenWidth = innerHeight / line * column;
+const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line * column;
 const squareEdge = screenWidth / 16;
 const padding = squareEdge / 4;
 const ballRadius = squareEdge / 3;
