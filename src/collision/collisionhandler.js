@@ -2,7 +2,7 @@ import { Container, Texture } from "pixi.js";
 import { ActiveBall } from "../objects/activeball";
 import { Game } from "../game";
 import { GameConstants } from "../gameconstants/gameconstants";
-import { Sound } from "@pixi/sound";
+import { Sound, sound } from "@pixi/sound";
 // import *as setting from "../../assets/particle/emitter.json";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import *as settingS from "../../assets/particle/emitter.json";
@@ -18,8 +18,8 @@ export class CollisionHandler{
         this.squares = squares;
         this.coins = coins;
         this.preBalls = preBalls;
-        this.ballSound = Sound.from("assets/sounds/ballSound.wav");
-        this.coinSound = Sound.from("assets/sounds/coinSound.wav");
+        // this.ballSound = Sound.from("assets/sounds/ballSound.wav");
+        // this.coinSound = Sound.from("assets/sounds/coinSound.wav");
         this.ballGainNum = 0;
     }
     update(dt){
@@ -28,10 +28,12 @@ export class CollisionHandler{
         this.preBallCollision(dt);
     }
     playSquareMusic(){
-        if(Game.music) this.ballSound.play(); 
+        // if(Game.music) this.ballSound.play(); 
+        sound.play("ballSound");
     }
     playCoinMusic(){
-        if (Game.music) this.coinSound.play();
+        // if (Game.music) this.coinSound.play();
+        sound.play("coinSound");
     }
     squareCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
