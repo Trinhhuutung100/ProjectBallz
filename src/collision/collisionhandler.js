@@ -29,11 +29,11 @@ export class CollisionHandler{
     }
     playSquareMusic(){
         // if(Game.music) this.ballSound.play(); 
-        sound.play("ballSound");
+        if(Game.music) sound.play("ballSound");
     }
     playCoinMusic(){
         // if (Game.music) this.coinSound.play();
-        sound.play("coinSound");
+        if(Game.music) sound.play("coinSound");
     }
     squareCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
