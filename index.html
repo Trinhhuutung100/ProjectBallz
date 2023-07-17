@@ -4894,8 +4894,6 @@ class CollisionHandler {
     this.squares = squares;
     this.coins = coins;
     this.preBalls = preBalls;
-    this.ballSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.Sound.from("assets/sounds/ballSound.wav");
-    this.coinSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.Sound.from("assets/sounds/coinSound.wav");
     this.ballGainNum = 0;
   }
   update(dt) {
@@ -4904,12 +4902,10 @@ class CollisionHandler {
     this.preBallCollision(dt);
   }
   playSquareMusic() {
-    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
-      this.ballSound.play();
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("ballSound");
   }
   playCoinMusic() {
-    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
-      this.coinSound.play();
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
   }
   squareCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
