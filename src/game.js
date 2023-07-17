@@ -26,6 +26,7 @@ export class Game{
         this.isFirst = true;
         this.best = 0;
         this.coinScore = 0;
+        this.music = true;
         //this.loadGame();
         this.uiManager = new UIManager();
         console.log("Start");
@@ -136,8 +137,9 @@ export class Game{
     static update(dt){    
         if(this.map.bottom>GameConstants.defaultBottom - GameConstants.ballRadius*3) {
             console.log("Lose");
+            var score = this.map.line - 1;
             this.map.resetMap();
-            this.uiManager.goUI = new GameOverUI();
+            this.uiManager.goUI = new GameOverUI(score);
             this.app.stage.addChild(this.uiManager.goUI);
             return;
         }  

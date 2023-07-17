@@ -1,8 +1,8 @@
 const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
-// const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
-const screenWidth = innerHeight/line*column;
+const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
+// const screenWidth = innerHeight/line*column;
 const squareEdge = screenWidth/16;
 const padding = squareEdge/4;
 //const edge = screenWidth/2/column;

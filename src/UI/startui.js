@@ -56,6 +56,21 @@ export class StartUI extends Container{
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
         tmp.position.set(GameConstants.screenWidth*0.2, GameConstants.screenHeight*0.7);
+        if(Game.music) {
+            tmp.tint = 0xffffff;
+        } else {
+            tmp.tint = 0x444444;
+        }
+        tmp.eventMode = "static";
+        tmp.on("pointerup",() => {
+            Game.music = !Game.music;
+            console.log("Music " + Game.music);
+            if(Game.music) {
+                tmp.tint = 0xffffff;
+            } else {
+                tmp.tint = 0x444444;
+            }
+        });
         this.addChild(tmp);
     }
     drawChartButton(){

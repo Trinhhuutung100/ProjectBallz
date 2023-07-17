@@ -255,7 +255,7 @@ export class BallController extends Container{
                             //     this.dx = this.speed;
                             //     this.dy = 0;
                             // }
-                            console.log(alpha + " " + this.dx + " " + this.dy);
+                            // console.log(alpha + " " + this.dx + " " + this.dy);
                         }
                         
                         // di chuot xuong duoi mot doan nhat dinh moi duoc ban

@@ -27,6 +27,12 @@ export class CollisionHandler{
         this.coinCollision(dt);
         this.preBallCollision(dt);
     }
+    playSquareMusic(){
+        if(Game.music) this.ballSound.play(); 
+    }
+    playCoinMusic(){
+        if (Game.music) this.coinSound.play();
+    }
     squareCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
             if(this.balls[b].isBall){
@@ -61,7 +67,7 @@ export class CollisionHandler{
                     }
                     //Corner collision
                     if(this.vectorDistance(bp, leftBottom)<ballRadius){
-                        this.ballSound.play(); 
+                        this.playSquareMusic();
                         this.balls[b].changeColor(color);
                         if(bc.dx>0) bc.dx = -bc.dx;
                         if(bc.dy<0) bc.dy = -bc.dy;
@@ -70,7 +76,7 @@ export class CollisionHandler{
                     } 
                     //Corner collision
                     if(this.vectorDistance(bp, leftTop)<ballRadius){
-                        this.ballSound.play(); 
+                        this.playSquareMusic();
                         this.balls[b].changeColor(color);
                         if(bc.dx>0) bc.dx = -bc.dx;
                         if(bc.dy>0) bc.dy = -bc.dy;
@@ -79,7 +85,7 @@ export class CollisionHandler{
                     } 
                     //Corner collision
                     if(this.vectorDistance(bp, rightBottom)<ballRadius){
-                        this.ballSound.play(); 
+                        this.playSquareMusic();
                         this.balls[b].changeColor(color);
                         if(bc.dx<0) bc.dx = -bc.dx;
                         if(bc.dy<0) bc.dy = -bc.dy;
@@ -88,7 +94,7 @@ export class CollisionHandler{
                     } 
                     //Corner collision
                     if(this.vectorDistance(bp, rightTop)<ballRadius){
-                        this.ballSound.play(); 
+                        this.playSquareMusic();
                         this.balls[b].changeColor(color);
                         if(bc.dx<0) bc.dx = -bc.dx;
                         if(bc.dy>0) bc.dy = -bc.dy;
@@ -98,7 +104,7 @@ export class CollisionHandler{
                     if(dx > dy) {      
                         //Horizontal collision     
                         if( dx < ballRadius + edge && dy < edge ) { 
-                            this.ballSound.play();
+                            this.playSquareMusic();
                             this.balls[b].changeColor(color);
                             //this.balls[b].ball.x -=bc.dx*dt;
                             bc.dx = -bc.dx;   
@@ -107,8 +113,8 @@ export class CollisionHandler{
                         }
                     } else { 
                         //Vertical collision
-                        if( dy < ballRadius + edge && dx < edge) {       
-                            this.ballSound.play();  
+                        if( dy < ballRadius + edge && dx < edge) {   
+                            this.playSquareMusic();
                             this.balls[b].changeColor(color);
                             //this.balls[b].ball.y -=bc.dy*dt;
                             bc.dy = -bc.dy;  
@@ -131,7 +137,7 @@ export class CollisionHandler{
                     if(this.vectorDistance({x: ballX, y: ballY}, coin)<ballRadius+coinRadius){
                         this.coins[c].destroy();
                         this.coins.splice(c, 1);
-                        this.coinSound.play();
+                        this.playCoinMusic();
                         Game.coinScore++;
                         Game.uiManager.igUI.drawCoinScore();
                     }
@@ -156,8 +162,8 @@ export class CollisionHandler{
                         this.balls.push(preBall);
                         this.balls[this.balls.length-1].dx = 0; 
                         this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
-                        this.balls[this.balls.length-1].readyGo = true;                          
-                        this.ballSound.play();
+                        this.balls[this.balls.length-1].readyGo = true;         
+                        this.playSquareMusic();
                         this.ballGainNum++;
                     }
                 }
