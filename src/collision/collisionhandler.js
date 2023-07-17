@@ -18,8 +18,8 @@ export class CollisionHandler{
         this.squares = squares;
         this.coins = coins;
         this.preBalls = preBalls;
-        this.ballSound = Sound.from("assets/sounds/Ball.wav");
-        this.coinSound = Sound.from("assets/sounds/Coin.wav");
+        this.ballSound = Sound.from("assets/sounds/ballSound.wav");
+        this.coinSound = Sound.from("assets/sounds/coinSound.wav");
         this.ballGainNum = 0;
     }
     update(dt){
