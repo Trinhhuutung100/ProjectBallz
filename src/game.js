@@ -142,6 +142,7 @@ export class Game{
             console.log("Lose");
             var score = this.map.line - 1;
             this.map.resetMap();
+            Game.app.stage.removeChild(Game.backYard);
             this.uiManager.goUI = new GameOverUI(score);
             this.app.stage.addChild(this.uiManager.goUI);
             return;

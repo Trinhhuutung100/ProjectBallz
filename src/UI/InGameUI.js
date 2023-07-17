@@ -26,6 +26,7 @@ export class InGameUI extends Container{
         tmp.on("pointerup",() => {
             console.log("Pause");
             if(!Game.isWaiting){
+                Game.app.stage.removeChild(Game.backYard);
                 Game.uiManager.psUI = new PauseUI();
                 Game.app.stage.addChild(Game.uiManager.psUI);
             }
