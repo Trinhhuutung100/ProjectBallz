@@ -12,6 +12,7 @@ import { UIManager } from "./UI/uimanager";
 import { GameOverUI } from "./UI/gameoverui";
 import { InGameUI } from "./UI/ingameui";
 import { StartUI } from "./UI/startui";
+import { manifest } from "./manifest";
 
 
 export class Game{
@@ -27,17 +28,19 @@ export class Game{
         this.best = 0;
         this.coinScore = 0;
         this.music = true;
-        //this.loadGame();
-        this.uiManager = new UIManager();
-        console.log("Start");
-        
+        // this.loadGame();
+        this.loadGame().then(() => {
+            this.uiManager = new UIManager();
+        });
+        // this.uiManager = new UIManager();
+        console.log("Start");        
     } 
-    // static async loadGame(){
-    //     await Assets.init({manifest: manifest});
-    //     const bundleIDs = manifest.bundles.map(bundle => bundle.name);
-    //     console.log(bundleIDs);
-    //     await Assets.loadBundle(bundleIDs);
-    // }
+    static async loadGame(){
+        await Assets.init({manifest: manifest});
+        const bundleIDs = manifest.bundles.map(bundle => bundle.name);
+        console.log(bundleIDs);
+        await Assets.loadBundle(bundleIDs);
+    }
     static play(){
         //Remove start-game ui
         Game.app.stage.removeChild(this.uiManager.stUI);

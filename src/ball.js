@@ -3,8 +3,8 @@ import { GameConstants } from "./gameconstants";
 export class Ball extends Container{
     constructor(x, y){
         super();
-        var tt = Texture.from("assets/images/ball.png");
-        this.ball = new Sprite(tt);
+        // var tt = Texture.from("assets/images/ball.png");
+        this.ball = new Sprite(Texture.from("ball"));
         this.ball.width = GameConstants.ballRadius*2;
         this.ball.height = GameConstants.ballRadius*2;
         this.ball.anchor.set(0.5, 0.5);
