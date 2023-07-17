@@ -1,13 +1,13 @@
 import { Container, Sprite, Texture, Ticker} from "pixi.js"
 import TWEEN from "@tweenjs/tween.js"
 import { Ball } from "./ball";
-import { GameConstants } from "./gameconstants";
+import { GameConstants } from "../gameconstants/gameconstants";
 import { gsap} from "gsap"
-import { Game } from "./game";
+import { Game } from "../game";
 export class PreBall extends Ball{
     constructor(x=GameConstants.defaultBallX, y=GameConstants.defaultBottomBall){
         super(x, y);       
-        this.ring = Sprite.from("assets/images/ring.png");
+        this.ring = Sprite.from(Texture.from("ring"));
         this.ring.anchor.set(0.5, 0.5);
         this.ring.width = GameConstants.minRing;
         this.ring.height = GameConstants.minRing;

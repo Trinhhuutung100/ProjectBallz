@@ -1,7 +1,7 @@
-import { Container, Sprite, Text, TextStyle } from "pixi.js";
-import { GameConstants } from "../gameconstants";
+import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
+import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
-import { ActiveBall } from "../activeball";
+import { ActiveBall } from "../objects/activeball";
 
 export class PauseUI extends Container {
     constructor() {
@@ -16,7 +16,7 @@ export class PauseUI extends Container {
         this.drawAdsButton();
     }
     drawBackground(){
-        var tmp = Sprite.from("assets/images/square.png"); 
+        var tmp = Sprite.from(Texture.from("square")); 
         tmp.width = GameConstants.screenWidth
         tmp.height = GameConstants.screenHeight     
         tmp.position.set(0, 0);
@@ -36,7 +36,7 @@ export class PauseUI extends Container {
         this.addChild(text);
     }
     drawContinueButton(){
-        var tmp = Sprite.from("assets/images/continue.png"); 
+        var tmp = Sprite.from(Texture.from("continue")); 
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*8
         tmp.height = GameConstants.squareEdge*2      
@@ -66,7 +66,7 @@ export class PauseUI extends Container {
         this.addChild(tmp);
     }
     drawMainMenuButton(){
-        var tmp = Sprite.from("assets/images/mainmenu.png");
+        var tmp = Sprite.from(Texture.from("mainmenu"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*8
         tmp.height = GameConstants.squareEdge*2
@@ -82,7 +82,7 @@ export class PauseUI extends Container {
         this.addChild(tmp);
     }
     drawMusicButton(){
-        var tmp = Sprite.from("assets/images/music.png");
+        var tmp = Sprite.from(Texture.from("music"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
@@ -105,7 +105,7 @@ export class PauseUI extends Container {
         this.addChild(tmp);
     }
     drawLikeButton(){
-        var tmp = Sprite.from("assets/images/like.png");
+        var tmp = Sprite.from(Texture.from("like"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2.25
         tmp.height = GameConstants.squareEdge*2
@@ -113,7 +113,7 @@ export class PauseUI extends Container {
         this.addChild(tmp);
     }
     drawAdsButton(){
-        var tmp = Sprite.from("assets/images/ads.png");
+        var tmp = Sprite.from(Texture.from("ads"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2

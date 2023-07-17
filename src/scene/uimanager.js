@@ -1,8 +1,8 @@
 import { Game } from "../game";
-import { InGameUI } from "./ingameui";
-import { GameOverUI } from "./gameoverui";
-import { StartUI } from "./startui";
-import { PauseUI } from "./pauseui";
+import { InGameUI } from "../UI/ingameui";
+import { GameOverUI } from "../UI/gameoverui";
+import { StartUI } from "../UI/startui";
+import { PauseUI } from "../UI/pauseui";
 
 export class UIManager{
     constructor(){

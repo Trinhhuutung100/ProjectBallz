@@ -1,10 +1,10 @@
-import { Container, Sprite } from "pixi.js"
-import { GameConstants } from "./gameconstants";
+import { Container, Sprite, Texture } from "pixi.js"
+import { GameConstants } from "../gameconstants/gameconstants";
 
 export class Coin extends Container{
     constructor(x, y){
         super();
-        this.coin = Sprite.from("assets/images/ring.png");
+        this.coin = Sprite.from(Texture.from("ring"));
         this.coin.tint = "yellow";
         this.coin.anchor.set(0.5, 0.5);
         this.coin.width = 2*GameConstants.coinRadius;

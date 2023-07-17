@@ -1,5 +1,5 @@
-import { Container, Sprite, Text, TextStyle } from "pixi.js";
-import { GameConstants } from "../gameconstants";
+import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
+import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 
 export class GameOverUI extends Container {
@@ -38,7 +38,7 @@ export class GameOverUI extends Container {
         this.addChild(tmp);
     }
     drawReplayButton(){
-        var tmp = Sprite.from("assets/images/replay.png");
+        var tmp = Sprite.from(Texture.from("replay"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*8
         tmp.height = GameConstants.squareEdge*2
@@ -51,7 +51,7 @@ export class GameOverUI extends Container {
         this.addChild(tmp);
     }
     drawMainMenuButton(){
-        var tmp = Sprite.from("assets/images/mainmenu.png");
+        var tmp = Sprite.from(Texture.from("mainmenu"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*8
         tmp.height = GameConstants.squareEdge*2
@@ -64,7 +64,7 @@ export class GameOverUI extends Container {
         this.addChild(tmp);
     }
     drawChartButton(){
-        var tmp = Sprite.from("assets/images/chart.png");
+        var tmp = Sprite.from(Texture.from("chart"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
@@ -80,7 +80,7 @@ export class GameOverUI extends Container {
         this.addChild(tmp);
     }
     drawAdsButton(){
-        var tmp = Sprite.from("assets/images/ads.png");
+        var tmp = Sprite.from(Texture.from("ads"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2

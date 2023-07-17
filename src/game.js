@@ -1,18 +1,18 @@
 import { Application, Assets, Sprite, Ticker } from "pixi.js"
-import { ActiveBall } from "./activeball";
-import { PreBall } from "./preball";
-import { BallController } from "./ballcontroller";
-import { Square } from "./square";
-import { CollisionHandler } from "./collisionhandler";
-import { GameConstants } from "./gameconstants";
-import { Coin } from "./coin";
-import { GenMap } from "./genmap";
+import { ActiveBall } from "./objects/activeball";
+import { PreBall } from "./objects/preball";
+import { BallController } from "./controller/ballcontroller";
+import { Square } from "./objects/square";
+import { CollisionHandler } from "./collision/collisionhandler";
+import { GameConstants } from "./gameconstants/gameconstants";
+import { Coin } from "./objects/coin";
+import { GenMap } from "./genmap/genmap";
 import TWEEN from "@tweenjs/tween.js";
-import { UIManager } from "./UI/uimanager";
+import { UIManager } from "./scene/uimanager";
 import { GameOverUI } from "./UI/gameoverui";
 import { InGameUI } from "./UI/ingameui";
 import { StartUI } from "./UI/startui";
-import { manifest } from "./manifest";
+import { manifest } from "./manifest/manifest";
 
 
 export class Game{
@@ -38,7 +38,7 @@ export class Game{
     static async loadGame(){
         await Assets.init({manifest: manifest});
         const bundleIDs = manifest.bundles.map(bundle => bundle.name);
-        console.log(bundleIDs);
+        // console.log(bundleIDs);
         await Assets.loadBundle(bundleIDs);
     }
     static play(){

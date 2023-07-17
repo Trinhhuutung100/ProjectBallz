@@ -1,7 +1,7 @@
 import { Container, Text, TextStyle, Texture } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { gsap } from "gsap";
-import { GameConstants } from "../gameconstants";
+import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 export class StartUI extends Container{
     constructor(){
@@ -15,7 +15,7 @@ export class StartUI extends Container{
         this.drawAdsButton();
     }
     drawBallz(){
-        var tmp= Sprite.from("assets/images/ballz.png");
+        var tmp= Sprite.from(Texture.from("ballz"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*14
         tmp.height = GameConstants.squareEdge*5
@@ -30,7 +30,7 @@ export class StartUI extends Container{
         })
     }
     drawPlayButton(){
-        var tmp = Sprite.from("assets/images/play.png");
+        var tmp = Sprite.from(Texture.from("play"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*8
         tmp.height = GameConstants.squareEdge*2
@@ -43,7 +43,7 @@ export class StartUI extends Container{
         this.addChild(tmp);
     }
     drawRateButton(){
-        var tmp = Sprite.from("assets/images/rate.png");
+        var tmp = Sprite.from(Texture.from("rate"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*8;
         tmp.height = GameConstants.squareEdge*2;
@@ -51,7 +51,7 @@ export class StartUI extends Container{
         this.addChild(tmp);
     }
     drawMusicButton(){
-        var tmp = Sprite.from("assets/images/music.png");
+        var tmp = Sprite.from(Texture.from("music"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
@@ -74,7 +74,7 @@ export class StartUI extends Container{
         this.addChild(tmp);
     }
     drawChartButton(){
-        var tmp = Sprite.from("assets/images/chart.png");
+        var tmp = Sprite.from(Texture.from("chart"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
@@ -82,7 +82,7 @@ export class StartUI extends Container{
         this.addChild(tmp);
     }
     drawBalltButton(){
-        var tmp = Sprite.from("assets/images/iconBall.png");
+        var tmp = Sprite.from(Texture.from("iconBall"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
@@ -90,7 +90,7 @@ export class StartUI extends Container{
         this.addChild(tmp);
     }
     drawAdsButton(){
-        var tmp = Sprite.from("assets/images/ads.png");
+        var tmp = Sprite.from(Texture.from("ads"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2

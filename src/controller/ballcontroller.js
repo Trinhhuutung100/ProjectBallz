@@ -1,7 +1,7 @@
 import TWEEN from "@tweenjs/tween.js";
-import {Container, Sprite, Text, Ticker } from "pixi.js"
-import { GameConstants } from "./gameconstants";
-import { Game } from "./game";
+import {Container, Sprite, Text, Texture, Ticker } from "pixi.js"
+import { GameConstants } from "../gameconstants/gameconstants";
+import { Game } from "../game";
 
 const ballRadius = GameConstants.ballRadius;
 const pi = Math.PI;
@@ -33,7 +33,7 @@ export class BallController extends Container{
         for(var i = 0; i< this.balls.length; i++){
             this.distance[i] = 0;
         }
-        this.needle = Sprite.from("assets/images/needle.png");
+        this.needle = Sprite.from(Texture.from("needle"));
         this.needle.anchor.set(GameConstants.needleAnchor.x, GameConstants.needleAnchor.y);
         this.needle.width = GameConstants.needleWidth;
         this.needle.height = GameConstants.needleHeight;
@@ -292,7 +292,7 @@ export class BallController extends Container{
                             
                             // // Gen predict
                             for( var i = 0; i < this.predict.length -1; i++){
-                                this.beams[i] = Sprite.from("assets/images/square.png");
+                                this.beams[i] = Sprite.from(Texture.from("square"));
                                 this.beams[i].anchor.set(0.5, 1);
                                 this.beams[i].x = this.predict[i].x;
                                 this.beams[i].y = this.predict[i].y;

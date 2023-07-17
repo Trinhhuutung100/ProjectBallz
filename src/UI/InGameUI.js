@@ -1,7 +1,7 @@
 import { Container, Text, TextStyle, Texture } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { gsap } from "gsap";
-import { GameConstants } from "../gameconstants";
+import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import { PauseUI } from "./pauseui";
 export class InGameUI extends Container{
@@ -15,8 +15,7 @@ export class InGameUI extends Container{
         this.drawSpeedupButton();
     }
     drawPauseButton(){
-        var texture = Texture.from("assets/images/pause.png");
-        var tmp = Sprite.from(texture);
+        var tmp = Sprite.from(Texture.from("pause"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*0.75;
         tmp.height = GameConstants.squareEdge*1.25;
@@ -60,7 +59,7 @@ export class InGameUI extends Container{
         this.addChild(this.bestScore);
     }
     drawCoinSymbol(){
-        var tmp = Sprite.from("assets/images/ring.png");
+        var tmp = Sprite.from(Texture.from("ring"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.coinRadius*2;
         tmp.height = GameConstants.coinRadius*2;
@@ -83,8 +82,7 @@ export class InGameUI extends Container{
         this.addChild(this.coinText);
     }
     drawSpeedupButton(){
-        var texture = Texture.from("assets/images/lightning.png");
-        var tmp = Sprite.from(texture);
+        var tmp = Sprite.from(Texture.from("lightning"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*1.5;
         tmp.height = GameConstants.squareEdge*1.5;

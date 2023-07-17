@@ -1,5 +1,5 @@
 import { Container, Sprite, Texture} from "pixi.js"
-import { GameConstants } from "./gameconstants";
+import { GameConstants } from "../gameconstants/gameconstants";
 export class Ball extends Container{
     constructor(x, y){
         super();

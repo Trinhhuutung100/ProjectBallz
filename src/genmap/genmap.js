@@ -1,12 +1,12 @@
 import { Container, Ticker, copySearchParams } from "pixi.js";
-import { GameConstants } from "./gameconstants";
-import { Square } from "./square";
+import { GameConstants } from "../gameconstants/gameconstants";
+import { Square } from "../objects/square";
 import TWEEN, { Tween } from "@tweenjs/tween.js";
-import { Coin } from "./coin";
-import { PreBall } from "./preball";
+import { Coin } from "../objects/coin";
+import { PreBall } from "../objects/preball";
 import { Row } from "./row";
-import { Game } from "./game";
-import { ActiveBall } from "./activeball";
+import { Game } from "../game";
+import { ActiveBall } from "../objects/activeball";
 
 export class GenMap extends Container{
     constructor(){
