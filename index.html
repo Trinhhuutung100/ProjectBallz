@@ -5160,6 +5160,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         delete this.verLines;
         delete this.horLines;
         delete this.cutLines;
+        this.removeChild(this.needle);
         if (this.ready) {
           this.balls.forEach((ball) => {
             ball.dx = this.dx;
@@ -5229,6 +5230,9 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
               delete this.container;
               delete this.predict;
               delete this.beams;
+              delete this.verLines;
+              delete this.horLines;
+              delete this.cutLines;
               this.removeChild(this.needle);
               this.ready = false;
             }
@@ -6250,6 +6254,14 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bottom = 0;
     this.line = 1;
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballGain, _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballNum);
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.container);
+    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.container;
+    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.predict;
+    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.beams;
+    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.verLines;
+    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.horLines;
+    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.cutLines;
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.needle);
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballText = true;
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI);
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI.destroy();
