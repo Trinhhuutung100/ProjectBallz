@@ -4902,10 +4902,12 @@ class CollisionHandler {
     this.preBallCollision(dt);
   }
   playSquareMusic() {
-    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("ballSound");
+    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+      _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("ballSound");
   }
   playCoinMusic() {
-    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
+    if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+      _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
   }
   squareCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
