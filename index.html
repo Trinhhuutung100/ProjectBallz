@@ -4484,6 +4484,7 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.on("pointerup", () => {
       console.log("Pause");
       if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.isWaiting) {
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.backYard);
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI = new _pauseui__WEBPACK_IMPORTED_MODULE_3__.PauseUI();
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
       }
@@ -4657,6 +4658,7 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.on("pointerup", () => {
       console.log("Continue");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChildAt(_game__WEBPACK_IMPORTED_MODULE_2__.Game.backYard);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI.destroy();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.isWaiting = false;
     });
@@ -5911,6 +5913,7 @@ class Game {
       console.log("Lose");
       var score = this.map.line - 1;
       this.map.resetMap();
+      Game.app.stage.removeChild(Game.backYard);
       this.uiManager.goUI = new _UI_gameoverui__WEBPACK_IMPORTED_MODULE_11__.GameOverUI(score);
       this.app.stage.addChild(this.uiManager.goUI);
       return;
@@ -5950,8 +5953,8 @@ const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight / line *
 const squareEdge = screenWidth / 16;
 const padding = squareEdge / 4;
 const ballRadius = squareEdge / 3;
-const defaultBottom = screenHeight / 2 + 5 * padding + 8 * squareEdge;
-const defaultTop = screenHeight / 2 - 5 * padding - 10 * squareEdge;
+const defaultBottom = screenHeight / 2 + 5 * padding + 9 * squareEdge;
+const defaultTop = screenHeight / 2 - 5 * padding - 9 * squareEdge;
 const defaultBottomBall = defaultBottom - ballRadius;
 const defaultTopBall = defaultTop + ballRadius;
 const defaultTopMap = defaultTop + squareEdge;
