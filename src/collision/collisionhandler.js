@@ -37,9 +37,17 @@ export class CollisionHandler{
         if(Game.music) sound.play("coinSound");
     }
     squareCollision(dt){
+        if(!Game.ballController.readyAttack) return;
         for(var b = 0; b< this.balls.length; b++){
             if(this.balls[b].dy != 0 && this.balls[b].isBall){
                 for(var s = 0; s< this.squares.length; s++){
+                    //Destroy square
+                    if(this.squares[s].index == 0) {
+                        this.emitSquareParticale(this.squares[s]);
+                        this.squares[s].destroy();
+                        this.squares.splice(s, 1);
+                        continue;
+                    }
                     //Ball container
                     var bc = this.balls[b];
                     //Get bounds
@@ -61,13 +69,6 @@ export class CollisionHandler{
                     var bp = {x: bx, y: by}
                     //ChangeBallCorlor
                     var color = Math.abs(0xffffff - this.squares[s].color + 4096*b);
-                    //Destroy square
-                    if(this.squares[s].index == 0) {
-                        this.emitSquareParticale(this.squares[s]);
-                        this.squares[s].destroy();
-                        this.squares.splice(s, 1);
-                        break;
-                    }
                     //Corner collision
                     if(this.vectorDistance(bp, leftBottom)<ballRadius){
                         this.playSquareMusic();
