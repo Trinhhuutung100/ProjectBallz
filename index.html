@@ -4352,7 +4352,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor(score) {
+  constructor() {
     super();
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont,
@@ -4360,31 +4360,40 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       fill: "white",
       align: "center"
     });
-    this.score = score;
+    this.isFirst = true;
     this.drawReplayButton();
     this.drawMainMenuButton();
     this.drawChartButton();
     this.drawLikeButton();
     this.drawAdsButton();
-    this.showScore();
-    this.showBest();
   }
-  showScore() {
-    var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.score, this.style);
-    tmp.anchor.set(0.5, 0.5);
-    tmp.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.2);
-    this.addChild(tmp);
+  showScore(score) {
+    if (this.isFirst) {
+      this.score = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(score, this.style);
+      this.score.anchor.set(0.5, 0.5);
+      this.score.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.2);
+      this.addChild(this.score);
+    } else {
+      this.score.text = score;
+      this.score.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.2);
+    }
   }
   showBest() {
-    var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("BEST " + _game__WEBPACK_IMPORTED_MODULE_2__.Game.best, {
-      fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont,
-      fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 2,
-      fill: "white",
-      align: "center"
-    });
-    tmp.anchor.set(0.5, 0.5);
-    tmp.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
-    this.addChild(tmp);
+    if (this.isFirst) {
+      this.best = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("BEST " + _game__WEBPACK_IMPORTED_MODULE_2__.Game.best, {
+        fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont,
+        fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 2,
+        fill: "white",
+        align: "center"
+      });
+      this.best.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
+      this.best.anchor.set(0.5, 0.5);
+      this.addChild(this.best);
+      this.isFirst = false;
+    } else {
+      this.best.text = "BEST " + _game__WEBPACK_IMPORTED_MODULE_2__.Game.best;
+      this.best.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.3);
+    }
   }
   drawReplayButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("replay"));
@@ -4465,12 +4474,20 @@ __webpack_require__.r(__webpack_exports__);
 class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
+    this.isFirst = true;
+    this.backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
+    this.backYard.tint = 2236962;
+    this.backYard.width = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth;
+    this.backYard.height = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultBottom - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop;
+    this.backYard.x = 0.5;
+    this.backYard.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultTop;
+    this.addChildAt(this.backYard);
     this.guide();
     this.drawPauseButton();
-    this.drawBestScore();
     this.drawCoinSymbol();
-    this.drawCoinScore();
     this.drawSpeedupButton();
+    this.drawBestScore();
+    this.drawCoinScore();
   }
   drawPauseButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("pause"));
@@ -4484,7 +4501,6 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.on("pointerup", () => {
       console.log("Pause");
       if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.isWaiting) {
-        _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.backYard);
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI = new _pauseui__WEBPACK_IMPORTED_MODULE_3__.PauseUI();
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
       }
@@ -4493,28 +4509,32 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(tmp);
   }
   drawBestScore() {
-    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize / 2,
-      fill: "white",
-      fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
-    });
-    this.removeChild(this.bestText);
-    this.bestText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("B E S T", this.textStyle);
-    this.bestText.anchor.set(0, 0.5);
-    this.bestText.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    this.bestText.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge / 2;
-    this.addChild(this.bestText);
-    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
-      fill: "white",
-      fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
-    });
-    this.removeChild(this.bestScore);
-    this.bestScore = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_game__WEBPACK_IMPORTED_MODULE_2__.Game.best, this.textStyle);
-    this.bestScore.anchor.set(0, 0.5);
-    this.bestScore.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    this.bestScore.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
-    this.addChild(this.bestScore);
+    if (this.isFirst) {
+      this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize / 2,
+        fill: "white",
+        fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+      });
+      this.bestText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("B E S T", this.textStyle);
+      this.bestText.anchor.set(0, 0.5);
+      this.bestText.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+      this.bestText.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge / 2;
+      this.addChild(this.bestText);
+      this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
+        fill: "white",
+        fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+      });
+      this.bestScore = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_game__WEBPACK_IMPORTED_MODULE_2__.Game.best, this.textStyle);
+      this.bestScore.anchor.set(0, 0.5);
+      this.bestScore.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+      this.bestScore.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+      this.addChild(this.bestScore);
+    } else {
+      this.bestScore.text = _game__WEBPACK_IMPORTED_MODULE_2__.Game.best;
+      this.bestScore.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+      this.bestScore.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    }
   }
   drawCoinSymbol() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("ring"));
@@ -4527,17 +4547,22 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(tmp);
   }
   drawCoinScore() {
-    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
-      fill: "white",
-      fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
-    });
-    this.removeChild(this.coinText);
-    this.coinText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_game__WEBPACK_IMPORTED_MODULE_2__.Game.coinScore, this.textStyle);
-    this.coinText.anchor.set(1, 0.5);
-    this.coinText.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
-    this.coinText.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
-    this.addChild(this.coinText);
+    if (this.isFirst) {
+      this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
+        fill: "white",
+        fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+      });
+      this.coinText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_game__WEBPACK_IMPORTED_MODULE_2__.Game.coinScore, this.textStyle);
+      this.coinText.anchor.set(1, 0.5);
+      this.coinText.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+      this.coinText.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+      this.addChild(this.coinText);
+    } else {
+      this.coinText.text = _game__WEBPACK_IMPORTED_MODULE_2__.Game.coinScore;
+      this.coinText.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 2;
+      this.coinText.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    }
   }
   drawSpeedupButton() {
     var tmp = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("lightning"));
@@ -4580,17 +4605,23 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.guideText);
   }
   setText(score) {
-    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 2,
-      fill: "white",
-      fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
-    });
-    this.removeChild(this.text);
-    this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(score, this.textStyle);
-    this.text.anchor.set(0.5, 0.5);
-    this.text.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2;
-    this.text.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
-    this.addChild(this.text);
+    if (this.isFirst) {
+      this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 2,
+        fill: "white",
+        fontFamily: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultFont
+      });
+      this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(score, this.textStyle);
+      this.text.anchor.set(0.5, 0.5);
+      this.text.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2;
+      this.text.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+      this.addChild(this.text);
+      this.isFirst = false;
+    } else {
+      this.text.text = score;
+      this.text.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / 2;
+      this.text.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 1.5;
+    }
   }
 }
 
@@ -4658,8 +4689,6 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.on("pointerup", () => {
       console.log("Continue");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
-      _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChildAt(_game__WEBPACK_IMPORTED_MODULE_2__.Game.backYard);
-      _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI.destroy();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.isWaiting = false;
     });
     this.addChild(tmp);
@@ -4688,7 +4717,6 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       console.log("Mainmenu");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.resetMap();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
-      _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI.destroy();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.menu();
     });
     this.addChild(tmp);
@@ -5007,7 +5035,8 @@ class CollisionHandler {
           var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy * dt;
           var coin = { x: this.coins[c].coin.getBounds().x + coinRadius, y: this.coins[c].coin.getBounds().y + coinRadius };
           if (this.vectorDistance({ x: ballX, y: ballY }, coin) < ballRadius + coinRadius) {
-            this.coins[c].destroy();
+            _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.coinPool.push(this.coins[c]);
+            this.coins[c].parent.removeChild(this.coins[c]);
             this.coins.splice(c, 1);
             this.playCoinMusic();
             _game__WEBPACK_IMPORTED_MODULE_2__.Game.coinScore++;
@@ -5026,15 +5055,20 @@ class CollisionHandler {
           var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy * dt;
           var preBall = { x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius };
           if (this.vectorDistance({ x: ballX, y: ballY }, preBall) < ballRadius + coinRadius) {
+            var newBall = _game__WEBPACK_IMPORTED_MODULE_2__.Game.ballPool.pop();
+            newBall.ball.position.set(this.preBalls[p].ball.x, this.preBalls[p].ball.y);
+            this.balls.push(newBall);
+            _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(newBall);
+            newBall.isBall = false;
+            newBall.readyGo = true;
+            newBall.changeColor("green");
+            newBall.distance = 0;
+            newBall.dx = 0;
+            newBall.dy = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.fallSpeed * dt;
             this.emitPreBallParticle(this.preBalls[p]);
-            this.preBalls[p].ringDestroy = true;
-            this.preBalls[p].ball.tint = "green";
-            var preBall = this.preBalls[p];
+            _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.preBallPool.push(this.preBalls[p]);
+            this.preBalls[p].parent.removeChild(this.preBalls[p]);
             this.preBalls.splice(p, 1);
-            this.balls.push(preBall);
-            this.balls[this.balls.length - 1].dx = 0;
-            this.balls[this.balls.length - 1].dy = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.fallSpeed * dt;
-            this.balls[this.balls.length - 1].readyGo = true;
             this.playSquareMusic();
             this.ballGainNum++;
           }
@@ -5062,6 +5096,95 @@ class CollisionHandler {
     var emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_5__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_5__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache || (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache = __webpack_require__.t(_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_7__, 2))), [texture]));
     emitter.autoUpdate = true;
     emitter.emit = true;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/containerSpawners/containerSpawner.js":
+/*!***************************************************!*\
+  !*** ./src/containerSpawners/containerSpawner.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ContainerSpawner: () => (/* binding */ ContainerSpawner)
+/* harmony export */ });
+/* harmony import */ var _spawner__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./spawner */ "./src/containerSpawners/spawner.js");
+
+class ContainerSpawner extends _spawner__WEBPACK_IMPORTED_MODULE_0__.Spawner {
+  constructor() {
+    super();
+  }
+  spawn(parent = void 0) {
+    let obj = super.spawn();
+    obj.visible = true;
+    parent == null ? void 0 : parent.addChild(obj);
+    obj.emit(_spawner__WEBPACK_IMPORTED_MODULE_0__.SpawningEvent.Spawn);
+    return obj;
+  }
+  despawn(obj) {
+    var _a;
+    super.despawn(obj);
+    obj.visible = false;
+    (_a = obj.parent) == null ? void 0 : _a.removeChild(obj);
+    obj.emit(_spawner__WEBPACK_IMPORTED_MODULE_0__.SpawningEvent.Despawn);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/containerSpawners/spawner.js":
+/*!******************************************!*\
+  !*** ./src/containerSpawners/spawner.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Spawner: () => (/* binding */ Spawner),
+/* harmony export */   SpawningEvent: () => (/* binding */ SpawningEvent)
+/* harmony export */ });
+const SpawningEvent = Object.freeze({
+  Spawn: "spawn",
+  Despawn: "despawn",
+  Despawned: "despawned"
+});
+class Spawner {
+  constructor() {
+    this.pool = [];
+  }
+  init(createObjectCallback, size = 1) {
+    this.createObject = createObjectCallback;
+    for (let i = 0; i < size; i++) {
+      this.pool.push(this.createObject());
+    }
+  }
+  despawn(obj) {
+    var _a;
+    this.pool.push(obj);
+    (_a = obj.parent) == null ? void 0 : _a.removeChild(obj);
+    if (obj.emit) {
+      obj.emit(SpawningEvent.Despawned, obj);
+    }
+  }
+  spawn() {
+    let obj = this.pool.pop();
+    if (!obj) {
+      obj = this.createObject();
+    }
+    if (obj.once) {
+      obj.once(SpawningEvent.Despawn, () => this.despawn(obj));
+    }
+    if (obj.emit) {
+      obj.emit(SpawningEvent.Spawn, this);
+    }
+    return obj;
   }
 }
 
@@ -5110,10 +5233,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.firstGroundedBall = false;
     this.isCreating = false;
     this.ballText = false;
-    this.distance = [];
-    for (var i = 0; i < this.balls.length; i++) {
-      this.distance[i] = 0;
-    }
     this.needle = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from("needle"));
     this.needle.anchor.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleAnchor.x, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleAnchor.y);
     this.needle.width = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.needleWidth;
@@ -5125,8 +5244,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.cutLines = [];
     this.verLines = [];
     this.horLines = [];
-    this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
-    this.addChild(this.container);
   }
   // Add listener
   init() {
@@ -5147,10 +5264,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       this.ballText = false;
       this.ready = false;
       for (var i = 0; i < this.balls.length; i++) {
-        if (this.distance[i] > i * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls * dt)
+        if (this.balls[i].distance > i * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls * dt)
           this.balls[i].readyGo = true;
         else
-          this.distance[i] += dt;
+          this.balls[i].distance += dt;
         if (this.balls[i].readyGo) {
           this.balls[i].ball.x += this.balls[i].dx * dt;
           this.balls[i].ball.y += this.balls[i].dy * dt;
@@ -5159,7 +5276,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       if (this.allGround) {
         for (var i = 0; i < this.balls.length; i++) {
           let ball = this.balls[i];
-          this.distance[i] = 0;
+          this.balls[i].distance = 0;
           ball.readyGo = false;
           ball.isBall = true;
           var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ x: ball.ball.x }).to({ x: this.groundPositionX }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * dt).onUpdate((obj) => {
@@ -5266,14 +5383,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         this.oldPosition.y = e.clientY;
       }
       if (e.type == "pointerup") {
-        this.removeChild(this.container);
-        delete this.container;
-        delete this.predict;
-        delete this.beams;
-        delete this.verLines;
-        delete this.horLines;
-        delete this.cutLines;
-        this.removeChild(this.needle);
+        this.resetProp();
         if (this.ready) {
           this.balls.forEach((ball) => {
             ball.dx = this.dx;
@@ -5292,7 +5402,6 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
             var y = this.oldPosition.y - e.clientY;
             var alpha = -Math.atan(x / y);
             this.needle.rotation = alpha;
-            this.addChild(this.needle);
             this.ready = true;
             {
               if (x != 0 && y != 0) {
@@ -5309,20 +5418,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
                 _game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.removeChild(_game__WEBPACK_IMPORTED_MODULE_3__.Game.uiManager.igUI.guideText);
               }
               {
-                this.removeChild(this.container);
-                delete this.container;
-                delete this.predict;
-                delete this.beams;
-                delete this.verLines;
-                delete this.horLines;
-                delete this.cutLines;
-                this.container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
-                this.addChild(this.container);
-                this.predict = [];
-                this.beams = [];
-                this.verLines = [];
-                this.horLines = [];
-                this.cutLines = [];
+                this.resetProp();
                 var pre = { x0: 0, y0: 0, x: this.groundPositionX, y: this.groundPositionY, alpha, hypo: 0 };
                 this.predict.push(pre);
                 this.deflectC(this.groundPositionX, this.groundPositionY, alpha, _game__WEBPACK_IMPORTED_MODULE_3__.Game.map.squares);
@@ -5335,18 +5431,12 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
                 this.beams[i].rotation = this.predict[i].alpha;
                 this.beams[i].width = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.squareEdge * 0.05;
                 this.beams[i].height = this.predict[i + 1].hypo;
-                this.container.addChild(this.beams[i]);
+                this.addChild(this.beams[i]);
               }
+              this.addChild(this.needle);
             }
             if (y > 0) {
-              this.removeChild(this.container);
-              delete this.container;
-              delete this.predict;
-              delete this.beams;
-              delete this.verLines;
-              delete this.horLines;
-              delete this.cutLines;
-              this.removeChild(this.needle);
+              this.resetProp();
               this.ready = false;
             }
           }
@@ -5354,228 +5444,14 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       }
     }
   }
-  deflect(x0, y0, alpha0) {
-    var hypo = 0;
-    var x1 = 0;
-    var y1 = 0;
-    var alpha1 = 0;
-    var lb = ballRadius;
-    var rb = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius;
-    var tb = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
-    var bb = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
-    var l = x0 - lb;
-    var r = rb - x0;
-    var t = y0 - tb;
-    var b = bb - y0;
-    var b1 = -Math.atan(l / t);
-    var b2 = -pi + Math.atan(l / b);
-    var g1 = Math.atan(r / t);
-    var g2 = pi - Math.atan(r / b);
-    if (b1 < alpha0 && alpha0 < g1) {
-      hypo = t / Math.cos(alpha0);
-      x1 = x0 + hypo * Math.sin(alpha0);
-      y1 = tb;
-      alpha1 = alpha0 < 0 ? -pi - alpha0 : pi - alpha0;
-    }
-    if (b1 > alpha0 && alpha0 > b2) {
-      hypo = l / Math.abs(Math.sin(alpha0));
-      x1 = lb;
-      y1 = y0 - hypo * Math.cos(alpha0);
-      alpha1 = Math.abs(alpha0);
-    }
-    if (g1 < alpha0 && alpha0 < g2) {
-      hypo = r / Math.abs(Math.sin(alpha0));
-      x1 = rb;
-      y1 = y0 - hypo * Math.cos(alpha0);
-      alpha1 = -Math.abs(alpha0);
-    }
-    if (alpha0 < b2 || alpha0 > g2) {
-      hypo = b / Math.cos(pi - Math.abs(alpha0));
-      x1 = x0 + hypo * Math.sin(alpha0);
-      y1 = bb;
-      alpha1 = alpha0 < 0 ? Math.abs(alpha0) - pi : pi - alpha0;
-    }
-    var pre = { hypo, x: x1, y: y1, alpha: alpha1 };
-    this.predict.push(pre);
-    if (this.predict.length == 6)
-      return;
-    if (y1 == bb) {
-      return;
-    }
-    this.deflect(x1, y1, alpha1);
-  }
-  deflectB(x0, y0, alpha0, squares) {
-    var lb = ballRadius;
-    var rb = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenWidth - ballRadius;
-    var tb = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultTopBall;
-    var bb = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall;
-    {
-      var leftLine = {
-        x1: lb,
-        y1: tb,
-        x2: lb,
-        y2: bb,
-        x: lb,
-        y: 0,
-        len: 0,
-        i: -1,
-        direct: 1
-      };
-      if (!(x0 == leftLine.x && leftLine.y1 < y0 && y0 < leftLine.y2))
-        this.verLines.push(leftLine);
-      var rightLine = {
-        x1: rb,
-        y1: tb,
-        x2: rb,
-        y2: bb,
-        x: rb,
-        y: 0,
-        len: 0,
-        i: -1,
-        direct: 1
-      };
-      if (!(x0 == rightLine.x && rightLine.y1 < y0 && y0 < rightLine.y2))
-        this.verLines.push(rightLine);
-      var topLine = {
-        x1: lb,
-        y1: tb,
-        x2: rb,
-        y2: tb,
-        x: 0,
-        y: tb,
-        len: 0,
-        i: -1,
-        direct: 0
-      };
-      if (!(y0 == topLine.y && topLine.x1 < x0 && x0 < topLine.x2))
-        this.horLines.push(topLine);
-      var bottomLine = {
-        x1: lb,
-        y1: bb,
-        x2: rb,
-        y2: bb,
-        x: 0,
-        y: bb,
-        len: 0,
-        i: -1,
-        direct: 0
-      };
-      if (!(y0 == bottomLine.y && bottomLine.x1 < x0 && x0 < bottomLine.x2))
-        this.horLines.push(bottomLine);
-    }
-    {
-      for (var i = 0; i < squares.length; i++) {
-        var bound = squares[i].square.getBounds();
-        var bdl = bound.left;
-        var bdr = bound.right;
-        var bdt = bound.top;
-        var bdb = bound.bottom;
-        var lVerLine = {
-          x1: bdl,
-          y1: bdt,
-          x2: bdl,
-          y2: bdb,
-          x: bdl,
-          y: 0,
-          len: 0,
-          i,
-          direct: 1
-        };
-        this.verLines.push(lVerLine);
-        var rVerLine = {
-          x1: bdr,
-          y1: bdt,
-          x2: bdr,
-          y2: bdb,
-          x: bdr,
-          y: 0,
-          len: 0,
-          i,
-          direct: 1
-        };
-        this.verLines.push(rVerLine);
-        var tHorLine = {
-          x1: bdl,
-          y1: bdt,
-          x2: bdr,
-          y2: bdt,
-          x: 0,
-          y: bdt,
-          len: 0,
-          i,
-          direct: 0
-        };
-        this.horLines.push(tHorLine);
-        var bHorLine = {
-          x1: bdl,
-          y1: bdb,
-          x2: bdr,
-          y2: bdb,
-          x: 0,
-          y: bdb,
-          len: 0,
-          i,
-          direct: 0
-        };
-        this.horLines.push(bHorLine);
-      }
-    }
-    this.verLines.forEach((verLine) => {
-      verLine.y = (verLine.x - x0) / Math.tan(-alpha0) + y0;
-      if (verLine.y1 < verLine.y && verLine.y < verLine.y2) {
-        verLine.len = this.vectorDistance({ x: verLine.x, y: verLine.y }, { x: x0, y: y0 });
-        if (verLine.len != 0)
-          this.cutLines.push(verLine);
-      }
-    });
-    this.horLines.forEach((horLine) => {
-      horLine.x = (horLine.y - y0) * Math.tan(-alpha0) + x0;
-      if (horLine.x1 < horLine.x && horLine.x < horLine.x2) {
-        horLine.len = this.vectorDistance({ x: horLine.x, y: horLine.y }, { x: x0, y: y0 });
-        if (horLine.len != 0)
-          this.cutLines.push(horLine);
-      }
-    });
-    var cutPoint = { x: 0, y: 0, len: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.screenHeight * 10, i: 0, direct: 0 };
-    for (var i = 0; i < this.cutLines.length; i++) {
-      var cutLine = this.cutLines[i];
-      if (cutLine.x == x0 && cutLine.y == y0)
-        continue;
-      if (cutPoint.len > cutLine.len) {
-        cutPoint.x = cutLine.x;
-        cutPoint.y = cutLine.y;
-        cutPoint.len = cutLine.len;
-        cutPoint.i = cutLine.i;
-        cutPoint.direct = cutLine.direct;
-      }
-    }
-    {
-      var hypo = cutPoint.len;
-      var x1 = cutPoint.x;
-      var y1 = cutPoint.y;
-      var alpha1 = 0;
-      if (cutPoint.direct == 1) {
-        alpha1 = -alpha0;
-      }
-      if (cutPoint.direct == 0) {
-        if (alpha0 > 0) {
-          alpha1 = pi - alpha0;
-        } else {
-          alpha1 = -pi - alpha0;
-        }
-      }
-      var pre = { x0, y0, x: x1, y: y1, alpha: alpha1, hypo };
-      this.predict.push(pre);
-    }
-    {
-      if (cutPoint.i != -1)
-        return;
-      if (this.predict.length == 11)
-        return;
-      if (y1 == _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall)
-        return;
-      this.deflectB(x1, y1, alpha1, squares);
-    }
+  resetProp() {
+    this.removeChildren();
+    this.predict.splice(0, this.predict.length);
+    this.beams.splice(0, this.beams.length);
+    this.verLines.splice(0, this.verLines.length);
+    this.horLines.splice(0, this.horLines.length);
+    this.cutLines.splice(0, this.cutLines.length);
+    this.removeChild(this.needle);
   }
   deflectC(x0, y0, alpha0, squares) {
     var lb = ballRadius;
@@ -5781,6 +5657,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UI_ingameui__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./UI/ingameui */ "./src/UI/ingameui.js");
 /* harmony import */ var _UI_startui__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./UI/startui */ "./src/UI/startui.js");
 /* harmony import */ var _manifest_manifest__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./manifest/manifest */ "./src/manifest/manifest.js");
+/* harmony import */ var _containerSpawners_containerSpawner__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./containerSpawners/containerSpawner */ "./src/containerSpawners/containerSpawner.js");
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -5816,6 +5693,7 @@ var __async = (__this, __arguments, generator) => {
 
 
 
+
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
@@ -5831,6 +5709,12 @@ class Game {
     this.music = true;
     this.loadGame().then(() => {
       this.uiManager = new _scene_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
+      this.app.stage.addChild(this.uiManager.stUI);
+      this.ballPool = [];
+      for (var i = 0; i < 200; i++) {
+        var ball = new _objects_activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
+        this.ballPool.push(ball);
+      }
     });
     console.log("Start");
   }
@@ -5843,8 +5727,7 @@ class Game {
     });
   }
   static play() {
-    Game.app.stage.removeChild(this.uiManager.stUI);
-    this.uiManager.stUI.destroy();
+    this.app.stage.removeChild(this.uiManager.stUI);
     this.isWaiting = false;
     this.startGame();
     if (this.isFirst)
@@ -5852,56 +5735,40 @@ class Game {
     this.isFirst = false;
   }
   static rePlay() {
-    Game.app.stage.removeChild(this.uiManager.goUI);
-    this.uiManager.goUI.destroy();
-    Game.app.stage.removeChild(Game.backYard);
-    Game.backYard.destroy();
-    Game.app.stage.removeChild(this.ballController);
-    this.ballController.destroy();
+    this.app.stage.removeChild(this.uiManager.goUI);
+    this.app.stage.removeChild(this.ballController);
     this.isWaiting = false;
     this.startGame();
   }
   static reStart() {
-    Game.app.stage.removeChild(this.uiManager.psUI);
-    this.uiManager.psUI.destroy();
-    Game.app.stage.removeChild(Game.backYard);
-    Game.backYard.destroy();
-    Game.app.stage.removeChild(this.ballController);
-    this.ballController.destroy();
+    this.app.stage.removeChild(this.uiManager.psUI);
+    this.app.stage.removeChild(this.ballController);
     this.map.resetMap();
     this.isWaiting = false;
     this.startGame();
   }
   static menu() {
-    Game.app.stage.removeChild(Game.backYard);
-    Game.backYard.destroy();
-    Game.app.stage.removeChild(this.ballController);
-    this.ballController.destroy();
-    Game.app.stage.removeChild(this.uiManager.goUI);
-    this.uiManager.goUI.destroy();
-    this.uiManager.stUI = new _UI_startui__WEBPACK_IMPORTED_MODULE_13__.StartUI();
-    Game.app.stage.addChild(this.uiManager.stUI);
+    this.app.stage.removeChild(this.ballController);
+    this.app.stage.removeChild(this.uiManager.goUI);
+    this.app.stage.addChild(this.uiManager.stUI);
   }
   static startGame() {
-    this.backYard = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from("assets/images/square.png");
-    this.backYard.tint = 2236962;
-    this.backYard.width = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth;
-    this.backYard.height = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
-    this.backYard.x = 0.5;
-    this.backYard.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultTop;
-    this.app.stage.addChild(this.backYard);
+    this.app.stage.addChild(this.uiManager.igUI);
     this.balls = [];
     for (var i = 0; i < 1; i++) {
-      var ball = new _objects_activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
+      var ball = this.ballPool.pop();
       this.balls.push(ball);
     }
     this.balls.forEach((ball2) => {
       this.app.stage.addChild(ball2);
     });
-    this.uiManager.igUI = new _UI_ingameui__WEBPACK_IMPORTED_MODULE_12__.InGameUI();
-    Game.app.stage.addChild(this.uiManager.igUI);
-    this.map = new _genmap_genmap__WEBPACK_IMPORTED_MODULE_8__.GenMap();
-    this.app.stage.addChild(this.map);
+    if (this.isFirst) {
+      this.map = new _genmap_genmap__WEBPACK_IMPORTED_MODULE_8__.GenMap();
+      this.app.stage.addChild(this.map);
+    } else {
+      this.map.createNewLine();
+      this.app.stage.addChild(this.map);
+    }
     this.ballController = new _controller_ballcontroller__WEBPACK_IMPORTED_MODULE_3__.BallController(this.balls, this.map);
     this.app.stage.addChild(this.ballController);
     this.collision = new _collision_collisionhandler__WEBPACK_IMPORTED_MODULE_5__.CollisionHandler(this.balls, this.map.squares, this.map.coins, this.map.preBalls);
@@ -5913,17 +5780,17 @@ class Game {
     this._current = 0;
   }
   static update(dt) {
+    if (this.isWaiting)
+      return;
     if (this.map.bottom > _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.defaultBottom - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.ballRadius * 3) {
       console.log("Lose");
       var score = this.map.line - 1;
-      this.map.resetMap();
-      Game.app.stage.removeChild(Game.backYard);
-      this.uiManager.goUI = new _UI_gameoverui__WEBPACK_IMPORTED_MODULE_11__.GameOverUI(score);
       this.app.stage.addChild(this.uiManager.goUI);
+      this.uiManager.goUI.showScore(score);
+      this.uiManager.goUI.showBest();
+      this.map.resetMap();
       return;
     }
-    if (this.isWaiting)
-      return;
     this._dt = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS;
     this._current += this._dt;
     _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_9__["default"].update(this._current);
@@ -6042,6 +5909,21 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.squares = [];
     this.coins = [];
     this.preBalls = [];
+    this.preBallPool = [];
+    for (var i = 0; i < 56; i++) {
+      var preBall = new _objects_preball__WEBPACK_IMPORTED_MODULE_5__.PreBall();
+      this.preBallPool.push(preBall);
+    }
+    this.coinPool = [];
+    for (var i = 0; i < 56; i++) {
+      var coin = new _objects_coin__WEBPACK_IMPORTED_MODULE_4__.Coin();
+      this.coinPool.push(coin);
+    }
+    this.squarePool = [];
+    for (var i = 0; i < 56; i++) {
+      var square = new _objects_square__WEBPACK_IMPORTED_MODULE_2__.Square(0, 0, 1);
+      this.squarePool.push(square);
+    }
     this.createNewLine();
     this.distance = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + 2 * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
     this.count = this.distance;
@@ -6063,19 +5945,27 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         case 0:
           continue;
         case -1:
-          var preBall = new _objects_preball__WEBPACK_IMPORTED_MODULE_5__.PreBall(positionX, positionY);
+          var preBall = this.preBallPool.pop();
+          preBall.ball.position.set(positionX, positionY);
+          preBall.ring.position.set(positionX, positionY);
+          preBall.ringAnimation();
           this.preBalls.push(preBall);
-          this.addChildAt(preBall);
+          this.addChild(preBall);
           continue;
         case -2:
-          var coin = new _objects_coin__WEBPACK_IMPORTED_MODULE_4__.Coin(positionX, positionY);
+          var coin = this.coinPool.pop();
+          coin.coin.position.set(positionX, positionY);
           this.coins.push(coin);
-          this.addChildAt(coin);
+          this.addChild(coin);
           continue;
         default:
-          var square = new _objects_square__WEBPACK_IMPORTED_MODULE_2__.Square(positionX, positionY, value);
+          var square = this.squarePool.pop();
+          square.square.position.set(positionX, positionY);
+          square.index = value;
+          square.color = square.changeColor(value);
+          square.setText();
           this.squares.push(square);
-          this.addChildAt(square);
+          this.addChild(square);
           continue;
       }
     }
@@ -6085,6 +5975,7 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       _game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI.drawBestScore();
     }
     this.count = this.distance;
+    console.log("coinPool:" + this.coinPool.length + " preBallPool:" + this.preBallPool.length + " \nsquarePool:" + this.squarePool.length + " ballPool:" + _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballPool.length);
   }
   pushDown(delta) {
     var dt = delta * 1.55;
@@ -6097,17 +5988,19 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
     if (this.coins.length > 0) {
       if (this.coins[0].getBounds().bottom > bot) {
-        this.coins[0].destroy();
+        this.coinPool.push(this.coins[0]);
+        this.coins[0].parent.removeChild(this.coins[0]);
         this.coins.splice(0, 1);
       }
     }
     if (this.preBalls.length > 0) {
       if (this.preBalls[0].getBounds().bottom > bot) {
-        this.preBalls[0].destroy();
+        this.preBallPool.push(this.preBalls[0]);
+        this.preBalls[0].parent.removeChild(this.preBalls[0]);
         this.preBalls.splice(0, 1);
       }
     }
-    if (this.count > 0) {
+    if (this.count > dt) {
       for (var i = 0; i < this.squares.length; i++) {
         this.squares[i].square.y += dt;
         this.squares[i].text.y += dt;
@@ -6124,44 +6017,42 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
   }
   resetMap() {
+    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAll();
     for (var i = 0; i < this.squares.length; i++) {
-      this.squares[i].destroy();
+      this.squarePool.push(this.squares[i]);
+      this.squares[i].parent.removeChild(this.squares[i]);
     }
-    if (this.squares.length > 0) {
-      this.squares.splice(0, this.squares.length);
-    }
+    this.squares.splice(0, this.squares.length);
     for (var i = 0; i < this.coins.length; i++) {
-      this.coins[i].destroy();
+      this.coinPool.push(this.coins[i]);
+      this.coins[i].parent.removeChild(this.coins[i]);
     }
-    if (this.coins.length > 0) {
-      this.coins.splice(0, this.coins.length);
-    }
+    this.coins.splice(0, this.coins.length);
     for (var i = 0; i < this.preBalls.length; i++) {
-      this.preBalls[i].destroy();
+      this.preBallPool.push(this.preBalls[i]);
+      this.preBalls[i].parent.removeChild(this.preBalls[i]);
     }
-    if (this.preBalls.length > 0) {
-      this.preBalls.splice(0, this.preBalls.length);
-    }
+    this.preBalls.splice(0, this.preBalls.length);
     for (var i = 0; i < _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.length; i++) {
-      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].destroy();
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].ball.x = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultBallX;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].ball.y = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultBottomBall;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].changeColor("white");
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].distance = 0;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].dx = 0;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].dy = 0;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].readyGo = false;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].isBall = true;
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballPool.push(_game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i]);
+      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i].parent.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.balls[i]);
     }
-    if (_game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.length > 0) {
-      _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.splice(0, _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.length);
-    }
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.splice(0, _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.length);
     this.bottom = 0;
     this.line = 1;
-    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballGain, _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballNum);
-    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.container);
-    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.container;
-    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.predict;
-    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.beams;
-    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.verLines;
-    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.horLines;
-    delete _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.cutLines;
-    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.needle);
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballGain);
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballNum);
+    _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.resetProp();
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballText = true;
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI);
-    _game__WEBPACK_IMPORTED_MODULE_7__.Game.uiManager.igUI.destroy();
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.isWaiting = true;
   }
 }
@@ -6433,6 +6324,7 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.ball.y = y;
     this.dx = 0;
     this.dy = 0;
+    this.distance = 0;
     this.readyGo = false;
     this.isBall = true;
     this.addChild(this.ball);
@@ -6462,8 +6354,9 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         var color = Math.abs(16777215 - _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].color + 4096 * b);
         if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].index == 0) {
           _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.emitSquareParticale(_game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s]);
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].destroy();
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares.splice(s, 1);
+          _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squarePool.push(_game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s]);
+          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s].parent.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s]);
+          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares.splice(s, 1);
           continue;
         }
         if (this.vectorDistance(bp, leftBottom) < ballRadius) {
@@ -6598,18 +6491,12 @@ class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
     this.isBall = false;
     this.addChild(this.ring);
     this.ringDestroy = false;
-    this.ringAnimation();
   }
   ringAnimation() {
     var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].Tween({ size: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing });
     tween.to({ size: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.maxRing }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ringTweenTime * pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS).repeat(Infinity).yoyo(true).onUpdate((obj) => {
       this.ring.width = obj.size;
       this.ring.height = obj.size;
-      this.followBall();
-      if (this.ringDestroy) {
-        _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].remove(tween);
-        this.ring.destroy();
-      }
     }).start(_game__WEBPACK_IMPORTED_MODULE_4__.Game._current);
   }
   followBall() {
@@ -6641,7 +6528,7 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y, index) {
     super();
     this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square"));
-    this.color = changeColor(index);
+    this.color = this.changeColor(index);
     this.square.tint = this.color;
     this.square.anchor.set(0.5, 0.5);
     this.square.width = 2 * edge;
@@ -6650,6 +6537,7 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.square.y = y;
     this.addChild(this.square);
     this.index = index;
+    this.isFirst = true;
     this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
       fill: "black",
@@ -6660,23 +6548,29 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   decreaseIndex() {
     if (this.index > 0)
       this.index--;
-    this.color = changeColor(this.index);
+    this.color = this.changeColor(this.index);
     this.setText();
   }
   setText() {
     this.square.tint = this.color;
-    this.removeChild(this.text);
-    this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.index, this.textStyle);
-    this.text.anchor.set(0.5, 0.5);
-    this.text.x = this.square.x;
-    this.text.y = this.square.y;
-    this.addChild(this.text);
+    if (this.isFirst) {
+      this.text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.index, this.textStyle);
+      this.text.anchor.set(0.5, 0.5);
+      this.text.x = this.square.x;
+      this.text.y = this.square.y;
+      this.addChild(this.text);
+      this.isFirst = false;
+    } else {
+      this.text.text = this.index;
+      this.text.x = this.square.x;
+      this.text.y = this.square.y;
+    }
   }
-}
-function changeColor(score) {
-  var baseColor = 15897349;
-  baseColor += score * 2048;
-  return baseColor;
+  changeColor(score) {
+    var baseColor = 15897349;
+    baseColor += score * 2048;
+    return baseColor;
+  }
 }
 
 
@@ -6709,7 +6603,6 @@ class UIManager {
     this.igUI = new _UI_ingameui__WEBPACK_IMPORTED_MODULE_1__.InGameUI();
     this.psUI = new _UI_pauseui__WEBPACK_IMPORTED_MODULE_4__.PauseUI();
     this.goUI = new _UI_gameoverui__WEBPACK_IMPORTED_MODULE_2__.GameOverUI();
-    _game__WEBPACK_IMPORTED_MODULE_0__.Game.app.stage.addChild(this.stUI);
   }
   update() {
   }
