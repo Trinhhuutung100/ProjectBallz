@@ -24,8 +24,16 @@ export class Ball extends Container{
         this.ball.tint = color;
     }
     squareCollision(dt, b){
-        if(this.isBall && (this.dx != 0 || this.dy != 0)){
+        // if(this.isBall){
             for(var s = 0; s< Game.map.squares.length; s++){
+                //Destroy square
+                if(Game.map.squares[s].index == 0) {
+                    Game.collision.emitSquareParticale(Game.map.squares[s]);
+                    Game.map.squarePool.push(Game.collision.squares[s]);
+                    Game.collision.squares[s].parent.removeChild(Game.collision.squares[s]);
+                    Game.collision.squares.splice(s, 1);
+                    break;
+                }
                 //Ball container
                 var bc = this;
                 //Get bounds
@@ -48,14 +56,6 @@ export class Ball extends Container{
                 var bp = {x: bx, y: by}
                 //ChangeBallCorlor
                 var color = Math.abs(0xffffff - Game.map.squares[s].color + 4096*b);
-                //Destroy square
-                if(Game.map.squares[s].index == 0) {
-                    Game.collision.emitSquareParticale(Game.map.squares[s]);
-                    Game.map.squarePool.push(Game.collision.squares[s]);
-                    Game.collision.squares[s].parent.removeChild(Game.collision.squares[s]);
-                    Game.collision.squares.splice(s, 1);
-                    continue;
-                }
                 //Corner collision
                 if(this.vectorDistance(bp, leftBottom)<ballRadius){
                     Game.collision.playSquareMusic();
@@ -114,7 +114,7 @@ export class Ball extends Container{
                     }
                 } 
             }
-        }      
+        // }      
     }
     
     vectorDistance(objA, objB){

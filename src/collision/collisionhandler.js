@@ -131,7 +131,9 @@ export class CollisionHandler{
         }
     }
     squareCollision2(dt){
+        if(!Game.ballController.readyAttack) return;
         for(var b = 0; b< this.balls.length; b++){
+            if(this.balls[b].dy == 0 || !this.balls[b].isBall) continue;
             this.balls[b].squareCollision(dt, b);
         }
     }
