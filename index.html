@@ -4953,9 +4953,17 @@ class CollisionHandler {
       _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
   }
   squareCollision(dt) {
+    if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.readyAttack)
+      return;
     for (var b = 0; b < this.balls.length; b++) {
-      if (this.balls[b].dx != 0 || this.balls[b].dy != 0 || this.balls[b].isBall) {
+      if (this.balls[b].dy != 0 && this.balls[b].isBall) {
         for (var s = 0; s < this.squares.length; s++) {
+          if (this.squares[s].index == 0) {
+            this.emitSquareParticale(this.squares[s]);
+            this.squares[s].destroy();
+            this.squares.splice(s, 1);
+            continue;
+          }
           var bc = this.balls[b];
           var ball = bc.ball.getBounds();
           var square = this.squares[s].square.getBounds();
@@ -4971,12 +4979,6 @@ class CollisionHandler {
           var rightTop = { x: square.right, y: square.top };
           var bp = { x: bx, y: by };
           var color = Math.abs(16777215 - this.squares[s].color + 4096 * b);
-          if (this.squares[s].index == 0) {
-            this.emitSquareParticale(this.squares[s]);
-            this.squares[s].destroy();
-            this.squares.splice(s, 1);
-            break;
-          }
           if (this.vectorDistance(bp, leftBottom) < ballRadius) {
             this.playSquareMusic();
             this.balls[b].changeColor(color);
