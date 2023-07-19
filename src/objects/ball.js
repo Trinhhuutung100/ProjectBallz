@@ -23,13 +23,14 @@ export class Ball extends Container{
         this.ball.tint = color;
     }
     squareCollision(dt, b){
-        if(this.isBall){
+        if(this.isBall && (this.dx != 0 || this.dy != 0)){
             for(var s = 0; s< Game.map.squares.length; s++){
                 //Ball container
                 var bc = this;
                 //Get bounds
                 var ball = bc.ball.getBounds();
                 var square = Game.map.squares[s].square.getBounds();
+                if(this.vectorDistance(ball, square > ballRadius + edge*Math.sqrt(2))) continue;
                 //Position
                 var bx = ball.x + ballRadius + bc.dx*dt;
                 var by = ball.y + ballRadius + bc.dy*dt;
