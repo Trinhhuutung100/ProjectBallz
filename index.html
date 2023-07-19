@@ -5729,15 +5729,39 @@ class Game {
     this.coinScore = 0;
     this.music = true;
     this.loadGame().then(() => {
-      this.uiManager = new _scene_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
-      this.app.stage.addChild(this.uiManager.stUI);
-      this.ballPool = [];
-      for (var i = 0; i < 200; i++) {
-        var ball = new _objects_activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
-        this.ballPool.push(ball);
-      }
+      this.createPool().then(() => {
+        this.uiManager = new _scene_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
+        this.app.stage.addChild(this.uiManager.stUI);
+      });
     });
     console.log("Start");
+  }
+  static createPool() {
+    return __async(this, null, function* () {
+      yield this.pool();
+    });
+  }
+  static pool() {
+    this.ballPool = [];
+    for (var i = 0; i < 200; i++) {
+      var ball = new _objects_activeball__WEBPACK_IMPORTED_MODULE_1__.ActiveBall();
+      this.ballPool.push(ball);
+    }
+    this.preBallPool = [];
+    for (var i = 0; i < 56; i++) {
+      var preBall = new _objects_preball__WEBPACK_IMPORTED_MODULE_2__.PreBall();
+      this.preBallPool.push(preBall);
+    }
+    this.coinPool = [];
+    for (var i = 0; i < 56; i++) {
+      var coin = new _objects_coin__WEBPACK_IMPORTED_MODULE_7__.Coin();
+      this.coinPool.push(coin);
+    }
+    this.squarePool = [];
+    for (var i = 0; i < 56; i++) {
+      var square = new _objects_square__WEBPACK_IMPORTED_MODULE_4__.Square(0, 0, 1);
+      this.squarePool.push(square);
+    }
   }
   static loadGame() {
     return __async(this, null, function* () {
@@ -5931,21 +5955,9 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.squares = [];
     this.coins = [];
     this.preBalls = [];
-    this.preBallPool = [];
-    for (var i = 0; i < 56; i++) {
-      var preBall = new _objects_preball__WEBPACK_IMPORTED_MODULE_5__.PreBall();
-      this.preBallPool.push(preBall);
-    }
-    this.coinPool = [];
-    for (var i = 0; i < 56; i++) {
-      var coin = new _objects_coin__WEBPACK_IMPORTED_MODULE_4__.Coin();
-      this.coinPool.push(coin);
-    }
-    this.squarePool = [];
-    for (var i = 0; i < 56; i++) {
-      var square = new _objects_square__WEBPACK_IMPORTED_MODULE_2__.Square(0, 0, 1);
-      this.squarePool.push(square);
-    }
+    this.preBallPool = _game__WEBPACK_IMPORTED_MODULE_7__.Game.preBallPool;
+    this.coinPool = _game__WEBPACK_IMPORTED_MODULE_7__.Game.coinPool;
+    this.squarePool = _game__WEBPACK_IMPORTED_MODULE_7__.Game.squarePool;
     this.createNewLine();
     this.distance = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.padding + 2 * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge;
     this.count = this.distance;
