@@ -6441,11 +6441,13 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.ball.tint = color;
   }
   squareCollision(dt, b) {
-    if (this.isBall) {
+    if (this.isBall && (this.dx != 0 || this.dy != 0)) {
       for (var s = 0; s < _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares.length; s++) {
         var bc = this;
         var ball = bc.ball.getBounds();
         var square = _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].square.getBounds();
+        if (this.vectorDistance(ball, square > ballRadius + edge * Math.sqrt(2)))
+          continue;
         var bx = ball.x + ballRadius + bc.dx * dt;
         var by = ball.y + ballRadius + bc.dy * dt;
         var sx = square.x + edge;
