@@ -14,7 +14,22 @@ export class GenMap extends Container{
         this.line = 1;
         this.squares = [];
         this.coins = [];
-        this.preBalls = [];    
+        this.preBalls = [];   
+        this.preBallPool = [];        
+        for(var i = 0; i < 56; i++){
+            var preBall = new PreBall();
+            this.preBallPool.push(preBall);
+        }
+        this.coinPool = [];        
+        for(var i = 0; i < 56; i++){
+            var coin = new Coin();
+            this.coinPool.push(coin);
+        }
+        this.squarePool = [];        
+        for(var i = 0; i < 56; i++){
+            var square = new Square(0, 0, 1);
+            this.squarePool.push(square);
+        } 
         this.createNewLine();  
         this.distance = GameConstants.padding + 2*GameConstants.squareEdge;
         this.count = this.distance
@@ -38,19 +53,27 @@ export class GenMap extends Container{
                 case 0:
                     continue;
                 case -1:
-                    var preBall = new PreBall(positionX, positionY);
+                    var preBall = this.preBallPool.pop();
+                    preBall.ball.position.set(positionX, positionY);
+                    preBall.ring.position.set(positionX, positionY);
+                    preBall.ringAnimation();
                     this.preBalls.push(preBall);
-                    this.addChildAt(preBall);
+                    this.addChild(preBall);
                     continue;
                 case -2:
-                    var coin = new Coin(positionX, positionY);
+                    var coin = this.coinPool.pop();
+                    coin.coin.position.set(positionX, positionY);
                     this.coins.push(coin);
-                    this.addChildAt(coin);
+                    this.addChild(coin);
                     continue;
                 default:
-                    var square = new Square(positionX, positionY, value);
+                    var square = this.squarePool.pop();
+                    square.square.position.set(positionX, positionY);
+                    square.index = value;
+                    square.color = square.changeColor(value);
+                    square.setText();
                     this.squares.push(square);
-                    this.addChildAt(square);
+                    this.addChild(square);
                     continue;
             }
         }
@@ -60,6 +83,7 @@ export class GenMap extends Container{
             Game.uiManager.igUI.drawBestScore();
         }
         this.count = this.distance;
+        console.log("coinPool:" + this.coinPool.length + " preBallPool:" + this.preBallPool.length + " \nsquarePool:" + this.squarePool.length + " ballPool:" + Game.ballPool.length);
     }
     pushDown(delta){
         var dt = delta*1.55;
@@ -72,17 +96,19 @@ export class GenMap extends Container{
         }
         if(this.coins.length>0){
             if(this.coins[0].getBounds().bottom > bot){
-                this.coins[0].destroy();
+                this.coinPool.push(this.coins[0]);
+                this.coins[0].parent.removeChild(this.coins[0]);
                 this.coins.splice(0, 1);
             }
         }
         if(this.preBalls.length>0){
             if(this.preBalls[0].getBounds().bottom > bot){
-                this.preBalls[0].destroy();
+                this.preBallPool.push(this.preBalls[0]);
+                this.preBalls[0].parent.removeChild(this.preBalls[0]);
                 this.preBalls.splice(0, 1);
             }
         }
-        if(this.count > 0){
+        if(this.count > dt){
             for(var i = 0; i < this.squares.length; i++){
                 //console.log(" over here");
                 this.squares[i].square.y +=dt;
@@ -100,55 +126,47 @@ export class GenMap extends Container{
         }       
     }
     resetMap(){
+        TWEEN.removeAll();
+
         for(var i = 0; i < this.squares.length; i++){
-            this.squares[i].destroy();
+            this.squarePool.push(this.squares[i]);
+            this.squares[i].parent.removeChild(this.squares[i]);
         }
-        if(this.squares.length>0){
-            this.squares.splice(0, this.squares.length);
-        }
+        this.squares.splice(0, this.squares.length);
 
         for(var i = 0; i < this.coins.length; i++){
-            this.coins[i].destroy();
+            this.coinPool.push(this.coins[i]);
+            this.coins[i].parent.removeChild(this.coins[i]);
         }
-        if(this.coins.length>0){
-            this.coins.splice(0, this.coins.length);
-        }
+        this.coins.splice(0, this.coins.length);
 
         for(var i = 0; i < this.preBalls.length; i++){
-            this.preBalls[i].destroy();
+            this.preBallPool.push(this.preBalls[i]);
+            this.preBalls[i].parent.removeChild(this.preBalls[i]);
         } 
-        if(this.preBalls.length>0){
-            this.preBalls.splice(0, this.preBalls.length);
-        }
-        for(var i = 0; i < Game.balls.length; i++){
-            Game.balls[i].destroy();
+        this.preBalls.splice(0, this.preBalls.length);
+        
+        for(var i = 0; i < Game.balls.length; i++){   
+            Game.balls[i].ball.x = GameConstants.defaultBallX;
+            Game.balls[i].ball.y = GameConstants.defaultBottomBall;
+            Game.balls[i].changeColor("white");
+            Game.balls[i].distance = 0;  
+            Game.balls[i].dx = 0;
+            Game.balls[i].dy = 0;        
+            Game.balls[i].readyGo = false;
+            Game.balls[i].isBall = true;
+            Game.ballPool.push(Game.balls[i]);
+            Game.balls[i].parent.removeChild(Game.balls[i]);
         } 
-        if(Game.balls.length>0){
-            Game.balls.splice(0, Game.balls.length);
-        }
-        // if(Game.balls.length>1){
-        //     for(var i = 1; i < Game.balls.length; i++){
-        //         Game.balls[i].destroy();
-        //     } 
-        //     Game.balls.splice(1, Game.balls.length-1);
-        // }
+        Game.balls.splice(0, Game.balls.length);
+
         this.bottom = 0;
         this.line = 1;
-        Game.ballController.removeChild(Game.ballController.ballGain,  Game.ballController.ballNum)
-                     
-        Game.ballController.removeChild(Game.ballController.container);
-        delete Game.ballController.container;
-        delete Game.ballController.predict;
-        delete Game.ballController.beams;
-        delete Game.ballController.verLines;
-        delete Game.ballController.horLines;
-        delete Game.ballController.cutLines;
-        Game.ballController.removeChild(Game.ballController.needle);
-        Game.ballController.ballText = true;
-        // this.createNewLine();          
+        Game.ballController.removeChild(Game.ballController.ballGain);
+        Game.ballController.removeChild(Game.ballController.ballNum); 
+        Game.ballController.resetProp();
+        Game.ballController.ballText = true;      
         Game.app.stage.removeChild(Game.uiManager.igUI);
-        Game.uiManager.igUI.destroy();   
-        // Game.app.stage.removeChild(Game.balls[0]);
         Game.isWaiting = true;
 
     }

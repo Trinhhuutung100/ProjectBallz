@@ -10,7 +10,6 @@ export class UIManager{
         this.igUI = new InGameUI();
         this.psUI = new PauseUI();
         this.goUI = new GameOverUI();
-        Game.app.stage.addChild(this.stUI);
     }
     update(){
     }

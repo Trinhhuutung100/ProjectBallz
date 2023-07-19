@@ -6,7 +6,7 @@ export class Square extends Container{
     constructor(x, y, index){
         super();
         this.square = Sprite.from(Texture.from("square"));
-        this.color = changeColor(index);
+        this.color = this.changeColor(index);
         this.square.tint = this.color;
         this.square.anchor.set(0.5, 0.5);
         this.square.width = 2*edge;
@@ -15,6 +15,7 @@ export class Square extends Container{
         this.square.y = y;
         this.addChild(this.square);
         this.index = index;
+        this.isFirst = true;
         this.textStyle = new TextStyle({
             fontSize: GameConstants.fontSize,
             fill: "black",
@@ -24,21 +25,28 @@ export class Square extends Container{
     }    
     decreaseIndex(){
         if(this.index > 0)this.index--;
-        this.color = changeColor(this.index);
+        this.color = this.changeColor(this.index);
         this.setText();
     }
     setText(){
         this.square.tint = this.color;
-        this.removeChild(this.text);
-        this.text = new Text(this.index, this.textStyle);
-        this.text.anchor.set(0.5, 0.5);
-        this.text.x = this.square.x;
-        this.text.y = this.square.y;
-        this.addChild(this.text);        
+        if(this.isFirst){
+            this.text = new Text(this.index, this.textStyle);
+            this.text.anchor.set(0.5, 0.5);
+            this.text.x = this.square.x;
+            this.text.y = this.square.y;
+            this.addChild(this.text);   
+            this.isFirst = false;
+        }    
+        else {
+            this.text.text = this.index;
+            this.text.x = this.square.x;
+            this.text.y = this.square.y;
+        }   
     }
-}
-function changeColor(score){// hàm đổi màu theo điểm
-    var baseColor = 0xf29305;
-    baseColor +=score*2048;
-    return baseColor;
+    changeColor(score){// hàm đổi màu theo điểm
+        var baseColor = 0xf29305;
+        baseColor +=score*2048;
+        return baseColor;
+    }
 }

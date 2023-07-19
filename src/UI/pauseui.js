@@ -46,8 +46,6 @@ export class PauseUI extends Container {
         tmp.on("pointerup",() => {
             console.log("Continue");        
             Game.app.stage.removeChild(Game.uiManager.psUI);
-            Game.app.stage.addChildAt(Game.backYard);
-            Game.uiManager.psUI.destroy();
             Game.isWaiting = false;            
         });
         this.addChild(tmp);
@@ -77,7 +75,6 @@ export class PauseUI extends Container {
             console.log("Mainmenu");
             Game.map.resetMap();
             Game.app.stage.removeChild(Game.uiManager.psUI);
-            Game.uiManager.psUI.destroy();
             Game.menu();
         });
         this.addChild(tmp);

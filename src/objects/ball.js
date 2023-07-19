@@ -15,6 +15,7 @@ export class Ball extends Container{
         this.ball.y = y;
         this.dx = 0;
         this.dy = 0;
+        this.distance = 0;
         this.readyGo = false;
         this.isBall = true;
         this.addChild(this.ball);
@@ -50,8 +51,9 @@ export class Ball extends Container{
                 //Destroy square
                 if(Game.map.squares[s].index == 0) {
                     Game.collision.emitSquareParticale(Game.map.squares[s]);
-                    Game.map.squares[s].destroy();
-                    Game.map.squares.splice(s, 1);
+                    Game.map.squarePool.push(Game.collision.squares[s]);
+                    Game.collision.squares[s].parent.removeChild(Game.collision.squares[s]);
+                    Game.collision.squares.splice(s, 1);
                     continue;
                 }
                 //Corner collision

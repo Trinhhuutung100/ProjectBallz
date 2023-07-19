@@ -143,7 +143,8 @@ export class CollisionHandler{
                     var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy*dt;
                     var coin = {x: this.coins[c].coin.getBounds().x + coinRadius, y: this.coins[c].coin.getBounds().y + coinRadius};
                     if(this.vectorDistance({x: ballX, y: ballY}, coin)<ballRadius+coinRadius){
-                        this.coins[c].destroy();
+                        Game.map.coinPool.push(this.coins[c]);
+                        this.coins[c].parent.removeChild(this.coins[c]);      
                         this.coins.splice(c, 1);
                         this.playCoinMusic();
                         Game.coinScore++;
@@ -162,15 +163,29 @@ export class CollisionHandler{
                     var ballY = ball.getBounds().y + ballRadius + this.balls[b].dy*dt;
                     var preBall = {x: this.preBalls[p].ball.getBounds().x + ballRadius, y: this.preBalls[p].ball.getBounds().y + ballRadius};
                     if(this.vectorDistance({x: ballX, y: ballY}, preBall)<ballRadius+coinRadius){
+                        // this.preBalls[p].ringDestroy = true;
+                        // this.preBalls[p].ball.tint = "green";
+                        // var preBall = this.preBalls[p];                    
+                        // this.preBalls.splice(p, 1);
+                        // this.balls.push(preBall);
+                        // this.balls[this.balls.length-1].dx = 0; 
+                        // this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
+                        // this.balls[this.balls.length-1].readyGo = true; 
+                        var newBall = Game.ballPool.pop();
+                        newBall.ball.position.set(this.preBalls[p].ball.x, this.preBalls[p].ball.y);  
+                        this.balls.push(newBall);
+                        Game.app.stage.addChild(newBall);
+                        newBall.isBall = false;  
+                        newBall.readyGo = true;    
+                        newBall.changeColor("green"); 
+                        newBall.distance = 0; 
+                        newBall.dx = 0; 
+                        newBall.dy = GameConstants.fallSpeed*dt;  
                         this.emitPreBallParticle(this.preBalls[p]);
-                        this.preBalls[p].ringDestroy = true;
-                        this.preBalls[p].ball.tint = "green";
-                        var preBall = this.preBalls[p];                    
-                        this.preBalls.splice(p, 1);
-                        this.balls.push(preBall);
-                        this.balls[this.balls.length-1].dx = 0; 
-                        this.balls[this.balls.length-1].dy = GameConstants.fallSpeed*dt;    
-                        this.balls[this.balls.length-1].readyGo = true;         
+                        Game.map.preBallPool.push(this.preBalls[p]);
+                        this.preBalls[p].parent.removeChild(this.preBalls[p]);       
+                        // this.preBalls[p].destroy();               
+                        this.preBalls.splice(p, 1);  
                         this.playSquareMusic();
                         this.ballGainNum++;
                     }

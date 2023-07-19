@@ -3,7 +3,7 @@ import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 
 export class GameOverUI extends Container {
-    constructor(score) {
+    constructor() {
         super();
         this.style = new TextStyle({
             fontFamily: GameConstants.defaultFont,
@@ -11,31 +11,42 @@ export class GameOverUI extends Container {
             fill: "white",
             align: "center"
         });
-        this.score = score; 
+        this.isFirst = true;
         this.drawReplayButton();
         this.drawMainMenuButton();
         this.drawChartButton();
         this.drawLikeButton();
         this.drawAdsButton();
-        this.showScore();
-        this.showBest();
     }
-    showScore(){
-        var tmp = new Text(this.score, this.style);
-        tmp.anchor.set(0.5, 0.5);
-        tmp.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.2);
-        this.addChild(tmp);
+    showScore(score){
+        if(this.isFirst) {
+            this.score = new Text(score, this.style);
+            this.score.anchor.set(0.5, 0.5);
+            this.score.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.2);
+            this.addChild(this.score);
+        }
+        else {
+            this.score.text = score;
+            this.score.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.2);
+        }
     }
     showBest(){
-        var tmp = new Text("BEST " + Game.best, {
-            fontFamily: GameConstants.defaultFont,
-            fontSize: GameConstants.fontSize*2,
-            fill: "white",
-            align: "center"
-        });
-        tmp.anchor.set(0.5, 0.5);
-        tmp.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.3);
-        this.addChild(tmp);
+        if(this.isFirst) {
+            this.best = new Text("BEST " + Game.best, {
+                fontFamily: GameConstants.defaultFont,
+                fontSize: GameConstants.fontSize*2,
+                fill: "white",
+                align: "center"
+            });
+            this.best.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.3);
+            this.best.anchor.set(0.5, 0.5);
+            this.addChild(this.best);
+            this.isFirst = false;
+        }
+        else {
+            this.best.text = "BEST " + Game.best;
+            this.best.position.set(GameConstants.screenWidth/2, GameConstants.screenHeight*0.3);
+        }
     }
     drawReplayButton(){
         var tmp = Sprite.from(Texture.from("replay"));

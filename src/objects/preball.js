@@ -16,7 +16,6 @@ export class PreBall extends Ball{
         this.isBall = false;
         this.addChild(this.ring);  
         this.ringDestroy = false;
-        this.ringAnimation();
     }
     ringAnimation(){        
         var tween = new TWEEN.Tween({ size: GameConstants.minRing});
@@ -24,14 +23,8 @@ export class PreBall extends Ball{
             .repeat(Infinity)
             .yoyo(true)
             .onUpdate((obj) => {
-                //console.log("DIO");
                 this.ring.width = obj.size;
                 this.ring.height = obj.size;
-                this.followBall();
-                if(this.ringDestroy) {
-                    TWEEN.remove(tween);
-                    this.ring.destroy();
-                }
             })
             .start(Game._current);            
     }
