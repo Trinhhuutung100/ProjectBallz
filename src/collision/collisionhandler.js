@@ -23,7 +23,7 @@ export class CollisionHandler{
         this.ballGainNum = 0;
     }
     update(dt){
-        // this.squareCollision(dt);
+        // this.squareCollision(dt);//
         this.squareCollision2(dt);
         this.coinCollision(dt);
         this.preBallCollision(dt);
