@@ -4940,7 +4940,7 @@ class CollisionHandler {
     this.ballGainNum = 0;
   }
   update(dt) {
-    this.squareCollision(dt);
+    this.squareCollision2(dt);
     this.coinCollision(dt);
     this.preBallCollision(dt);
   }
@@ -5039,7 +5039,11 @@ class CollisionHandler {
     }
   }
   squareCollision2(dt) {
+    if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.readyAttack)
+      return;
     for (var b = 0; b < this.balls.length; b++) {
+      if (this.balls[b].dy == 0 || !this.balls[b].isBall)
+        continue;
       this.balls[b].squareCollision(dt, b);
     }
   }
@@ -6369,86 +6373,84 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.ball.tint = color;
   }
   squareCollision(dt, b) {
-    if (this.isBall && (this.dx != 0 || this.dy != 0)) {
-      for (var s = 0; s < _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares.length; s++) {
-        var bc = this;
-        var ball = bc.ball.getBounds();
-        var square = _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].square.getBounds();
-        if (this.vectorDistance(ball, square > ballRadius + edge * Math.sqrt(2)))
-          continue;
-        var bx = ball.x + ballRadius + bc.dx * dt;
-        var by = ball.y + ballRadius + bc.dy * dt;
-        var sx = square.x + edge;
-        var sy = square.y + edge;
-        var dx = Math.abs(bx - sx);
-        var dy = Math.abs(by - sy);
-        var leftBottom = { x: square.left, y: square.bottom };
-        var leftTop = { x: square.left, y: square.top };
-        var rightBottom = { x: square.right, y: square.bottom };
-        var rightTop = { x: square.right, y: square.top };
-        var bp = { x: bx, y: by };
-        var color = Math.abs(16777215 - _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].color + 4096 * b);
-        if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].index == 0) {
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.emitSquareParticale(_game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s]);
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squarePool.push(_game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s]);
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s].parent.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s]);
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares.splice(s, 1);
-          continue;
-        }
-        if (this.vectorDistance(bp, leftBottom) < ballRadius) {
+    for (var s = 0; s < _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares.length; s++) {
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].index == 0) {
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.emitSquareParticale(_game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s]);
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squarePool.push(_game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s]);
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s].parent.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares[s]);
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares.splice(s, 1);
+        break;
+      }
+      var bc = this;
+      var ball = bc.ball.getBounds();
+      var square = _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].square.getBounds();
+      if (this.vectorDistance(ball, square > ballRadius + edge * Math.sqrt(2)))
+        continue;
+      var bx = ball.x + ballRadius + bc.dx * dt;
+      var by = ball.y + ballRadius + bc.dy * dt;
+      var sx = square.x + edge;
+      var sy = square.y + edge;
+      var dx = Math.abs(bx - sx);
+      var dy = Math.abs(by - sy);
+      var leftBottom = { x: square.left, y: square.bottom };
+      var leftTop = { x: square.left, y: square.top };
+      var rightBottom = { x: square.right, y: square.bottom };
+      var rightTop = { x: square.right, y: square.top };
+      var bp = { x: bx, y: by };
+      var color = Math.abs(16777215 - _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].color + 4096 * b);
+      if (this.vectorDistance(bp, leftBottom) < ballRadius) {
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
+        this.changeColor(color);
+        if (bc.dx > 0)
+          bc.dx = -bc.dx;
+        if (bc.dy < 0)
+          bc.dy = -bc.dy;
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
+        continue;
+      }
+      if (this.vectorDistance(bp, leftTop) < ballRadius) {
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
+        this.changeColor(color);
+        if (bc.dx > 0)
+          bc.dx = -bc.dx;
+        if (bc.dy > 0)
+          bc.dy = -bc.dy;
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
+        continue;
+      }
+      if (this.vectorDistance(bp, rightBottom) < ballRadius) {
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
+        this.changeColor(color);
+        if (bc.dx < 0)
+          bc.dx = -bc.dx;
+        if (bc.dy < 0)
+          bc.dy = -bc.dy;
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
+        continue;
+      }
+      if (this.vectorDistance(bp, rightTop) < ballRadius) {
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
+        this.changeColor(color);
+        if (bc.dx < 0)
+          bc.dx = -bc.dx;
+        if (bc.dy > 0)
+          bc.dy = -bc.dy;
+        _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
+        continue;
+      }
+      if (dx > dy) {
+        if (dx < ballRadius + edge && dy < edge) {
           _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
           this.changeColor(color);
-          if (bc.dx > 0)
-            bc.dx = -bc.dx;
-          if (bc.dy < 0)
-            bc.dy = -bc.dy;
+          bc.dx = -bc.dx;
           _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
-          continue;
         }
-        if (this.vectorDistance(bp, leftTop) < ballRadius) {
+      } else {
+        if (dy < ballRadius + edge && dx < edge) {
           _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
           this.changeColor(color);
-          if (bc.dx > 0)
-            bc.dx = -bc.dx;
-          if (bc.dy > 0)
-            bc.dy = -bc.dy;
+          bc.dy = -bc.dy;
           _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
-          continue;
-        }
-        if (this.vectorDistance(bp, rightBottom) < ballRadius) {
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
-          this.changeColor(color);
-          if (bc.dx < 0)
-            bc.dx = -bc.dx;
-          if (bc.dy < 0)
-            bc.dy = -bc.dy;
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
-          continue;
-        }
-        if (this.vectorDistance(bp, rightTop) < ballRadius) {
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
-          this.changeColor(color);
-          if (bc.dx < 0)
-            bc.dx = -bc.dx;
-          if (bc.dy > 0)
-            bc.dy = -bc.dy;
-          _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
-          continue;
-        }
-        if (dx > dy) {
-          if (dx < ballRadius + edge && dy < edge) {
-            _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
-            this.changeColor(color);
-            bc.dx = -bc.dx;
-            _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
-          }
-        } else {
-          if (dy < ballRadius + edge && dx < edge) {
-            _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.playSquareMusic();
-            this.changeColor(color);
-            bc.dy = -bc.dy;
-            _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares[s].decreaseIndex();
-          }
         }
       }
     }
