@@ -36,6 +36,12 @@ export class BallController extends Container{
         this.needle.y = GameConstants.defaultBottomBall;
         this.predict = [];
         this.beams = [];
+        for( var i = 0; i < 11; i++){
+            this.beams[i] = Sprite.from(Texture.from("square"));
+            this.beams[i].anchor.set(0.5, 1);
+            this.beams[i].width = 0;
+            this.beams[i].height = 0;
+        }
         this.cutLines = [];
         this.verLines =[];
         this.horLines = [];
@@ -249,15 +255,12 @@ export class BallController extends Container{
                             
                             // // Gen predict
                             for( var i = 0; i < this.predict.length -1; i++){
-                                this.beams[i] = Sprite.from(Texture.from("square"));
-                                this.beams[i].anchor.set(0.5, 1);
                                 this.beams[i].x = this.predict[i].x;
                                 this.beams[i].y = this.predict[i].y;
                                 this.beams[i].rotation = this.predict[i].alpha;
                                 this.beams[i].width = GameConstants.squareEdge*0.05;
                                 this.beams[i].height = this.predict[i+1].hypo;
-                                this.addChild( this.beams[i]);
-                                // this.container.addChild( this.beams[i]);
+                                this.addChild(this.beams[i]);
                             }
                             this.addChild(this.needle);
                         }
@@ -273,13 +276,14 @@ export class BallController extends Container{
     }
     resetProp() {        
         this.removeChildren();
-        // console.log(this.predict);
+        for( var i = 0; i < this.beams.length; i++){
+            this.beams[i].width = 0;
+            this.beams[i].height = 0;
+        }
         this.predict.splice(0, this.predict.length);
-        this.beams.splice(0, this.beams.length);
         this.verLines.splice(0, this.verLines.length);
         this.horLines.splice(0, this.horLines.length);
         this.cutLines.splice(0, this.cutLines.length);
-        this.removeChild(this.needle);
     }
     deflectC(x0, y0, alpha0, squares){ 
          //Bounds
