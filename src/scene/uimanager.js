@@ -12,5 +12,7 @@ export class UIManager{
         this.goUI = new GameOverUI();
     }
     update(){
+        this.stUI.musicButton.listen();
+        this.psUI.musicButton.listen();
     }
 }

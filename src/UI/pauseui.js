@@ -2,6 +2,7 @@ import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import { ActiveBall } from "../objects/activeball";
+import { MusicButton } from "./musicbutton";
 
 export class PauseUI extends Container {
     constructor() {
@@ -79,28 +80,9 @@ export class PauseUI extends Container {
         });
         this.addChild(tmp);
     }
-    drawMusicButton(){
-        var tmp = Sprite.from(Texture.from("music"));
-        tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.squareEdge*2
-        tmp.height = GameConstants.squareEdge*2
-        tmp.position.set(GameConstants.screenWidth*0.3, GameConstants.screenHeight*0.68);
-        if(Game.music) {
-            tmp.tint = 0xffffff;
-        } else {
-            tmp.tint = 0x444444;
-        }
-        tmp.eventMode = "static";
-        tmp.on("pointerup",() => {
-            Game.music = !Game.music;
-            console.log("Music " + Game.music);
-            if(Game.music) {
-                tmp.tint = 0xffffff;
-            } else {
-                tmp.tint = 0x444444;
-            }
-        });
-        this.addChild(tmp);
+    drawMusicButton(){        
+        this.musicButton = new MusicButton(GameConstants.screenWidth*0.3, GameConstants.screenHeight*0.68);
+        this.addChild(this.musicButton);
     }
     drawLikeButton(){
         var tmp = Sprite.from(Texture.from("like"));

@@ -107,6 +107,7 @@ export class Game{
         this._current = 0;
     }
     static update(dt){    
+        this.uiManager.update();
         if(this.isWaiting) return;
         if(this.map.bottom>GameConstants.defaultBottom - GameConstants.ballRadius*3) {
             console.log("Lose");
