@@ -30,17 +30,37 @@ export class Game{
         this.coinScore = 0;
         this.music = true;
         this.loadGame().then(() => {
-            this.uiManager = new UIManager();
-            this.app.stage.addChild(this.uiManager.stUI);
-            this.ballPool = [];
+            this.createPool().then(() => {
+                this.uiManager = new UIManager();
+                this.app.stage.addChild(this.uiManager.stUI);
+            })
+        })
+        console.log("Start");        
+    } 
+    static async createPool(){
+        await this.pool();
+    }
+    static pool(){
+        this.ballPool = [];
             for(var i = 0; i < 200; i++){
                 var ball = new ActiveBall();
                 this.ballPool.push(ball);
+            }this.preBallPool = [];        
+            for(var i = 0; i < 56; i++){
+                var preBall = new PreBall();
+                this.preBallPool.push(preBall);
             }
-            // console.log(this.ballPool.pool);
-        });
-        console.log("Start");        
-    } 
+            this.coinPool = [];        
+            for(var i = 0; i < 56; i++){
+                var coin = new Coin();
+                this.coinPool.push(coin);
+            }
+            this.squarePool = [];        
+            for(var i = 0; i < 56; i++){
+                var square = new Square(0, 0, 1);
+                this.squarePool.push(square);
+            } 
+    }
     static async loadGame(){
         await Assets.init({manifest: manifest});
         const bundleIDs = manifest.bundles.map(bundle => bundle.name);

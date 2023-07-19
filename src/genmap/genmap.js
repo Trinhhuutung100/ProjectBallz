@@ -15,21 +15,21 @@ export class GenMap extends Container{
         this.squares = [];
         this.coins = [];
         this.preBalls = [];   
-        this.preBallPool = [];        
-        for(var i = 0; i < 56; i++){
-            var preBall = new PreBall();
-            this.preBallPool.push(preBall);
-        }
-        this.coinPool = [];        
-        for(var i = 0; i < 56; i++){
-            var coin = new Coin();
-            this.coinPool.push(coin);
-        }
-        this.squarePool = [];        
-        for(var i = 0; i < 56; i++){
-            var square = new Square(0, 0, 1);
-            this.squarePool.push(square);
-        } 
+        this.preBallPool = Game.preBallPool;        
+        // for(var i = 0; i < 56; i++){
+        //     var preBall = new PreBall();
+        //     this.preBallPool.push(preBall);
+        // }
+        this.coinPool = Game.coinPool;        
+        // for(var i = 0; i < 56; i++){
+        //     var coin = new Coin();
+        //     this.coinPool.push(coin);
+        // }
+        this.squarePool = Game.squarePool;        
+        // for(var i = 0; i < 56; i++){
+        //     var square = new Square(0, 0, 1);
+        //     this.squarePool.push(square);
+        // } 
         this.createNewLine();  
         this.distance = GameConstants.padding + 2*GameConstants.squareEdge;
         this.count = this.distance
