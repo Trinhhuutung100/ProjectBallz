@@ -46,7 +46,7 @@ export class CollisionHandler{
                         this.emitSquareParticale(this.squares[s]);
                         this.squares[s].destroy();
                         this.squares.splice(s, 1);
-                        continue;
+                        break;
                     }
                     //Ball container
                     var bc = this.balls[b];
