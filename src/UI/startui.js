@@ -69,6 +69,13 @@ export class StartUI extends Container{
         tmp.width = GameConstants.squareEdge*2
         tmp.height = GameConstants.squareEdge*2
         tmp.position.set(GameConstants.screenWidth*0.6, GameConstants.screenHeight*0.7);
+        tmp.eventMode = "static";
+        tmp.on("pointerup", () => {
+            console.log("Shop");
+            Game.app.stage.removeChild(Game.uiManager.stUI);
+            Game.app.stage.addChild(Game.uiManager.shUI);
+            Game.uiManager.shUI.drawNumberOfRing();
+        })
         this.addChild(tmp);
     }
     drawAdsButton(){

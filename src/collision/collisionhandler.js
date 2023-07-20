@@ -70,7 +70,7 @@ export class CollisionHandler{
                     var rightTop = {x: square.right, y: square.top};
                     var bp = {x: bx, y: by}
                     //ChangeBallCorlor
-                    var color = Math.abs(0xffffff - this.squares[s].color + 4096*b);
+                    var color = Math.abs(this.squares[s].color);
                     //Corner collision
                     if(this.vectorDistance(bp, leftBottom)<ballRadius){
                         this.playSquareMusic();

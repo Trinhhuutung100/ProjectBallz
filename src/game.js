@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, Ticker } from "pixi.js"
+import { Application, Assets, Sprite, Texture, Ticker } from "pixi.js"
 import { ActiveBall } from "./objects/activeball";
 import { PreBall } from "./objects/preball";
 import { BallController } from "./controller/ballcontroller";
@@ -27,7 +27,7 @@ export class Game{
         this.isWaiting = true;
         this.isFirst = true;
         this.best = 0;
-        this.coinScore = 0;
+        this.coinScore = 1000000;
         this.music = true;
         this.loadGame().then(() => {
             this.createPool().then(() => {
@@ -95,7 +95,8 @@ export class Game{
 
     }
     static startGame(){  
-        this.app.stage.addChild(this.uiManager.igUI);        
+        this.app.stage.addChild(this.uiManager.igUI);      
+        this.uiManager.igUI.drawCoinScore();  
         //Add balls
         this.balls = [];
         for(var i = 0; i<1; i++){

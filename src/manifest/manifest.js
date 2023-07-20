@@ -7,9 +7,69 @@ export const manifest = {
             }
         },
         {
+            name : "backButton",
+            assets : {
+                backButton : "assets/images/backButton.png",
+            }
+        },
+        {
             name : "ball",
             assets : {
                 ball : "assets/images/ball.png",
+            }
+        },
+        {
+            name : "ball1",
+            assets : {
+                ball1 : "assets/images/ball1.png",
+            }
+        },
+        {
+            name : "ball2",
+            assets : {
+                ball2 : "assets/images/ball2.png",
+            }
+        },
+        {
+            name : "ball3",
+            assets : {
+                ball3 : "assets/images/ball3.png",
+            }
+        },
+        {
+            name : "ball4",
+            assets : {
+                ball4 : "assets/images/ball4.png",
+            }
+        },
+        {
+            name : "ball5",
+            assets : {
+                ball5 : "assets/images/ball5.png",
+            }
+        },
+        {
+            name : "ball6",
+            assets : {
+                ball6 : "assets/images/ball6.png",
+            }
+        },
+        {
+            name : "ball7",
+            assets : {
+                ball7 : "assets/images/ball7.png",
+            }
+        },
+        {
+            name : "ball8",
+            assets : {
+                ball8 : "assets/images/ball8.png",
+            }
+        },
+        {
+            name : "ball9",
+            assets : {
+                ball9 : "assets/images/ball9.png",
             }
         },
         {

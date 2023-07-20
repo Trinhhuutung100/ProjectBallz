@@ -3,6 +3,7 @@ import { InGameUI } from "../UI/ingameui";
 import { GameOverUI } from "../UI/gameoverui";
 import { StartUI } from "../UI/startui";
 import { PauseUI } from "../UI/pauseui";
+import { ShopUI } from "../shopui";
 
 export class UIManager{
     constructor(){
@@ -10,6 +11,7 @@ export class UIManager{
         this.igUI = new InGameUI();
         this.psUI = new PauseUI();
         this.goUI = new GameOverUI();
+        this.shUI = new ShopUI();
     }
     update(){
         this.stUI.musicButton.listen();

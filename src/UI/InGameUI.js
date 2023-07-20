@@ -8,6 +8,7 @@ export class InGameUI extends Container{
     constructor(){
         super();
         this.isFirst = true;
+        this.isFirstCoin = true;
         //Back yard
         this.backYard = Sprite.from("assets/images/square.png");
         this.backYard.tint = 0x222222;
@@ -74,17 +75,17 @@ export class InGameUI extends Container{
         }
     }
     drawCoinSymbol(){
-        var tmp = Sprite.from(Texture.from("ring"));
-        tmp.anchor.set(0.5, 0.5);
-        tmp.width = GameConstants.coinRadius*2;
-        tmp.height = GameConstants.coinRadius*2;
-        tmp.x = GameConstants.screenWidth - GameConstants.squareEdge;
-        tmp.y = GameConstants.squareEdge*1.5;
-        tmp.tint = "yellow";
-        this.addChild(tmp);
+        this.tmp = Sprite.from(Texture.from("ring"));
+        this.tmp.anchor.set(0.5, 0.5);
+        this.tmp.width = GameConstants.coinRadius*2;
+        this.tmp.height = GameConstants.coinRadius*2;
+        this.tmp.x = GameConstants.screenWidth - GameConstants.squareEdge;
+        this.tmp.y = GameConstants.squareEdge*1.5;
+        this.tmp.tint = "yellow";
+        this.addChild(this.tmp);
     }
     drawCoinScore(){
-        if (this.isFirst) {
+        if (this.isFirstCoin) {
             this.textStyle = new TextStyle({
                 fontSize: GameConstants.fontSize,
                 fill: "white",
@@ -95,6 +96,7 @@ export class InGameUI extends Container{
             this.coinText.x = GameConstants.screenWidth - GameConstants.squareEdge*2;
             this.coinText.y = GameConstants.squareEdge*1.5;
             this.addChild(this.coinText);
+            this.isFirstCoin = false;
         }
         else {
             this.coinText.text = Game.coinScore;

@@ -4,10 +4,20 @@ import { Game } from "../game";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 export class Ball extends Container{
-    constructor(x, y){
+    constructor(x = GameConstants.defaultBallX, y = GameConstants.defaultBottomBall){
         super();
-        // var tt = Texture.from("assets/images/ball.png");
-        this.ball = new Sprite(Texture.from("ball"));
+        var ball0 = new Sprite(Texture.from("ball"));
+        this.ballSkin = [];
+        this.ballSkin.push(ball0);
+        for (var i = 1; i< 10; i++){
+            var ball = new Sprite(Texture.from("ball"+i));
+            this.ballSkin.push(ball);
+        }
+        this.ball = this.ballSkin[0];
+        this.init(x, y);
+        this.addChild(this.ball);
+    }
+    init(x = GameConstants.defaultBallX, y = GameConstants.defaultBottomBall){
         this.ball.width = GameConstants.ballRadius*2;
         this.ball.height = GameConstants.ballRadius*2;
         this.ball.anchor.set(0.5, 0.5);
@@ -18,7 +28,6 @@ export class Ball extends Container{
         this.distance = 0;
         this.readyGo = false;
         this.isBall = true;
-        this.addChild(this.ball);
     }
     changeColor(color){
         this.ball.tint = color;
