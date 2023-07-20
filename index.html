@@ -4940,9 +4940,14 @@ class CollisionHandler {
     this.ballGainNum = 0;
   }
   update(dt) {
-    this.squareCollision(dt);
-    this.coinCollision(dt);
-    this.preBallCollision(dt);
+    if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.readyAttack)
+      return;
+    if (this.squares.length > 0)
+      this.squareCollision(dt);
+    if (this.coins.length > 0)
+      this.coinCollision(dt);
+    if (this.preBalls.length > 0)
+      this.preBallCollision(dt);
   }
   playSquareMusic() {
     if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
@@ -4953,8 +4958,6 @@ class CollisionHandler {
       _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
   }
   squareCollision(dt) {
-    if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.readyAttack)
-      return;
     for (var b = 0; b < this.balls.length; b++) {
       if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom)
         continue;
@@ -5045,6 +5048,8 @@ class CollisionHandler {
   }
   coinCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
+      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom)
+        continue;
       if (this.balls[b].isBall) {
         for (var c = 0; c < this.coins.length; c++) {
           var ball = this.balls[b].ball;
@@ -5065,6 +5070,8 @@ class CollisionHandler {
   }
   preBallCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
+      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom)
+        continue;
       if (this.balls[b].isBall) {
         for (var p = 0; p < this.preBalls.length; p++) {
           var ball = this.balls[b].ball;
