@@ -23,8 +23,8 @@ export class CollisionHandler{
         this.ballGainNum = 0;
     }
     update(dt){
-        // this.squareCollision(dt);
-        this.squareCollision2(dt);
+        this.squareCollision(dt);
+        // this.squareCollision2(dt);
         this.coinCollision(dt);
         this.preBallCollision(dt);
     }
@@ -46,7 +46,7 @@ export class CollisionHandler{
                         this.emitSquareParticale(this.squares[s]);
                         this.squares[s].destroy();
                         this.squares.splice(s, 1);
-                        break;
+                        // break;
                     }
                     //Ball container
                     var bc = this.balls[b];
