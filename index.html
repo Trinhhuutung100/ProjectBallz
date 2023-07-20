@@ -5048,7 +5048,7 @@ class CollisionHandler {
   }
   coinCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
-      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom)
+      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom2)
         continue;
       if (this.balls[b].isBall) {
         for (var c = 0; c < this.coins.length; c++) {
@@ -5070,7 +5070,7 @@ class CollisionHandler {
   }
   preBallCollision(dt) {
     for (var b = 0; b < this.balls.length; b++) {
-      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom)
+      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom2)
         continue;
       if (this.balls[b].isBall) {
         for (var p = 0; p < this.preBalls.length; p++) {
@@ -5972,6 +5972,7 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.count = this.distance;
     this.isCreatingMap = false;
     this.bottom = 0;
+    this.bottom2 = 0;
   }
   update(dt) {
     this.pushDown(dt);
@@ -6023,13 +6024,18 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   pushDown(delta) {
     var dt = delta * 1.55;
     this.bottom = 0;
+    this.bottom2 = 0;
     this.isCreatingMap = false;
     var bot = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.defaultBottom - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.ballRadius * 3;
     if (this.squares.length > 0) {
       if (this.bottom < this.squares[0].getBounds().bottom)
         this.bottom = this.squares[0].getBounds().bottom;
+      if (this.bottom2 < this.squares[0].getBounds().bottom)
+        this.bottom2 = this.squares[0].getBounds().bottom;
     }
     if (this.coins.length > 0) {
+      if (this.bottom2 < this.coins[0].getBounds().bottom)
+        this.bottom2 = this.coins[0].getBounds().bottom;
       if (this.coins[0].getBounds().bottom > bot) {
         this.coinPool.push(this.coins[0]);
         this.coins[0].parent.removeChild(this.coins[0]);
@@ -6037,6 +6043,8 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       }
     }
     if (this.preBalls.length > 0) {
+      if (this.bottom2 < this.preBalls[0].getBounds().bottom)
+        this.bottom2 = this.preBalls[0].getBounds().bottom;
       if (this.preBalls[0].getBounds().bottom > bot) {
         this.preBallPool.push(this.preBalls[0]);
         this.preBalls[0].parent.removeChild(this.preBalls[0]);
@@ -6090,6 +6098,7 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.splice(0, _game__WEBPACK_IMPORTED_MODULE_7__.Game.balls.length);
     this.bottom = 0;
+    this.bottom2 = 0;
     this.line = 1;
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballGain);
     _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.removeChild(_game__WEBPACK_IMPORTED_MODULE_7__.Game.ballController.ballNum);
