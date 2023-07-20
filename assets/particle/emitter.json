@@ -4,8 +4,8 @@
 		"end": 0.1
 	},
 	"scale": {
-		"start": 0.06,
-		"end": 0.06,
+		"start": 0.075,
+		"end": 0.075,
 		"minimumScaleMultiplier": 0.075
 	},
 	"color": {
@@ -13,7 +13,7 @@
 		"end": "#ffb640"
 	},
 	"speed": {
-		"start": 170,
+		"start": 100,
 		"end": 0,
 		"minimumSpeedMultiplier": 0.001
 	},
@@ -23,13 +23,13 @@
 	},
 	"maxSpeed": 150,
 	"startRotation": {
-		"min": 0,
-		"max": 360
+		"min": 90,
+		"max": 90
 	},
 	"noRotation": false,
 	"rotationSpeed": {
-		"min": 60,
-		"max": 100
+		"min": 0,
+		"max": 0
 	},
 	"lifetime": {
 		"min": 0.3,
@@ -48,7 +48,7 @@
 	"spawnRect": {
 		"x": 0,
 		"y": 0,
-		"w": 50,
-		"h": 50
+		"w": 30,
+		"h": 30
 	}
 }

@@ -206,7 +206,7 @@ export class CollisionHandler{
     emitSquareParticale(square){
         // tạo particle trước khi biến mất
         var tmp = new Container();
-        tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
+        tmp.position.set(square.square.x-GameConstants.squareEdge/2,square.square.y-GameConstants.squareEdge/2); // vị trí của particle ở góc trái hình vuông
         Game.app.stage.addChild(tmp);
         let texture = Texture.from("square"); // các hạt là hình vuông
         var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
