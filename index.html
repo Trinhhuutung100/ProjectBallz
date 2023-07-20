@@ -4940,7 +4940,7 @@ class CollisionHandler {
     this.ballGainNum = 0;
   }
   update(dt) {
-    this.squareCollision2(dt);
+    this.squareCollision(dt);
     this.coinCollision(dt);
     this.preBallCollision(dt);
   }
@@ -4962,7 +4962,6 @@ class CollisionHandler {
             this.emitSquareParticale(this.squares[s]);
             this.squares[s].destroy();
             this.squares.splice(s, 1);
-            break;
           }
           var bc = this.balls[b];
           var ball = bc.ball.getBounds();
