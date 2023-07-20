@@ -39,7 +39,8 @@ export class CollisionHandler{
     squareCollision(dt){
         if(!Game.ballController.readyAttack) return;
         for(var b = 0; b< this.balls.length; b++){
-            if(this.balls[b].dy != 0 && this.balls[b].isBall){
+            if(this.balls[b].ball.getBounds().top > Game.map.bottom) continue;
+            if(this.balls[b].isBall){
                 for(var s = 0; s< this.squares.length; s++){
                     //Destroy square
                     // if(this.squares[s].index == 0) {
