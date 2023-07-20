@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, Texture, Ticker } from "pixi.js"
+import { Application, Assets, Sprite, Text, Texture, Ticker } from "pixi.js"
 import { ActiveBall } from "./objects/activeball";
 import { PreBall } from "./objects/preball";
 import { BallController } from "./controller/ballcontroller";
@@ -27,7 +27,7 @@ export class Game{
         this.isWaiting = true;
         this.isFirst = true;
         this.best = 0;
-        this.coinScore = 1000000;
+        this.coinScore = 700;
         this.music = true;
         this.loadGame().then(() => {
             this.createPool().then(() => {
@@ -42,24 +42,36 @@ export class Game{
     }
     static pool(){
         this.ballPool = [];
-            for(var i = 0; i < 200; i++){
-                var ball = new ActiveBall();
-                this.ballPool.push(ball);
-            }this.preBallPool = [];        
-            for(var i = 0; i < 56; i++){
-                var preBall = new PreBall();
-                this.preBallPool.push(preBall);
-            }
-            this.coinPool = [];        
-            for(var i = 0; i < 56; i++){
-                var coin = new Coin();
-                this.coinPool.push(coin);
-            }
-            this.squarePool = [];        
-            for(var i = 0; i < 56; i++){
-                var square = new Square(0, 0, 1);
-                this.squarePool.push(square);
-            } 
+        for(var i = 0; i < 200; i++){
+            var ball = new ActiveBall();
+            this.ballPool.push(ball);
+        }this.preBallPool = [];        
+        for(var i = 0; i < 56; i++){
+            var preBall = new PreBall();
+            this.preBallPool.push(preBall);
+        }
+        this.coinPool = [];        
+        for(var i = 0; i < 56; i++){
+            var coin = new Coin();
+            this.coinPool.push(coin);
+        }
+        this.squarePool = [];        
+        for(var i = 0; i < 56; i++){
+            var square = new Square(0, 0, 1);
+            this.squarePool.push(square);
+        }   
+        this.textFXPool = [];        
+        for(var i = 0; i < 56; i++){
+            var text = new Text("SIUU !", {
+                fontSize: GameConstants.fontSize,
+                fill: "yellow",
+                fontFamily: GameConstants.defaultFont,    
+                stroke: "blue",
+                strokeThickness:20             
+            });
+            text.anchor.set(0.5, 0.5);
+            this.textFXPool.push(text);
+        }  
     }
     static async loadGame(){
         await Assets.init({manifest: manifest});

@@ -1,12 +1,13 @@
-import { Container, Texture } from "pixi.js";
+import { Container, Text, TextStyle, Texture } from "pixi.js";
 import { ActiveBall } from "../objects/activeball";
 import { Game } from "../game";
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Sound, sound } from "@pixi/sound";
-// import *as setting from "../../assets/particle/emitter.json";
+import TWEEN from "@tweenjs/tween.js"
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import *as settingS from "../../assets/particle/emitter.json";
 import *as settingP from "../../assets/particle/emitter2.json";
+import { ShopUI } from "../UI/shopui";
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 const coinRadius = GameConstants.coinRadius;
@@ -18,8 +19,6 @@ export class CollisionHandler{
         this.squares = squares;
         this.coins = coins;
         this.preBalls = preBalls;
-        // this.ballSound = Sound.from("assets/sounds/ballSound.wav");
-        // this.coinSound = Sound.from("assets/sounds/coinSound.wav");
         this.ballGainNum = 0;
     }
     update(dt){
@@ -30,8 +29,13 @@ export class CollisionHandler{
         if(this.preBalls.length > 0)  this.preBallCollision(dt);
     }
     playSquareMusic(){
-        // if(Game.music) this.ballSound.play(); 
-        if(Game.music) sound.play("ballSound");
+        if(Game.music) {
+            if( ShopUI.used == 7) {
+                sound.play("Siu");
+                return;
+            }
+            sound.play("ballSound");
+        }
     }
     playCoinMusic(){
         // if (Game.music) this.coinSound.play();
@@ -204,6 +208,7 @@ export class CollisionHandler{
         return Math.sqrt((objA.x- objB.x)*(objA.x- objB.x)+(objA.y- objB.y)*(objA.y- objB.y));
     }
     emitSquareParticale(square){
+        if(ShopUI.used == 7) this.createTextFX(square);
         // tạo particle trước khi biến mất
         var tmp = new Container();
         tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
@@ -212,6 +217,16 @@ export class CollisionHandler{
         var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
         emitter.autoUpdate = true;
         emitter.emit = true;// chạy particle
+    }
+    
+    createTextFX(square){
+        var text = Game.textFXPool.pop();
+        text.position.set(square.square.x,square.square.y)
+        Game.app.stage.addChild(text); 
+        setTimeout(() => {
+            text.parent.removeChild(text);
+            Game.textFXPool.push(text);
+        },500);
     }
     emitPreBallParticle(ball){
       // tạo particle trước khi biến mất

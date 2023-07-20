@@ -1,6 +1,6 @@
 import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
-import { GameConstants } from "./gameconstants/gameconstants";
-import { Game } from "./game";
+import { GameConstants } from "../gameconstants/gameconstants";
+import { Game } from "../game";
 
 const halfEdge = GameConstants.screenWidth/(6 + 4/3);
 const padding = halfEdge/3;
@@ -128,7 +128,7 @@ export class ShopUI extends Container {
                 console.log("Skin ball id:" + ShopUI.used); 
                 return;
             }
-            if(Game.coinScore > item.price) {
+            if(Game.coinScore >= item.price) {
                 if(ShopUI.used>0 && this.items[ShopUI.used-1].sold) this.items[ShopUI.used-1].tint = 0x666666;
                 ShopUI.used = item.id;
                 item.sold = true;
@@ -143,6 +143,12 @@ export class ShopUI extends Container {
     }
     changeBallSkin(){
         Game.ballPool.forEach(ball => {
+            ball.removeChild(ball.ball);
+            ball.ball = ball.ballSkin[ShopUI.used];
+            ball.init();
+            ball.addChild(ball.ball);
+        })
+        Game.preBallPool.forEach(ball => {
             ball.removeChild(ball.ball);
             ball.ball = ball.ballSkin[ShopUI.used];
             ball.init();

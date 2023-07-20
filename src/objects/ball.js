@@ -1,6 +1,7 @@
-import { Container, Sprite, Texture} from "pixi.js"
+import { Container, Sprite, Texture, Ticker} from "pixi.js"
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
+
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
 export class Ball extends Container{
@@ -125,7 +126,6 @@ export class Ball extends Container{
             }
         // }      
     }
-    
     vectorDistance(objA, objB){
         return Math.sqrt((objA.x- objB.x)*(objA.x- objB.x)+(objA.y- objB.y)*(objA.y- objB.y));
     }

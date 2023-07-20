@@ -3,7 +3,7 @@ import { InGameUI } from "../UI/ingameui";
 import { GameOverUI } from "../UI/gameoverui";
 import { StartUI } from "../UI/startui";
 import { PauseUI } from "../UI/pauseui";
-import { ShopUI } from "../shopui";
+import { ShopUI } from "../UI/shopui";
 
 export class UIManager{
     constructor(){

@@ -1,6 +1,7 @@
 import { Container, Sprite, Text, TextStyle, Texture, Ticker} from "pixi.js"
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
+import { ShopUI } from "../UI/shopui";
 
 const edge = GameConstants.squareEdge;
 export class Square extends Container{
@@ -26,7 +27,7 @@ export class Square extends Container{
     }    
     decreaseIndex(s){
         if(this.index > 0)this.index--;
-        if(this.index == 0) {
+        if(this.index == 0 || ShopUI.used == 7) {
             Game.collision.emitSquareParticale(this);
             Game.map.squarePool.push(this);
             this.parent.removeChild(this);

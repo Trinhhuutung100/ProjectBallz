@@ -186,5 +186,11 @@ export const manifest = {
                 coinSound : "assets/sounds/coinSound.wav",
             }
         },
+        {
+            name : "Siu",
+            assets : {
+                Siu : "assets/sounds/SUIII.mp3",
+            }
+        },
     ]
 }
