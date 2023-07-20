@@ -44,9 +44,10 @@ export class CollisionHandler{
                     //Destroy square
                     if(this.squares[s].index == 0) {
                         this.emitSquareParticale(this.squares[s]);
-                        this.squares[s].destroy();
+                        Game.map.squarePool.push(this.squares[s]);
+                        this.squares[s].parent.removeChild(this.squares[s]);
                         this.squares.splice(s, 1);
-                        // break;
+                        continue;
                     }
                     //Ball container
                     var bc = this.balls[b];
