@@ -1,5 +1,6 @@
 import { Container, Sprite, Text, TextStyle, Texture, Ticker} from "pixi.js"
 import { GameConstants } from "../gameconstants/gameconstants";
+import { Game } from "../game";
 
 const edge = GameConstants.squareEdge;
 export class Square extends Container{
@@ -23,8 +24,14 @@ export class Square extends Container{
         })        
         this.setText();     
     }    
-    decreaseIndex(){
+    decreaseIndex(s){
         if(this.index > 0)this.index--;
+        if(this.index == 0) {
+            Game.collision.emitSquareParticale(this);
+            Game.map.squarePool.push(this);
+            this.parent.removeChild(this);
+            Game.collision.squares.splice(s, 1);
+        }
         this.color = this.changeColor(this.index);
         this.setText();
     }

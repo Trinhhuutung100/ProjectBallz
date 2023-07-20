@@ -42,13 +42,13 @@ export class CollisionHandler{
             if(this.balls[b].dy != 0 && this.balls[b].isBall){
                 for(var s = 0; s< this.squares.length; s++){
                     //Destroy square
-                    if(this.squares[s].index == 0) {
-                        this.emitSquareParticale(this.squares[s]);
-                        Game.map.squarePool.push(this.squares[s]);
-                        this.squares[s].parent.removeChild(this.squares[s]);
-                        this.squares.splice(s, 1);
-                        continue;
-                    }
+                    // if(this.squares[s].index == 0) {
+                    //     this.emitSquareParticale(this.squares[s]);
+                    //     Game.map.squarePool.push(this.squares[s]);
+                    //     this.squares[s].parent.removeChild(this.squares[s]);
+                    //     this.squares.splice(s, 1);
+                    //     continue;
+                    // }
                     //Ball container
                     var bc = this.balls[b];
                     //Get bounds
@@ -76,7 +76,7 @@ export class CollisionHandler{
                         this.balls[b].changeColor(color);
                         if(bc.dx>0) bc.dx = -bc.dx;
                         if(bc.dy<0) bc.dy = -bc.dy;
-                        this.squares[s].decreaseIndex();
+                        this.squares[s].decreaseIndex(s);
                         continue;
                     } 
                     //Corner collision
@@ -85,7 +85,7 @@ export class CollisionHandler{
                         this.balls[b].changeColor(color);
                         if(bc.dx>0) bc.dx = -bc.dx;
                         if(bc.dy>0) bc.dy = -bc.dy;
-                        this.squares[s].decreaseIndex();
+                        this.squares[s].decreaseIndex(s);
                         continue;
                     } 
                     //Corner collision
@@ -94,7 +94,7 @@ export class CollisionHandler{
                         this.balls[b].changeColor(color);
                         if(bc.dx<0) bc.dx = -bc.dx;
                         if(bc.dy<0) bc.dy = -bc.dy;
-                        this.squares[s].decreaseIndex();
+                        this.squares[s].decreaseIndex(s);
                         continue;
                     } 
                     //Corner collision
@@ -103,7 +103,7 @@ export class CollisionHandler{
                         this.balls[b].changeColor(color);
                         if(bc.dx<0) bc.dx = -bc.dx;
                         if(bc.dy>0) bc.dy = -bc.dy;
-                        this.squares[s].decreaseIndex();
+                        this.squares[s].decreaseIndex(s);
                         continue;
                     }     
                     if(dx > dy) {      
@@ -113,7 +113,7 @@ export class CollisionHandler{
                             this.balls[b].changeColor(color);
                             //this.balls[b].ball.x -=bc.dx*dt;
                             bc.dx = -bc.dx;   
-                            this.squares[s].decreaseIndex();      
+                            this.squares[s].decreaseIndex(s);      
                             //console.log("ngang");        
                         }
                     } else { 
@@ -123,7 +123,7 @@ export class CollisionHandler{
                             this.balls[b].changeColor(color);
                             //this.balls[b].ball.y -=bc.dy*dt;
                             bc.dy = -bc.dy;  
-                            this.squares[s].decreaseIndex(); 
+                            this.squares[s].decreaseIndex(s); 
                             //console.log("doc");
                         }
                     } 
