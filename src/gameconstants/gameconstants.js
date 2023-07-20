@@ -1,14 +1,14 @@
 const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
-// const screenWidth = innerWidth < innerHeight ? innerWidth : innerHeight/line*column;
-const screenWidth = innerHeight/line*column;
+const screenWidth = innerWidth < innerHeight*0.65 ? innerWidth : innerHeight/line*column;
+// const screenWidth = innerHeight/line*column;
 const squareEdge = screenWidth/16;
 const padding = squareEdge/4;
 //const edge = screenWidth/2/column;
 const ballRadius = squareEdge/3;
-const defaultBottom = screenHeight/2 + 5*padding + 8*squareEdge;
-const defaultTop = screenHeight/2 - 5*padding - 10*squareEdge ;
+const defaultBottom = screenHeight/2 + 5*padding + 9*squareEdge;
+const defaultTop = screenHeight/2 - 5*padding - 9*squareEdge ;
 const defaultBottomBall = defaultBottom - ballRadius;
 const defaultTopBall = defaultTop + ballRadius;
 const defaultTopMap = defaultTop + squareEdge;
@@ -45,7 +45,7 @@ export const GameConstants = {
     minRing : squareEdge,
     maxRing : squareEdge*1.5,
     //Ball move
-    ballSpeed : squareEdge*0.5/2,
+    ballSpeed : squareEdge*0.25,
     distanceBetweenBalls : Math.round(squareEdge/2)*1.1,
     fallSpeed : squareEdge*0.5/2,
     //Tween animation

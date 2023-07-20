@@ -1,22 +1,30 @@
 import { Container, Text, TextStyle, Texture } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { gsap } from "gsap";
-import { GameConstants } from "../gameconstants";
+import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import { PauseUI } from "./pauseui";
 export class InGameUI extends Container{
     constructor(){
         super();
+        this.isFirst = true;
+        //Back yard
+        this.backYard = Sprite.from("assets/images/square.png");
+        this.backYard.tint = 0x222222;
+        this.backYard.width = GameConstants.screenWidth;
+        this.backYard.height = GameConstants.defaultBottom - GameConstants.defaultTop;
+        this.backYard.x = 0.5;
+        this.backYard.y = GameConstants.defaultTop;
+        this.addChildAt(this.backYard);
         this.guide();
         this.drawPauseButton();
-        this.drawBestScore();
         this.drawCoinSymbol();
+        this.drawSpeedupButton(); 
+        this.drawBestScore();
         this.drawCoinScore();
-        this.drawSpeedupButton();
     }
     drawPauseButton(){
-        var texture = Texture.from("assets/images/pause.png");
-        var tmp = Sprite.from(texture);
+        var tmp = Sprite.from(Texture.from("pause"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*0.75;
         tmp.height = GameConstants.squareEdge*1.25;
@@ -27,6 +35,7 @@ export class InGameUI extends Container{
         tmp.on("pointerup",() => {
             console.log("Pause");
             if(!Game.isWaiting){
+                // Game.app.stage.removeChild(Game.backYard);
                 Game.uiManager.psUI = new PauseUI();
                 Game.app.stage.addChild(Game.uiManager.psUI);
             }
@@ -35,32 +44,37 @@ export class InGameUI extends Container{
         this.addChild(tmp);
     }
     drawBestScore(){
-        this.textStyle = new TextStyle({
-            fontSize: GameConstants.fontSize/2,
-            fill: "white",
-            fontFamily: GameConstants.defaultFont, 
-        }); 
-        this.removeChild(this.bestText);
-        this.bestText = new Text("B E S T", this.textStyle);
-        this.bestText.anchor.set(0, 0.5);
-        this.bestText.x = GameConstants.squareEdge*2;
-        this.bestText.y = GameConstants.squareEdge/2;
-        this.addChild(this.bestText);
-
-        this.textStyle = new TextStyle({
-            fontSize: GameConstants.fontSize,
-            fill: "white",
-            fontFamily: GameConstants.defaultFont, 
-        }); 
-        this.removeChild(this.bestScore);
-        this.bestScore = new Text(Game.best, this.textStyle);
-        this.bestScore.anchor.set(0, 0.5);
-        this.bestScore.x = GameConstants.squareEdge*2;
-        this.bestScore.y = GameConstants.squareEdge*1.5;
-        this.addChild(this.bestScore);
+        if(this.isFirst) {
+            this.textStyle = new TextStyle({
+                fontSize: GameConstants.fontSize/2,
+                fill: "white",
+                fontFamily: GameConstants.defaultFont, 
+            }); 
+            this.bestText = new Text("B E S T", this.textStyle);
+            this.bestText.anchor.set(0, 0.5);
+            this.bestText.x = GameConstants.squareEdge*2;
+            this.bestText.y = GameConstants.squareEdge/2;
+            this.addChild(this.bestText);
+    
+            this.textStyle = new TextStyle({
+                fontSize: GameConstants.fontSize,
+                fill: "white",
+                fontFamily: GameConstants.defaultFont, 
+            }); 
+            this.bestScore = new Text(Game.best, this.textStyle);
+            this.bestScore.anchor.set(0, 0.5);
+            this.bestScore.x = GameConstants.squareEdge*2;
+            this.bestScore.y = GameConstants.squareEdge*1.5;
+            this.addChild(this.bestScore);
+        }
+        else {
+            this.bestScore.text = Game.best;
+            this.bestScore.x = GameConstants.squareEdge*2;
+            this.bestScore.y = GameConstants.squareEdge*1.5;
+        }
     }
     drawCoinSymbol(){
-        var tmp = Sprite.from("assets/images/ring.png");
+        var tmp = Sprite.from(Texture.from("ring"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.coinRadius*2;
         tmp.height = GameConstants.coinRadius*2;
@@ -70,21 +84,26 @@ export class InGameUI extends Container{
         this.addChild(tmp);
     }
     drawCoinScore(){
-        this.textStyle = new TextStyle({
-            fontSize: GameConstants.fontSize,
-            fill: "white",
-            fontFamily: GameConstants.defaultFont, 
-        }); 
-        this.removeChild(this.coinText);
-        this.coinText = new Text(Game.coinScore, this.textStyle);
-        this.coinText.anchor.set(1, 0.5);
-        this.coinText.x = GameConstants.screenWidth - GameConstants.squareEdge*2;
-        this.coinText.y = GameConstants.squareEdge*1.5;
-        this.addChild(this.coinText);
+        if (this.isFirst) {
+            this.textStyle = new TextStyle({
+                fontSize: GameConstants.fontSize,
+                fill: "white",
+                fontFamily: GameConstants.defaultFont, 
+            }); 
+            this.coinText = new Text(Game.coinScore, this.textStyle);
+            this.coinText.anchor.set(1, 0.5);
+            this.coinText.x = GameConstants.screenWidth - GameConstants.squareEdge*2;
+            this.coinText.y = GameConstants.squareEdge*1.5;
+            this.addChild(this.coinText);
+        }
+        else {
+            this.coinText.text = Game.coinScore;
+            this.coinText.x = GameConstants.screenWidth - GameConstants.squareEdge*2;
+            this.coinText.y = GameConstants.squareEdge*1.5;
+        }
     }
     drawSpeedupButton(){
-        var texture = Texture.from("assets/images/lightning.png");
-        var tmp = Sprite.from(texture);
+        var tmp = Sprite.from(Texture.from("lightning"));
         tmp.anchor.set(0.5, 0.5);
         tmp.width = GameConstants.squareEdge*1.5;
         tmp.height = GameConstants.squareEdge*1.5;
@@ -126,16 +145,23 @@ export class InGameUI extends Container{
 
     }
     setText(score){   
-        this.textStyle = new TextStyle({
-            fontSize: GameConstants.fontSize*2,
-            fill: "white",
-            fontFamily: GameConstants.defaultFont, 
-        });     
-        this.removeChild(this.text);
-        this.text = new Text(score, this.textStyle);
-        this.text.anchor.set(0.5, 0.5);
-        this.text.x = GameConstants.screenWidth/2;
-        this.text.y = GameConstants.squareEdge*1.5;
-        this.addChild(this.text);        
+        if (this.isFirst) {
+            this.textStyle = new TextStyle({
+                fontSize: GameConstants.fontSize*2,
+                fill: "white",
+                fontFamily: GameConstants.defaultFont, 
+            });     
+            this.text = new Text(score, this.textStyle);
+            this.text.anchor.set(0.5, 0.5);
+            this.text.x = GameConstants.screenWidth/2;
+            this.text.y = GameConstants.squareEdge*1.5;
+            this.addChild(this.text);   
+            this.isFirst = false;    
+        } 
+        else {
+            this.text.text = score;
+            this.text.x = GameConstants.screenWidth/2;
+            this.text.y = GameConstants.squareEdge*1.5;
+        }
     }
 }
