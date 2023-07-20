@@ -141,7 +141,7 @@ export class CollisionHandler{
     }
     coinCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
-            if(this.balls[b].ball.getBounds().top > Game.map.bottom) continue;
+            if(this.balls[b].ball.getBounds().top > Game.map.bottom2) continue;
             if(this.balls[b].isBall){
                 for(var c = 0; c< this.coins.length; c++){
                     var ball = this.balls[b].ball;
@@ -162,7 +162,7 @@ export class CollisionHandler{
     }
     preBallCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
-            if(this.balls[b].ball.getBounds().top > Game.map.bottom) continue;
+            if(this.balls[b].ball.getBounds().top > Game.map.bottom2) continue;
             if(this.balls[b].isBall){
                 for(var p = 0; p< this.preBalls.length; p++){
                     var ball = this.balls[b].ball;

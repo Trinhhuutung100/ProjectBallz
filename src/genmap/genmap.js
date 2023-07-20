@@ -35,6 +35,7 @@ export class GenMap extends Container{
         this.count = this.distance
         this.isCreatingMap = false;
         this.bottom = 0;
+        this.bottom2 = 0;
     }
     update(dt){
         this.pushDown(dt);
@@ -88,13 +89,18 @@ export class GenMap extends Container{
     pushDown(delta){
         var dt = delta*1.55;
         this.bottom = 0;
+        this.bottom2 = 0;
         this.isCreatingMap = false;
         var bot = GameConstants.defaultBottom - GameConstants.ballRadius*3;
         if(this.squares.length>0){
             if(this.bottom < this.squares[0].getBounds().bottom)
             this.bottom = this.squares[0].getBounds().bottom;
+            if(this.bottom2 < this.squares[0].getBounds().bottom)
+            this.bottom2 = this.squares[0].getBounds().bottom;
         }
         if(this.coins.length>0){
+            if(this.bottom2 < this.coins[0].getBounds().bottom)
+            this.bottom2 = this.coins[0].getBounds().bottom;
             if(this.coins[0].getBounds().bottom > bot){
                 this.coinPool.push(this.coins[0]);
                 this.coins[0].parent.removeChild(this.coins[0]);
@@ -102,6 +108,8 @@ export class GenMap extends Container{
             }
         }
         if(this.preBalls.length>0){
+            if(this.bottom2 < this.preBalls[0].getBounds().bottom)
+            this.bottom2 = this.preBalls[0].getBounds().bottom;
             if(this.preBalls[0].getBounds().bottom > bot){
                 this.preBallPool.push(this.preBalls[0]);
                 this.preBalls[0].parent.removeChild(this.preBalls[0]);
@@ -161,6 +169,7 @@ export class GenMap extends Container{
         Game.balls.splice(0, Game.balls.length);
 
         this.bottom = 0;
+        this.bottom2 = 0;
         this.line = 1;
         Game.ballController.removeChild(Game.ballController.ballGain);
         Game.ballController.removeChild(Game.ballController.ballNum); 
