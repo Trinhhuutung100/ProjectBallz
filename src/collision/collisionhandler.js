@@ -23,10 +23,11 @@ export class CollisionHandler{
         this.ballGainNum = 0;
     }
     update(dt){
-        this.squareCollision(dt);
+        if(!Game.ballController.readyAttack) return;
+        if(this.squares.length > 0) this.squareCollision(dt);
         // this.squareCollision2(dt);
-        this.coinCollision(dt);
-        this.preBallCollision(dt);
+        if(this.coins.length > 0) this.coinCollision(dt);
+        if(this.preBalls.length > 0)  this.preBallCollision(dt);
     }
     playSquareMusic(){
         // if(Game.music) this.ballSound.play(); 
@@ -37,7 +38,6 @@ export class CollisionHandler{
         if(Game.music) sound.play("coinSound");
     }
     squareCollision(dt){
-        if(!Game.ballController.readyAttack) return;
         for(var b = 0; b< this.balls.length; b++){
             if(this.balls[b].ball.getBounds().top > Game.map.bottom) continue;
             if(this.balls[b].isBall){
@@ -141,6 +141,7 @@ export class CollisionHandler{
     }
     coinCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
+            if(this.balls[b].ball.getBounds().top > Game.map.bottom) continue;
             if(this.balls[b].isBall){
                 for(var c = 0; c< this.coins.length; c++){
                     var ball = this.balls[b].ball;
@@ -161,6 +162,7 @@ export class CollisionHandler{
     }
     preBallCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
+            if(this.balls[b].ball.getBounds().top > Game.map.bottom) continue;
             if(this.balls[b].isBall){
                 for(var p = 0; p< this.preBalls.length; p++){
                     var ball = this.balls[b].ball;
