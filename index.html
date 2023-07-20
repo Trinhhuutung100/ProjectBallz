@@ -4956,7 +4956,9 @@ class CollisionHandler {
     if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.ballController.readyAttack)
       return;
     for (var b = 0; b < this.balls.length; b++) {
-      if (this.balls[b].dy != 0 && this.balls[b].isBall) {
+      if (this.balls[b].ball.getBounds().top > _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.bottom)
+        continue;
+      if (this.balls[b].isBall) {
         for (var s = 0; s < this.squares.length; s++) {
           var bc = this.balls[b];
           var ball = bc.ball.getBounds();
