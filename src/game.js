@@ -14,6 +14,7 @@ import { InGameUI } from "./UI/ingameui";
 import { StartUI } from "./UI/startui";
 import { manifest } from "./manifest/manifest";
 import { ContainerSpawner } from "./containerSpawners/containerSpawner";
+import { ShopUI } from "./UI/shopui";
 
 
 export class Game{
@@ -26,17 +27,21 @@ export class Game{
         document.body.appendChild(this.app.view);
         this.isWaiting = true;
         this.isFirst = true;
-        this.best = 0;
-        this.coinScore = 700;
+        this.best = this.get("best", 0);
+        this.coinScore = this.get("coinScore", 1000000);
         this.music = true;
         this.loadGame().then(() => {
             this.createPool().then(() => {
-                this.uiManager = new UIManager();
-                this.app.stage.addChild(this.uiManager.stUI);
+                this.ticker();
             })
         })
         console.log("Start");        
     } 
+    static get(key, defaul){
+        if (localStorage.getItem(key) != null)
+        return localStorage.getItem(key);
+        else return defaul;
+    }
     static async createPool(){
         await this.pool();
     }
@@ -71,7 +76,9 @@ export class Game{
             });
             text.anchor.set(0.5, 0.5);
             this.textFXPool.push(text);
-        }  
+        }          
+        this.uiManager = new UIManager();
+        this.app.stage.addChild(this.uiManager.stUI);
     }
     static async loadGame(){
         await Assets.init({manifest: manifest});
@@ -83,8 +90,6 @@ export class Game{
         this.app.stage.removeChild(this.uiManager.stUI);
         this.isWaiting = false;
         this.startGame();
-        if(this.isFirst) this.ticker();
-        this.isFirst = false;
     }
     static rePlay(){ 
         this.app.stage.removeChild(this.uiManager.goUI);
@@ -134,12 +139,12 @@ export class Game{
     }
     static ticker(){
         this.app.ticker.add(Game.update.bind(this));
-        this.app.ticker.add(Game.update.bind(this));
         //Delta time
         this._dt = 0;
         this._current = 0;
     }
-    static update(dt){    
+    static update(dt){  
+        this.store();  
         this.uiManager.update();
         if(this.isWaiting) return;
         if(this.map.bottom>GameConstants.defaultBottom - GameConstants.ballRadius*3) {
@@ -157,6 +162,15 @@ export class Game{
         this.map.update(dt);
         this.ballController.update(dt);
         this.collision.update(dt);  
+    }
+    static store(){
+        // localStorage.clear();
+        localStorage.setItem("best", this.best);
+        localStorage.setItem("coinScore", this.coinScore);
+        localStorage.setItem("used", ShopUI.used);
+        Game.uiManager.shUI.items.forEach(item => {
+            localStorage.setItem("sold"+item.id, item.sold);
+        })
     }
 } 
 

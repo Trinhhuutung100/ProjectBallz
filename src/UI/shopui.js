@@ -5,11 +5,13 @@ import { Game } from "../game";
 const halfEdge = GameConstants.screenWidth/(6 + 4/3);
 const padding = halfEdge/3;
 const top = GameConstants.screenHeight/2 - 4*halfEdge;
+const used = localStorage.getItem("used");
 
 export class ShopUI extends Container {
-    static used = 0;
+    static used = used == null ? 0 :used;
     constructor() {
         super();
+        this.changeBallSkin(ShopUI.used);
         this.drawTextShop();
         this.drawBack();
         // this.drawNumberOfRing();
@@ -20,6 +22,7 @@ export class ShopUI extends Container {
                 this.drawItem(i,j);
             }
         }
+        // this.changeBallSkin(ShopUI.used);
         // console.log(this.items);
     }
     drawBack(){
@@ -88,8 +91,16 @@ export class ShopUI extends Container {
         const y = top + (3*row + 1)*halfEdge;
         item.position.set(x, y);
         item.price = 100*(3*row+(col+1));
-        item.tint = 0x000000;
         item.sold = false;
+
+        var sold = localStorage.getItem("sold"+item.id);
+        if(sold == "true" ) item.sold = true;
+
+        item.tint = 0x000000;
+        if(item.sold == true) {
+            item.tint = 0x666666;
+        }
+        if(ShopUI.used == item.id) item.tint = 0xffffff;
 
         item.textStyle = new TextStyle({
             fontSize: GameConstants.fontSize,
@@ -138,7 +149,7 @@ export class ShopUI extends Container {
                 Game.uiManager.shUI.drawNumberOfRing();
             }  
             console.log("Skin ball " +item.id + " sold:" + item.sold);  
-            console.log("Skin ball id:" + ShopUI.used); 
+            // console.log("Skin ball id:" + ShopUI.used); 
         })
     }
     changeBallSkin(){

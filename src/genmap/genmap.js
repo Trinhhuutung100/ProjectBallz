@@ -87,7 +87,7 @@ export class GenMap extends Container{
         console.log("coinPool:" + this.coinPool.length + " preBallPool:" + this.preBallPool.length + " \nsquarePool:" + this.squarePool.length + " ballPool:" + Game.ballPool.length);
     }
     pushDown(delta){
-        var dt = delta*1.55;
+        var dt = delta*GameConstants.pushDownSpeed;
         this.bottom = 0;
         this.bottom2 = 0;
         this.isCreatingMap = false;
@@ -116,7 +116,10 @@ export class GenMap extends Container{
                 this.preBalls.splice(0, 1);
             }
         }
-        if(this.count > dt){
+        if(this.count > 0){
+            if(this.count < dt) {
+                dt = this.count;
+            }
             for(var i = 0; i < this.squares.length; i++){
                 //console.log(" over here");
                 this.squares[i].square.y +=dt;
@@ -129,7 +132,7 @@ export class GenMap extends Container{
                 this.preBalls[i].ball.y +=dt;
                 this.preBalls[i].ring.y +=dt;
             } 
-            this.count -=dt;  
+            if(this.count >= dt) this.count -=dt;  
             this.isCreatingMap = true;         
         }       
     }
