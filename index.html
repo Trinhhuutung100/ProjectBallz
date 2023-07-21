@@ -5180,7 +5180,7 @@ class CollisionHandler {
           var rightBottom = { x: square.right, y: square.bottom };
           var rightTop = { x: square.right, y: square.top };
           var bp = { x: bx, y: by };
-          var color = Math.abs(this.squares[s].color);
+          var color = this.squares[s].color;
           if (this.vectorDistance(bp, leftBottom) < ballRadius) {
             this.playSquareMusic();
             this.balls[b].changeColor(color);
@@ -6956,9 +6956,10 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
   }
   changeColor(score) {
-    var baseColor = 15442695;
-    var newColor = baseColor + score * 1024;
-    return newColor;
+    var baseColor = 4095;
+    var newColor = baseColor - score * 15;
+    var hex = "#" + newColor.toString(16);
+    return hex;
   }
 }
 
