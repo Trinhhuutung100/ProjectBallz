@@ -83,7 +83,7 @@ export class BallController extends Container{
                     ball.readyGo = false;
                     ball.isBall = true;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
-                    .to({x: this.groundPositionX }, GameConstants.ballTweenTime*dt)
+                    .to({x: this.groundPositionX }, GameConstants.ballTweenTime)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
                         this.isCreating = true;
@@ -92,7 +92,7 @@ export class BallController extends Container{
                         ball.ball.tint = "white";
                         this.isCreating = false;
                         var textTween = new TWEEN.Tween({ time: 100})
-                        .to({x: 200 }, GameConstants.ballTweenTime*dt*3)
+                        .to({x: 200 }, GameConstants.ballTweenTime*3)
                         .onUpdate(() => {
                             // console.log("gain");
                             if(Game.collision.ballGainNum > 0){
