@@ -4825,9 +4825,11 @@ var __publicField = (obj, key, value) => {
 const halfEdge = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth / (6 + 4 / 3);
 const padding = halfEdge / 3;
 const top = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight / 2 - 4 * halfEdge;
+const used = localStorage.getItem("used");
 const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
+    this.changeBallSkin(_ShopUI.used);
     this.drawTextShop();
     this.drawBack();
     this.isFirst = true;
@@ -4901,8 +4903,16 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const y = top + (3 * row + 1) * halfEdge;
     item.position.set(x, y);
     item.price = 100 * (3 * row + (col + 1));
-    item.tint = 0;
     item.sold = false;
+    var sold = localStorage.getItem("sold" + item.id);
+    if (sold == "true")
+      item.sold = true;
+    item.tint = 0;
+    if (item.sold == true) {
+      item.tint = 6710886;
+    }
+    if (_ShopUI.used == item.id)
+      item.tint = 16777215;
     item.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fontSize: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize,
       fill: "white",
@@ -4948,7 +4958,6 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.shUI.drawNumberOfRing();
       }
       console.log("Skin ball " + item.id + " sold:" + item.sold);
-      console.log("Skin ball id:" + _ShopUI.used);
     });
   }
   changeBallSkin() {
@@ -4967,7 +4976,7 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
 };
 let ShopUI = _ShopUI;
-__publicField(ShopUI, "used", 0);
+__publicField(ShopUI, "used", used == null ? 0 : used);
 
 
 /***/ }),
@@ -5890,6 +5899,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UI_startui__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./UI/startui */ "./src/UI/startui.js");
 /* harmony import */ var _manifest_manifest__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./manifest/manifest */ "./src/manifest/manifest.js");
 /* harmony import */ var _containerSpawners_containerSpawner__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./containerSpawners/containerSpawner */ "./src/containerSpawners/containerSpawner.js");
+/* harmony import */ var _UI_shopui__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./UI/shopui */ "./src/UI/shopui.js");
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -5926,6 +5936,7 @@ var __async = (__this, __arguments, generator) => {
 
 
 
+
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
@@ -5936,16 +5947,21 @@ class Game {
     document.body.appendChild(this.app.view);
     this.isWaiting = true;
     this.isFirst = true;
-    this.best = 0;
-    this.coinScore = 700;
+    this.best = this.get("best", 0);
+    this.coinScore = this.get("coinScore", 1e6);
     this.music = true;
     this.loadGame().then(() => {
       this.createPool().then(() => {
-        this.uiManager = new _scene_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
-        this.app.stage.addChild(this.uiManager.stUI);
+        this.ticker();
       });
     });
     console.log("Start");
+  }
+  static get(key, defaul) {
+    if (localStorage.getItem(key) != null)
+      return localStorage.getItem(key);
+    else
+      return defaul;
   }
   static createPool() {
     return __async(this, null, function* () {
@@ -5985,6 +6001,8 @@ class Game {
       text.anchor.set(0.5, 0.5);
       this.textFXPool.push(text);
     }
+    this.uiManager = new _scene_uimanager__WEBPACK_IMPORTED_MODULE_10__.UIManager();
+    this.app.stage.addChild(this.uiManager.stUI);
   }
   static loadGame() {
     return __async(this, null, function* () {
@@ -5998,9 +6016,6 @@ class Game {
     this.app.stage.removeChild(this.uiManager.stUI);
     this.isWaiting = false;
     this.startGame();
-    if (this.isFirst)
-      this.ticker();
-    this.isFirst = false;
   }
   static rePlay() {
     this.app.stage.removeChild(this.uiManager.goUI);
@@ -6044,11 +6059,11 @@ class Game {
   }
   static ticker() {
     this.app.ticker.add(Game.update.bind(this));
-    this.app.ticker.add(Game.update.bind(this));
     this._dt = 0;
     this._current = 0;
   }
   static update(dt) {
+    this.store();
     this.uiManager.update();
     if (this.isWaiting)
       return;
@@ -6067,6 +6082,14 @@ class Game {
     this.map.update(dt);
     this.ballController.update(dt);
     this.collision.update(dt);
+  }
+  static store() {
+    localStorage.setItem("best", this.best);
+    localStorage.setItem("coinScore", this.coinScore);
+    localStorage.setItem("used", _UI_shopui__WEBPACK_IMPORTED_MODULE_16__.ShopUI.used);
+    Game.uiManager.shUI.items.forEach((item) => {
+      localStorage.setItem("sold" + item.id, item.sold);
+    });
   }
 }
 window.onload = function() {
@@ -6132,12 +6155,13 @@ const GameConstants = {
   minRing: squareEdge,
   maxRing: squareEdge * 1.5,
   //Ball move
-  ballSpeed: squareEdge * 0.25,
-  distanceBetweenBalls: Math.round(squareEdge / 2) * 1.1,
-  fallSpeed: squareEdge * 0.5 / 2,
+  ballSpeed: squareEdge * 0.5,
+  distanceBetweenBalls: Math.round(squareEdge / 2) * 0.55,
+  fallSpeed: squareEdge * 0.5,
+  pushDownSpeed: 10,
   //Tween animation
-  ballTweenTime: 500 / 2,
-  ringTweenTime: 10 * 2
+  ballTweenTime: 100,
+  ringTweenTime: 10
 };
 
 
@@ -6237,7 +6261,7 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     console.log("coinPool:" + this.coinPool.length + " preBallPool:" + this.preBallPool.length + " \nsquarePool:" + this.squarePool.length + " ballPool:" + _game__WEBPACK_IMPORTED_MODULE_7__.Game.ballPool.length);
   }
   pushDown(delta) {
-    var dt = delta * 1.55;
+    var dt = delta * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.pushDownSpeed;
     this.bottom = 0;
     this.bottom2 = 0;
     this.isCreatingMap = false;
@@ -6266,7 +6290,10 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.preBalls.splice(0, 1);
       }
     }
-    if (this.count > dt) {
+    if (this.count > 0) {
+      if (this.count < dt) {
+        dt = this.count;
+      }
       for (var i = 0; i < this.squares.length; i++) {
         this.squares[i].square.y += dt;
         this.squares[i].text.y += dt;
@@ -6278,7 +6305,8 @@ class GenMap extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.preBalls[i].ball.y += dt;
         this.preBalls[i].ring.y += dt;
       }
-      this.count -= dt;
+      if (this.count >= dt)
+        this.count -= dt;
       this.isCreatingMap = true;
     }
   }
