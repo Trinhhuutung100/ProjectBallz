@@ -5526,13 +5526,13 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           this.balls[i].distance = 0;
           ball.readyGo = false;
           ball.isBall = true;
-          var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ x: ball.ball.x }).to({ x: this.groundPositionX }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * dt).onUpdate((obj) => {
+          var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ x: ball.ball.x }).to({ x: this.groundPositionX }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime).onUpdate((obj) => {
             ball.ball.x = obj.x;
             this.isCreating = true;
           }).onComplete(() => {
             ball.ball.tint = "white";
             this.isCreating = false;
-            var textTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ time: 100 }).to({ x: 200 }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * dt * 3).onUpdate(() => {
+            var textTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ time: 100 }).to({ x: 200 }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * 3).onUpdate(() => {
               if (_game__WEBPACK_IMPORTED_MODULE_3__.Game.collision.ballGainNum > 0) {
                 this.showBallGain();
                 this.ballText = true;
@@ -6166,7 +6166,7 @@ const GameConstants = {
   fallSpeed: squareEdge * 0.5,
   pushDownSpeed: 10,
   //Tween animation
-  ballTweenTime: 100,
+  ballTweenTime: 180,
   ringTweenTime: 180
 };
 
