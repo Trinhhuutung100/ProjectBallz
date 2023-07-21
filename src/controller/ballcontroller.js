@@ -67,8 +67,8 @@ export class BallController extends Container{
             this.ready = false;
             for(var i = 0; i< this.balls.length; i++){
                 //console.log(i+" "+this.distance[i]);
-                if(this.balls[i].distance>i*GameConstants.distanceBetweenBalls) this.balls[i].readyGo=true;
-                else this.balls[i].distance +=1;
+                if(this.balls[i].distance>i*GameConstants.distanceBetweenBalls*dt) this.balls[i].readyGo=true;
+                else this.balls[i].distance +=dt;
                 //console.log(i + " readyGo "+this.balls[i].readyGo);
                 if(this.balls[i].readyGo){
                     this.balls[i].ball.x +=this.balls[i].dx*dt;
@@ -83,7 +83,7 @@ export class BallController extends Container{
                     ball.readyGo = false;
                     ball.isBall = true;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
-                    .to({x: this.groundPositionX }, GameConstants.ballTweenTime)
+                    .to({x: this.groundPositionX }, GameConstants.ballTweenTime*dt)
                     .onUpdate((obj) => {
                         ball.ball.x = obj.x;
                         this.isCreating = true;
@@ -92,7 +92,7 @@ export class BallController extends Container{
                         ball.ball.tint = "white";
                         this.isCreating = false;
                         var textTween = new TWEEN.Tween({ time: 100})
-                        .to({x: 200 }, GameConstants.ballTweenTime*3)
+                        .to({x: 200 }, GameConstants.ballTweenTime*dt*3)
                         .onUpdate(() => {
                             // console.log("gain");
                             if(Game.collision.ballGainNum > 0){
