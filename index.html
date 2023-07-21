@@ -5098,7 +5098,8 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 "use strict";
 var _assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache;
-var _assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_8___namespace_cache;
+var _assets_particle_emitter1_json__WEBPACK_IMPORTED_MODULE_8___namespace_cache;
+var _assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_9___namespace_cache;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   CollisionHandler: () => (/* binding */ CollisionHandler)
@@ -5111,8 +5112,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
 /* harmony import */ var _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @pixi/particle-emitter */ "./node_modules/@pixi/particle-emitter/lib/particle-emitter.es.js");
 /* harmony import */ var _assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../assets/particle/emitter.json */ "./assets/particle/emitter.json");
-/* harmony import */ var _assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../assets/particle/emitter2.json */ "./assets/particle/emitter2.json");
-/* harmony import */ var _UI_shopui__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../UI/shopui */ "./src/UI/shopui.js");
+/* harmony import */ var _assets_particle_emitter1_json__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../assets/particle/emitter1.json */ "./assets/particle/emitter1.json");
+/* harmony import */ var _assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../assets/particle/emitter2.json */ "./assets/particle/emitter2.json");
+/* harmony import */ var _UI_shopui__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../UI/shopui */ "./src/UI/shopui.js");
+
 
 
 
@@ -5146,7 +5149,7 @@ class CollisionHandler {
   }
   playSquareMusic() {
     if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
-      if (_UI_shopui__WEBPACK_IMPORTED_MODULE_9__.ShopUI.used == 7) {
+      if (_UI_shopui__WEBPACK_IMPORTED_MODULE_10__.ShopUI.used == 7) {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("Siu");
         return;
       }
@@ -5304,15 +5307,18 @@ class CollisionHandler {
     return Math.sqrt((objA.x - objB.x) * (objA.x - objB.x) + (objA.y - objB.y) * (objA.y - objB.y));
   }
   emitSquareParticale(square) {
-    if (_UI_shopui__WEBPACK_IMPORTED_MODULE_9__.ShopUI.used == 7)
+    if (_UI_shopui__WEBPACK_IMPORTED_MODULE_10__.ShopUI.used == 7)
       this.createTextFX(square);
     var tmp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    tmp.position.set(square.square.x, square.square.y);
+    tmp.position.set(square.square.x - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.squareEdge / 2, square.square.y - _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.squareEdge / 2);
     _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(tmp);
     let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square");
-    var emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache || (_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache = __webpack_require__.t(_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7__, 2))), [texture]));
-    emitter.autoUpdate = true;
-    emitter.emit = true;
+    var emitter1 = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache || (_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7___namespace_cache = __webpack_require__.t(_assets_particle_emitter_json__WEBPACK_IMPORTED_MODULE_7__, 2))), [texture]));
+    emitter1.autoUpdate = true;
+    emitter1.emit = true;
+    var emitter2 = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter1_json__WEBPACK_IMPORTED_MODULE_8___namespace_cache || (_assets_particle_emitter1_json__WEBPACK_IMPORTED_MODULE_8___namespace_cache = __webpack_require__.t(_assets_particle_emitter1_json__WEBPACK_IMPORTED_MODULE_8__, 2))), [texture]));
+    emitter2.autoUpdate = true;
+    emitter2.emit = true;
   }
   createTextFX(square) {
     var text = _game__WEBPACK_IMPORTED_MODULE_2__.Game.textFXPool.pop();
@@ -5328,7 +5334,7 @@ class CollisionHandler {
     tmp.position.set(ball.ball.x, ball.ball.y);
     _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(tmp);
     let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square");
-    var emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_8___namespace_cache || (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_8___namespace_cache = __webpack_require__.t(_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_8__, 2))), [texture]));
+    var emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.Emitter(tmp, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_6__.upgradeConfig)(/*#__PURE__*/ (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_9___namespace_cache || (_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_9___namespace_cache = __webpack_require__.t(_assets_particle_emitter2_json__WEBPACK_IMPORTED_MODULE_9__, 2))), [texture]));
     emitter.autoUpdate = true;
     emitter.emit = true;
   }
@@ -6386,26 +6392,30 @@ class Row {
     if (this.count > 1) {
       var idxB = getRandomElementsFromArray(this.idx, 1)[0];
       this.data[idxB] = -1;
-      const isHaveRing = Math.random() <= 0.5;
-      if (isHaveRing) {
+      var random1 = Math.random();
+      if (random1 < 0.5) {
         var idxR = getRandomElementsFromArray(this.idx, 1)[0];
         this.data[idxR] = -2;
       }
     }
-    var random = Math.random();
+    var random2 = Math.random();
     var idxX = [];
-    if (random <= 0.65) {
+    if (random2 <= 0.75) {
       idxX = getRandomElementsFromArray(this.idx, 1);
     }
-    if (random <= 0.8 && random > 0.65) {
+    if (random2 <= 0.87 && random2 > 0.75) {
       idxX = getRandomElementsFromArray(this.idx, 2);
     }
-    if (random <= 0.85 && random > 0.8) {
+    if (random2 <= 0.9 && random2 > 0.87) {
       idxX = getRandomElementsFromArray(this.idx, 3);
     }
     for (let i = 0; i < idxX.length; i++) {
       this.data[idxX[i]] = this.count * 2;
     }
+    var idxNull = getRandomElementsFromArray(this.idx, 1)[0];
+    this.data[idxNull] = 0;
+    var idxS = getRandomElementsFromArray(this.idx, 1)[0];
+    this.data[idxS] = this.count;
     for (let i = 0; i < this.idx.length; i++) {
       var tmp = Math.random();
       if (tmp >= 0.5) {
@@ -6946,9 +6956,9 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
   }
   changeColor(score) {
-    var baseColor = 15897349;
-    baseColor += score * 2048;
-    return baseColor;
+    var baseColor = 15442695;
+    var newColor = baseColor + score * 1024;
+    return newColor;
   }
 }
 
@@ -52764,7 +52774,18 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"alpha":{"start":1,"end":0.1},"scale":{"start":0.06,"end":0.06,"minimumScaleMultiplier":0.075},"color":{"start":"#ffb640","end":"#ffb640"},"speed":{"start":170,"end":0,"minimumSpeedMultiplier":0.001},"acceleration":{"x":0,"y":0},"maxSpeed":150,"startRotation":{"min":0,"max":360},"noRotation":false,"rotationSpeed":{"min":60,"max":100},"lifetime":{"min":0.3,"max":0.3},"blendMode":"normal","frequency":0.001,"emitterLifetime":0.3,"maxParticles":80,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"rect","spawnRect":{"x":0,"y":0,"w":0,"h":0}}');
+module.exports = JSON.parse('{"alpha":{"start":1,"end":0.1},"scale":{"start":0.075,"end":0.075,"minimumScaleMultiplier":0.075},"color":{"start":"#ffb640","end":"#ffb640"},"speed":{"start":100,"end":0,"minimumSpeedMultiplier":0.001},"acceleration":{"x":0,"y":0},"maxSpeed":150,"startRotation":{"min":0,"max":0},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":0.3,"max":0.3},"blendMode":"normal","frequency":0.001,"emitterLifetime":0.3,"maxParticles":40,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"rect","spawnRect":{"x":0,"y":0,"w":30,"h":30}}');
+
+/***/ }),
+
+/***/ "./assets/particle/emitter1.json":
+/*!***************************************!*\
+  !*** ./assets/particle/emitter1.json ***!
+  \***************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"alpha":{"start":1,"end":0.1},"scale":{"start":0.075,"end":0.075,"minimumScaleMultiplier":0.075},"color":{"start":"#ffb640","end":"#ffb640"},"speed":{"start":100,"end":0,"minimumSpeedMultiplier":0.001},"acceleration":{"x":0,"y":0},"maxSpeed":150,"startRotation":{"min":180,"max":180},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":0.3,"max":0.3},"blendMode":"normal","frequency":0.001,"emitterLifetime":0.3,"maxParticles":40,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"rect","spawnRect":{"x":0,"y":0,"w":30,"h":30}}');
 
 /***/ }),
 
