@@ -51,5 +51,5 @@ export const GameConstants = {
     pushDownSpeed : 10,
     //Tween animation
     ballTweenTime : 100,
-    ringTweenTime : 10,
+    ringTweenTime : 180,
 }
