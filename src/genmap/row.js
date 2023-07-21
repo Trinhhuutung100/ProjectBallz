@@ -32,29 +32,33 @@ export class Row {
         //     return;
         // }
         if(this.count>1){ // ring và bonus không xuất hiện ở hàng đầu tiên, chỉ xuất hiện từ hàng thứ 2 trở đi
-            var idxB= getRandomElementsFromArray(this.idx,1)[0]; // hàng nào cũng phải có 1 item bonus, xác định vị trí của item này
+            var idxB= getRandomElementsFromArray(this.idx,1)[0]; // hàng nào cũng phải có 1 item preball, xác định vị trí của item này
             this.data[idxB]=-1; //preBall
-            const isHaveRing = Math.random() <= 0.5; // Xác suất xuất hiện của cái nhẫn (50%)
-            if(isHaveRing){
+            var random1 = Math.random(); // Xác suất xuất hiện của coin (50%)
+            if(random1<0.5){
                 var idxR=getRandomElementsFromArray(this.idx,1)[0];
                 this.data[idxR]=-2; //coin
             }
         }
-        var random = Math.random();
-        var idxX=[]; // mảng lưu các chỉ số của các ô đặc biệt
-        if(random <=0.65){
-            idxX=getRandomElementsFromArray(this.idx,1);  //xác suất xuất hiện 1 ô lớn là 65%
+        var random2= Math.random();
+        var idxX=[]; // mảng lưu các chỉ số của các ô lớn
+        if(random2 <=0.75){
+            idxX=getRandomElementsFromArray(this.idx,1);  //xác suất xuất hiện 1 ô lớn là 75%
         }
-        if(random<=0.8 && random >0.65){
-             idxX=getRandomElementsFromArray(this.idx,2);// xác suất xuất hiện 2 ô lớn là 15%
+         if(random2<=0.87 && random2 >0.75){
+             idxX=getRandomElementsFromArray(this.idx,2);// xác suất xuất hiện 2 ô lớn là 12%
         }
-        if(random<=0.85 && random >0.8){
-            idxX=getRandomElementsFromArray(this.idx,3);// xác suất xuất hiện 3 ô lớn là 5%
+        if(random2<=0.9 && random2 >0.87){
+            idxX=getRandomElementsFromArray(this.idx,3);// xác suất xuất hiện 3 ô lớn là 3%
         }
         for(let i=0;i< idxX.length;i++){
             this.data[idxX[i]]=this.count*2; // ô đặc biệt có điểm gấp đôi ô bình thường
         }
-        for(let i=0;i<this.idx.length;i++){ // xác suất xuất hiện ô null và ô điểm bình thường là 50 50 
+        var idxNull=getRandomElementsFromArray(this.idx,1)[0];
+        this.data[idxNull]=0; // chắc chắn có ít nhất 1 ô null
+        var idxS=getRandomElementsFromArray(this.idx,1)[0];
+        this.data[idxS]=this.count; // chắc chắn có ít nhất 1 ô điểm bình thường
+        for(let i=0;i<this.idx.length;i++){ // xác suất xuất hiện ô null và ô điểm bình thường là 50 50
             var tmp = Math.random();
             if(tmp >=0.5){
                 this.data[this.idx[i]]=0;

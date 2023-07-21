@@ -5,7 +5,8 @@ import { GameConstants } from "../gameconstants/gameconstants";
 import { Sound, sound } from "@pixi/sound";
 import TWEEN from "@tweenjs/tween.js"
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
-import *as settingS from "../../assets/particle/emitter.json";
+import *as settingS1 from "../../assets/particle/emitter.json";
+import *as settingS2 from "../../assets/particle/emitter1.json";
 import *as settingP from "../../assets/particle/emitter2.json";
 import { ShopUI } from "../UI/shopui";
 const ballRadius = GameConstants.ballRadius;
@@ -211,12 +212,15 @@ export class CollisionHandler{
         if(ShopUI.used == 7) this.createTextFX(square);
         // tạo particle trước khi biến mất
         var tmp = new Container();
-        tmp.position.set(square.square.x,square.square.y); // vị trí của particle ở giữa hình vuông
+        tmp.position.set(square.square.x-GameConstants.squareEdge/2,square.square.y-GameConstants.squareEdge/2); // vị trí của particle ở góc trái hình vuông
         Game.app.stage.addChild(tmp);
         let texture = Texture.from("square"); // các hạt là hình vuông
-        var emitter = new Emitter(tmp, upgradeConfig(settingS,[texture]));
-        emitter.autoUpdate = true;
-        emitter.emit = true;// chạy particle
+        var emitter1 = new Emitter(tmp, upgradeConfig(settingS1,[texture]));
+        emitter1.autoUpdate = true;
+        emitter1.emit = true;// chạy particle
+        var emitter2 = new Emitter(tmp,upgradeConfig(settingS2,[texture]));
+        emitter2.autoUpdate = true;
+        emitter2.emit = true;// chạy particle
     }
     
     createTextFX(square){
