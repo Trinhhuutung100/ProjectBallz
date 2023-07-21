@@ -6167,7 +6167,7 @@ const GameConstants = {
   pushDownSpeed: 10,
   //Tween animation
   ballTweenTime: 100,
-  ringTweenTime: 10
+  ringTweenTime: 180
 };
 
 
@@ -6873,7 +6873,7 @@ class PreBall extends _ball__WEBPACK_IMPORTED_MODULE_2__.Ball {
   }
   ringAnimation() {
     var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].Tween({ size: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.minRing });
-    tween.to({ size: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.maxRing }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ringTweenTime * pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS).repeat(Infinity).yoyo(true).onUpdate((obj) => {
+    tween.to({ size: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.maxRing }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_3__.GameConstants.ringTweenTime).repeat(Infinity).yoyo(true).onUpdate((obj) => {
       this.ring.width = obj.size;
       this.ring.height = obj.size;
     }).start(_game__WEBPACK_IMPORTED_MODULE_4__.Game._current);
