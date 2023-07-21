@@ -53,8 +53,9 @@ export class Square extends Container{
         }   
     }
     changeColor(score){// hàm đổi màu theo điểm
-        var baseColor = 0xeba307;
-        var newColor = baseColor + score * 0x400;
-        return newColor;
+        var baseColor = 0xfff;
+        var newColor = baseColor - score * 0xf;
+        var hex = "#" + newColor.toString(16);
+        return hex;
     }
 }
