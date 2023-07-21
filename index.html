@@ -5511,10 +5511,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       this.ballText = false;
       this.ready = false;
       for (var i = 0; i < this.balls.length; i++) {
-        if (this.balls[i].distance > i * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls * dt)
+        if (this.balls[i].distance > i * _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.distanceBetweenBalls)
           this.balls[i].readyGo = true;
         else
-          this.balls[i].distance += dt;
+          this.balls[i].distance += 1;
         if (this.balls[i].readyGo) {
           this.balls[i].ball.x += this.balls[i].dx * dt;
           this.balls[i].ball.y += this.balls[i].dy * dt;
@@ -6162,7 +6162,7 @@ const GameConstants = {
   maxRing: squareEdge * 1.5,
   //Ball move
   ballSpeed: squareEdge * 0.5,
-  distanceBetweenBalls: Math.round(squareEdge / 2) * 0.55,
+  distanceBetweenBalls: squareEdge * 0.15,
   fallSpeed: squareEdge * 0.5,
   pushDownSpeed: 10,
   //Tween animation
