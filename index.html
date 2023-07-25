@@ -4348,6 +4348,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -4404,6 +4406,8 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Replay");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.rePlay();
     });
     this.addChild(tmp);
@@ -4417,6 +4421,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Mainmenu");
+      _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.menu();
     });
     this.addChild(tmp);
@@ -4465,6 +4470,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _pauseui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pauseui */ "./src/UI/pauseui.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -4501,6 +4508,8 @@ class InGameUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Pause");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
       if (!_game__WEBPACK_IMPORTED_MODULE_2__.Game.isWaiting) {
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI = new _pauseui__WEBPACK_IMPORTED_MODULE_3__.PauseUI();
         _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
@@ -4644,6 +4653,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -4657,11 +4668,14 @@ class MusicButton extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite {
     this.tmp.position.set(x, y);
     this.tmp.eventMode = "static";
     this.tmp.on("pointerup", () => {
+      _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_1__.Game.music = !_game__WEBPACK_IMPORTED_MODULE_1__.Game.music;
       console.log("Music " + _game__WEBPACK_IMPORTED_MODULE_1__.Game.music);
       if (_game__WEBPACK_IMPORTED_MODULE_1__.Game.music) {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("AmoredCore").volume = 0.5;
         this.tmp.tint = 16777215;
       } else {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("AmoredCore").volume = 0;
         this.tmp.tint = 4473924;
       }
     });
@@ -4695,6 +4709,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _objects_activeball__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../objects/activeball */ "./src/objects/activeball.js");
 /* harmony import */ var _musicbutton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./musicbutton */ "./src/UI/musicbutton.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -4741,6 +4757,8 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Continue");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_5__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.isWaiting = false;
     });
@@ -4755,6 +4773,8 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Restart");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_5__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.reStart();
     });
     this.addChild(tmp);
@@ -4768,6 +4788,8 @@ class PauseUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Mainmenu");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_5__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.resetMap();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.psUI);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.menu();
@@ -4813,12 +4835,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+
 
 
 
@@ -4850,6 +4874,8 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Back");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.shUI);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.stUI);
     });
@@ -4933,6 +4959,8 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(item, item.ring, item.coinText);
     item.eventMode = "static";
     item.on("pointerup", () => {
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("coinSound");
       if (item.sold) {
         if (_ShopUI.used > 0)
           this.items[_ShopUI.used - 1].tint = 6710886;
@@ -4993,10 +5021,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   StartUI: () => (/* binding */ StartUI)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
-/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/index.js");
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/index.js");
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _musicbutton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./musicbutton */ "./src/UI/musicbutton.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -5021,7 +5051,7 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.height = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.squareEdge * 5;
     tmp.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.1);
     this.addChild(tmp);
-    gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.to(tmp, {
+    gsap__WEBPACK_IMPORTED_MODULE_5__.gsap.to(tmp, {
       y: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.2,
       duration: 1,
       yoyo: true,
@@ -5037,6 +5067,8 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.position.set(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenWidth * 0.5, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.screenHeight * 0.4);
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
       console.log("Play");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.play();
     });
@@ -5071,6 +5103,8 @@ class StartUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     tmp.eventMode = "static";
     tmp.on("pointerup", () => {
       console.log("Shop");
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound");
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.removeChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.stUI);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.stage.addChild(_game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.shUI);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.uiManager.shUI.drawNumberOfRing();
@@ -5151,7 +5185,9 @@ class CollisionHandler {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("Siu");
         return;
       }
-      _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("ballSound");
+      _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound", {
+        volume: 2
+      });
     }
   }
   playCoinMusic() {
@@ -5445,6 +5481,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -5485,11 +5523,12 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       this.beams[i].anchor.set(0.5, 1);
       this.beams[i].width = 0;
       this.beams[i].height = 0;
+      this.beams[i].tint = "blue";
     }
     this.cutLines = [];
     this.verLines = [];
     this.horLines = [];
-    this.ball = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from("ball"));
+    this.ball = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from("aimCircle"));
     this.ball.anchor.set(0.5, 0.5);
     this.ball.width = 2 * ballRadius;
     this.ball.height = 2 * ballRadius;
@@ -5518,7 +5557,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         else
           this.balls[i].distance += dt;
         if (this.balls[i].readyGo) {
-          this.balls[i].move(dt);
+          this.balls[i].move(dt, i);
         }
       }
       if (this.allGround) {
@@ -5527,6 +5566,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           this.balls[i].distance = 0;
           ball.readyGo = false;
           ball.isBall = true;
+          ball.isMove = false;
           var tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__["default"].Tween({ x: ball.ball.x }).to({ x: this.groundPositionX }, _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.ballTweenTime * dt).onUpdate((obj) => {
             ball.ball.x = obj.x;
             this.isCreating = true;
@@ -5906,6 +5946,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _manifest_manifest__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./manifest/manifest */ "./src/manifest/manifest.js");
 /* harmony import */ var _containerSpawners_containerSpawner__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./containerSpawners/containerSpawner */ "./src/containerSpawners/containerSpawner.js");
 /* harmony import */ var _UI_shopui__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./UI/shopui */ "./src/UI/shopui.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -5943,6 +5984,7 @@ var __async = (__this, __arguments, generator) => {
 
 
 
+
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
@@ -5956,12 +5998,34 @@ class Game {
     this.best = this.get("best", 0);
     this.coinScore = this.get("coinScore", 1e6);
     this.music = true;
+    this.processBar();
     this.loadGame().then(() => {
+      this.app.stage.removeChild(this.loaderBar);
       this.createPool().then(() => {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_17__.sound.play("AmoredCore", {
+          volume: 0.5,
+          loop: true
+        });
         this.ticker();
       });
     });
     console.log("Start");
+  }
+  static processBar() {
+    this.loaderBarFill = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.loaderBarFill.beginFill(34816, 1);
+    this.loaderBarFill.drawRect(0, 0, 100, 50);
+    this.loaderBarFill.endFill();
+    this.loaderBarFill.scale.x = 0;
+    this.loaderBarBoder = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.loaderBarBoder.lineStyle(10, 0, 1);
+    this.loaderBarBoder.drawRect(0, 0, 100, 50);
+    this.loaderBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.loaderBar.addChild(this.loaderBarFill);
+    this.loaderBar.addChild(this.loaderBarBoder);
+    this.loaderBar.position.x = (_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenWidth - this.loaderBar.width) / 2;
+    this.loaderBar.position.y = (_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_6__.GameConstants.screenHeight - this.loaderBar.height) / 2;
+    this.app.stage.addChild(this.loaderBar);
   }
   static get(key, defaul) {
     if (localStorage.getItem(key) != null)
@@ -6014,9 +6078,13 @@ class Game {
     return __async(this, null, function* () {
       yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.init({ manifest: _manifest_manifest__WEBPACK_IMPORTED_MODULE_14__.manifest });
       const bundleIDs = _manifest_manifest__WEBPACK_IMPORTED_MODULE_14__.manifest.bundles.map((bundle) => bundle.name);
-      yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.loadBundle(bundleIDs);
+      yield pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.loadBundle(bundleIDs, this.loading.bind(this));
       console.log(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.cache);
     });
+  }
+  static loading(ratio) {
+    console.log(ratio);
+    this.loaderBarFill.scale.x = ratio;
   }
   static play() {
     this.app.stage.removeChild(this.uiManager.stUI);
@@ -6635,6 +6703,36 @@ const manifest = {
       assets: {
         Siu: "assets/sounds/SUIII.mp3"
       }
+    },
+    {
+      name: "AmoredCore",
+      assets: {
+        AmoredCore: "assets/sounds/AmoredCore.mp3"
+      }
+    },
+    {
+      name: "gunSound",
+      assets: {
+        gunSound: "assets/sounds/gunSound.mp3"
+      }
+    },
+    {
+      name: "firing",
+      assets: {
+        firing: "assets/sounds/firing.mp3"
+      }
+    },
+    {
+      name: "load",
+      assets: {
+        load: "assets/sounds/load.mp3"
+      }
+    },
+    {
+      name: "aimCircle",
+      assets: {
+        aimCircle: "assets/images/aimCircle.png"
+      }
     }
   ]
 };
@@ -6681,6 +6779,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -6727,6 +6827,10 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         var square = squares[s].square.getBounds();
         var bx = ball.x + ballRadius + bc.dx * dt;
         var by = ball.y + ballRadius + bc.dy * dt;
+        if (squares[s].index == 1) {
+          bx = ball.x + ballRadius;
+          by = ball.y + ballRadius;
+        }
         var sx = square.x + edge;
         var sy = square.y + edge;
         var dx = Math.abs(bx - sx);
@@ -6795,7 +6899,17 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       }
     }
   }
-  move(dt) {
+  move(dt, i) {
+    if (!this.isMove) {
+      this.isMove = true;
+      if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("load", () => {
+          if (i == _game__WEBPACK_IMPORTED_MODULE_2__.Game.balls.length - 1) {
+            _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound");
+          }
+        });
+      }
+    }
     this.squareCollision(dt, _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squares);
     this.ball.x += this.dx * dt;
     this.ball.y += this.dy * dt;
