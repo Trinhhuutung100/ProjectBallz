@@ -24,8 +24,8 @@ export class CollisionHandler{
     }
     update(dt){
         if(!Game.ballController.readyAttack) return;
-        if(this.squares.length > 0) this.squareCollision(dt);
-        // this.squareCollision2(dt);
+        // if(this.squares.length > 0) this.squareCollision(dt);
+        // if(this.squares.length > 0) this.squareCollision2(dt);
         if(this.coins.length > 0) this.coinCollision(dt);
         if(this.preBalls.length > 0)  this.preBallCollision(dt);
     }
@@ -141,7 +141,7 @@ export class CollisionHandler{
         if(!Game.ballController.readyAttack) return;
         for(var b = 0; b< this.balls.length; b++){
             if(this.balls[b].dy == 0 || !this.balls[b].isBall) continue;
-            this.balls[b].squareCollision(dt, b);
+            this.balls[b].squareCollision(dt, this.squares);
         }
     }
     coinCollision(dt){
