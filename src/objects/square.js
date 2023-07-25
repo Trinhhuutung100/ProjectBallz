@@ -26,7 +26,7 @@ export class Square extends Container{
         this.setText();     
     }    
     decreaseIndex(s){
-        console.log(s);
+        // console.log(s);
         if(this.index > 0)this.index--;
         if(this.index == 0 || ShopUI.used == 7) {
             Game.collision.emitSquareParticale(this);

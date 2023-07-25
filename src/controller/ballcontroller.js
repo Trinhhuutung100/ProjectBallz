@@ -45,6 +45,10 @@ export class BallController extends Container{
         this.cutLines = [];
         this.verLines =[];
         this.horLines = [];
+        this.ball = new Sprite(Texture.from("ball"));
+        this.ball.anchor.set(0.5, 0.5);
+        this.ball.width = 2*ballRadius;
+        this.ball.height = 2*ballRadius;
         
     }
     // Add listener
@@ -249,7 +253,6 @@ export class BallController extends Container{
                                 // this.deflect(this.groundPositionX, this.groundPositionY, alpha);  
                                 this.deflectC(this.groundPositionX, this.groundPositionY, alpha, Game.map.squares);  
                             }
-                            
                             // // Gen predict
                             for( var i = 0; i < this.predict.length -1; i++){
                                 this.beams[i].x = this.predict[i].x;
@@ -258,7 +261,12 @@ export class BallController extends Container{
                                 this.beams[i].width = GameConstants.squareEdge*0.05;
                                 this.beams[i].height = this.predict[i+1].hypo;
                                 this.addChild(this.beams[i]);
-                            }
+                            }                            
+                            // this.ball.x = (this.beams[index].getBounds().left + this.beams[index].getBounds().right)/2 ;
+                            // this.ball.y = this.beams[index].getBounds().top;
+                            this.ball.x = this.predict[this.predict.length-1].x;
+                            this.ball.y = this.predict[this.predict.length-1].y;
+                            this.addChild(this.ball);
                             this.addChild(this.needle);
                         }
                         if( y > 0 ) {
@@ -320,10 +328,10 @@ export class BallController extends Container{
         {
             for(var i = 0; i < squares.length; i++){
                 var bound = squares[i].square.getBounds();
-                var bdl = bound.left;
-                var bdr = bound.right;
-                var bdt = bound.top;
-                var bdb = bound.bottom
+                var bdl = bound.left - ballRadius;
+                var bdr = bound.right + ballRadius;
+                var bdt = bound.top - ballRadius;
+                var bdb = bound.bottom + ballRadius;
                 
                 //left vertical bound
                 var lVerLine = {x1: bdl, y1: bdt, 
@@ -414,9 +422,7 @@ export class BallController extends Container{
 
         //recursive
         {
-            if(cutPoint.i != -1) return;
-            if(this.predict.length == 11) return;   
-            if(y1 == GameConstants.defaultBottomBall) return
+            if(cutPoint.i != -1 || this.predict.length == 11 || y1 == GameConstants.defaultBottomBall) return;
             this.deflectC(x1, y1, alpha1, squares); 
         }
     }
