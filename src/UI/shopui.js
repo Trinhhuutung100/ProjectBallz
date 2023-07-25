@@ -1,6 +1,7 @@
 import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
+import { sound } from "@pixi/sound";
 
 const halfEdge = GameConstants.screenWidth/(6 + 4/3);
 const padding = halfEdge/3;
@@ -35,6 +36,7 @@ export class ShopUI extends Container {
         tmp.eventMode = "static";
         tmp.on("pointerup", () => {
             console.log("Back");
+            if(Game.music) sound.play("coinSound");
             Game.app.stage.removeChild(Game.uiManager.shUI);
             Game.app.stage.addChild(Game.uiManager.stUI);
         })
@@ -125,6 +127,7 @@ export class ShopUI extends Container {
 
         item.eventMode = "static";
         item.on("pointerup", () => {   
+            if(Game.music) sound.play("coinSound");
             if(item.sold) {
                 if(ShopUI.used>0) this.items[ShopUI.used-1].tint = 0x666666;
                 if(ShopUI.used == item.id ) {

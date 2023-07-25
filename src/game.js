@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, Text, Texture, Ticker } from "pixi.js"
+import { Application, Assets, Container, Graphics, Sprite, Text, Texture, Ticker } from "pixi.js"
 import { ActiveBall } from "./objects/activeball";
 import { PreBall } from "./objects/preball";
 import { BallController } from "./controller/ballcontroller";
@@ -15,6 +15,7 @@ import { StartUI } from "./UI/startui";
 import { manifest } from "./manifest/manifest";
 import { ContainerSpawner } from "./containerSpawners/containerSpawner";
 import { ShopUI } from "./UI/shopui";
+import { sound } from "@pixi/sound";
 
 
 export class Game{
@@ -30,13 +31,40 @@ export class Game{
         this.best = this.get("best", 0);
         this.coinScore = this.get("coinScore", 1000000);
         this.music = true;
+        this.processBar();
         this.loadGame().then(() => {
+            this.app.stage.removeChild(this.loaderBar);
             this.createPool().then(() => {
+                sound.play("AmoredCore",{
+                    volume: 0.5,
+                    loop: true
+                });
                 this.ticker();
             })
         })
         console.log("Start");        
     } 
+    static processBar(){
+        this.loaderBarFill = new Graphics();
+        this.loaderBarFill.beginFill(0x008800, 1)
+        this.loaderBarFill.drawRect(0, 0, 100, 50);
+        this.loaderBarFill.endFill();
+        this.loaderBarFill.scale.x = 0; // we draw the filled bar and with scale we set the %
+
+        // The border of the bar.
+        this.loaderBarBoder = new Graphics();
+        this.loaderBarBoder.lineStyle(10, 0x0, 1);
+        this.loaderBarBoder.drawRect(0, 0, 100, 50);
+
+        // Now we keep the border and the fill in a container so we can move them together.
+        this.loaderBar = new Container();
+        this.loaderBar.addChild(this.loaderBarFill);
+        this.loaderBar.addChild(this.loaderBarBoder);
+        //Looks complex but this just centers the bar on screen.
+        this.loaderBar.position.x = (GameConstants.screenWidth - this.loaderBar.width) / 2; 
+        this.loaderBar.position.y = (GameConstants.screenHeight - this.loaderBar.height) / 2;
+        this.app.stage.addChild(this.loaderBar);
+    }
     static get(key, defaul){
         if (localStorage.getItem(key) != null)
         return localStorage.getItem(key);
@@ -83,8 +111,12 @@ export class Game{
     static async loadGame(){
         await Assets.init({manifest: manifest});
         const bundleIDs = manifest.bundles.map(bundle => bundle.name);
-        await Assets.loadBundle(bundleIDs);
+        await Assets.loadBundle(bundleIDs, this.loading.bind(this));
         console.log(Assets.cache);
+    }
+    static loading(ratio){
+        console.log(ratio);
+        this.loaderBarFill.scale.x = ratio;
     }
     static play(){
         this.app.stage.removeChild(this.uiManager.stUI);

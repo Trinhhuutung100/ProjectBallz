@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import { MusicButton } from "./musicbutton";
+import { sound } from "@pixi/sound";
 export class StartUI extends Container{
     constructor(){
         super();
@@ -38,6 +39,7 @@ export class StartUI extends Container{
         tmp.position.set(GameConstants.screenWidth*0.5, GameConstants.screenHeight*0.4);
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
+            if(Game.music) sound.play("coinSound");
             console.log("Play");
             Game.play();
         });
@@ -72,6 +74,7 @@ export class StartUI extends Container{
         tmp.eventMode = "static";
         tmp.on("pointerup", () => {
             console.log("Shop");
+            if(Game.music) sound.play("coinSound");
             Game.app.stage.removeChild(Game.uiManager.stUI);
             Game.app.stage.addChild(Game.uiManager.shUI);
             Game.uiManager.shUI.drawNumberOfRing();

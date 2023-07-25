@@ -2,6 +2,7 @@ import TWEEN from "@tweenjs/tween.js";
 import {Container, Sprite, Text, Texture, Ticker } from "pixi.js"
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
+import { sound } from "@pixi/sound";
 
 const ballRadius = GameConstants.ballRadius;
 const pi = Math.PI;
@@ -41,11 +42,12 @@ export class BallController extends Container{
             this.beams[i].anchor.set(0.5, 1);
             this.beams[i].width = 0;
             this.beams[i].height = 0;
+            this.beams[i].tint = "blue"
         }
         this.cutLines = [];
         this.verLines =[];
         this.horLines = [];
-        this.ball = new Sprite(Texture.from("ball"));
+        this.ball = new Sprite(Texture.from("aimCircle"));
         this.ball.anchor.set(0.5, 0.5);
         this.ball.width = 2*ballRadius;
         this.ball.height = 2*ballRadius;
@@ -69,11 +71,14 @@ export class BallController extends Container{
             this.removeChild(this.ballNum)
             this.ballText = false;
             this.ready = false;
+            // sound.play("firing", {
+            //     loop: true
+            // });
             for(var i = 0; i< this.balls.length; i++){
                 if(this.balls[i].distance>i*GameConstants.distanceBetweenBalls*dt) this.balls[i].readyGo=true;
                 else this.balls[i].distance +=dt;
                 if(this.balls[i].readyGo){
-                    this.balls[i].move(dt);
+                    this.balls[i].move(dt, i);
                 } 
             }
             if(this.allGround){
@@ -83,6 +88,7 @@ export class BallController extends Container{
                     this.balls[i].distance = 0;
                     ball.readyGo = false;
                     ball.isBall = true;
+                    ball.isMove = false;
                     var tween = new TWEEN.Tween({ x: ball.ball.x})
                     .to({x: this.groundPositionX }, GameConstants.ballTweenTime*dt)
                     .onUpdate((obj) => {

@@ -1,6 +1,7 @@
 import { Sprite, Texture } from "pixi.js";
 import { Game } from "../game";
 import { GameConstants } from "../gameconstants/gameconstants";
+import { sound } from "@pixi/sound";
 
 export class MusicButton extends Sprite{
     constructor(x, y){
@@ -12,11 +13,14 @@ export class MusicButton extends Sprite{
         this.tmp.position.set(x, y);
         this.tmp.eventMode = "static";
         this.tmp.on("pointerup",() => {
+            sound.play("coinSound");
             Game.music = !Game.music;
             console.log("Music " + Game.music);
             if(Game.music) {
+                sound.find("AmoredCore").volume = 0.5;
                 this.tmp.tint = 0xffffff;
             } else {
+                sound.find("AmoredCore").volume = 0;
                 this.tmp.tint = 0x444444;
             }
         });

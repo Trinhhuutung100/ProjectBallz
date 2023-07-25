@@ -1,6 +1,7 @@
 import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
+import { sound } from "@pixi/sound";
 
 export class GameOverUI extends Container {
     constructor() {
@@ -57,6 +58,7 @@ export class GameOverUI extends Container {
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Replay");
+            if(Game.music) sound.play("coinSound");
             Game.rePlay();
         });
         this.addChild(tmp);
@@ -70,6 +72,7 @@ export class GameOverUI extends Container {
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Mainmenu");
+            sound.play("coinSound");
             Game.menu();
         });
         this.addChild(tmp);

@@ -3,6 +3,7 @@ import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import { ActiveBall } from "../objects/activeball";
 import { MusicButton } from "./musicbutton";
+import { sound } from "@pixi/sound";
 
 export class PauseUI extends Container {
     constructor() {
@@ -45,7 +46,8 @@ export class PauseUI extends Container {
 
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
-            console.log("Continue");        
+            console.log("Continue"); 
+            if(Game.music) sound.play("coinSound");       
             Game.app.stage.removeChild(Game.uiManager.psUI);
             Game.isWaiting = false;            
         });
@@ -60,6 +62,7 @@ export class PauseUI extends Container {
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Restart");
+            if(Game.music) sound.play("coinSound");
             Game.reStart();
             
         });
@@ -74,6 +77,7 @@ export class PauseUI extends Container {
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Mainmenu");
+            if(Game.music) sound.play("coinSound");
             Game.map.resetMap();
             Game.app.stage.removeChild(Game.uiManager.psUI);
             Game.menu();

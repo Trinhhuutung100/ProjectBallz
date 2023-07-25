@@ -192,5 +192,35 @@ export const manifest = {
                 Siu : "assets/sounds/SUIII.mp3",
             }
         },
+        {
+            name : "AmoredCore",
+            assets : {
+                AmoredCore : "assets/sounds/AmoredCore.mp3",
+            }
+        },
+        {
+            name : "gunSound",
+            assets : {
+                gunSound : "assets/sounds/gunSound.mp3",
+            }
+        },
+        {
+            name : "firing",
+            assets : {
+                firing : "assets/sounds/firing.mp3",
+            }
+        },
+        {
+            name : "load",
+            assets : {
+                load : "assets/sounds/load.mp3",
+            }
+        },
+        {
+            name : "aimCircle",
+            assets : {
+                aimCircle : "assets/images/aimCircle.png",
+            }
+        },
     ]
 }

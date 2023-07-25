@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import { PauseUI } from "./pauseui";
+import { sound } from "@pixi/sound";
 export class InGameUI extends Container{
     constructor(){
         super();
@@ -35,6 +36,7 @@ export class InGameUI extends Container{
         tmp.eventMode = "static";
         tmp.on("pointerup",() => {
             console.log("Pause");
+            if(Game.music) sound.play("coinSound");
             if(!Game.isWaiting){
                 // Game.app.stage.removeChild(Game.backYard);
                 Game.uiManager.psUI = new PauseUI();

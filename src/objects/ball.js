@@ -2,6 +2,7 @@ import { Container, Sprite, Texture, Ticker} from "pixi.js"
 import { GameConstants } from "../gameconstants/gameconstants";
 import { Game } from "../game";
 import TWEEN from "@tweenjs/tween.js";
+import { sound } from "@pixi/sound";
 
 const ballRadius = GameConstants.ballRadius;
 const edge = GameConstants.squareEdge;
@@ -47,6 +48,10 @@ export class Ball extends Container{
                 //Position
                 var bx = ball.x + ballRadius + bc.dx*dt;
                 var by = ball.y + ballRadius + bc.dy*dt;
+                if(squares[s].index == 1){
+                    bx = ball.x + ballRadius ;
+                    by = ball.y + ballRadius ;
+                }
                 var sx = square.x + edge;
                 var sy = square.y + edge;
                 //Distance
@@ -116,7 +121,17 @@ export class Ball extends Container{
             } 
         }  
     }
-    move(dt){
+    move(dt, i){
+        if(!this.isMove){
+            this.isMove = true;
+            if(Game.music){
+                sound.play("load", () => {
+                if(i == Game.balls.length - 1) {
+                    sound.play("gunSound");
+                }
+            });
+        }
+        }
         this.squareCollision(dt, Game.map.squares);
         this.ball.x +=this.dx*dt;
         this.ball.y +=this.dy*dt;

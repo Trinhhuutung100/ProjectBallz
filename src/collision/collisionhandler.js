@@ -35,7 +35,9 @@ export class CollisionHandler{
                 sound.play("Siu");
                 return;
             }
-            sound.play("ballSound");
+            sound.play("gunSound", {
+                volume: 2,
+            });
         }
     }
     playCoinMusic(){
