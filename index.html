@@ -5489,6 +5489,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.cutLines = [];
     this.verLines = [];
     this.horLines = [];
+    this.ball = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from("ball"));
+    this.ball.anchor.set(0.5, 0.5);
+    this.ball.width = 2 * ballRadius;
+    this.ball.height = 2 * ballRadius;
   }
   // Add listener
   init() {
@@ -5675,6 +5679,9 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
                 this.beams[i].height = this.predict[i + 1].hypo;
                 this.addChild(this.beams[i]);
               }
+              this.ball.x = this.predict[this.predict.length - 1].x;
+              this.ball.y = this.predict[this.predict.length - 1].y;
+              this.addChild(this.ball);
               this.addChild(this.needle);
             }
             if (y > 0) {
@@ -5755,10 +5762,10 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     {
       for (var i = 0; i < squares.length; i++) {
         var bound = squares[i].square.getBounds();
-        var bdl = bound.left;
-        var bdr = bound.right;
-        var bdt = bound.top;
-        var bdb = bound.bottom;
+        var bdl = bound.left - ballRadius;
+        var bdr = bound.right + ballRadius;
+        var bdt = bound.top - ballRadius;
+        var bdb = bound.bottom + ballRadius;
         var lVerLine = {
           x1: bdl,
           y1: bdt,
@@ -5858,11 +5865,7 @@ class BallController extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       this.predict.push(pre);
     }
     {
-      if (cutPoint.i != -1)
-        return;
-      if (this.predict.length == 11)
-        return;
-      if (y1 == _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall)
+      if (cutPoint.i != -1 || this.predict.length == 11 || y1 == _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__.GameConstants.defaultBottomBall)
         return;
       this.deflectC(x1, y1, alpha1, squares);
     }
@@ -6117,8 +6120,9 @@ const column = 7;
 const line = 13;
 const screenHeight = innerHeight;
 const screenWidth = innerWidth < innerHeight * 0.65 ? innerWidth : innerHeight / line * column;
-const squareEdge = screenWidth / 16;
-const padding = squareEdge / 4;
+const padPerEd = 1 / 4;
+const squareEdge = screenWidth / (14 + 8 * padPerEd);
+const padding = squareEdge * padPerEd;
 const ballRadius = squareEdge / 3;
 const defaultBottom = screenHeight / 2 + 5 * padding + 9 * squareEdge;
 const defaultTop = screenHeight / 2 - 5 * padding - 9 * squareEdge;
@@ -6949,7 +6953,6 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.setText();
   }
   decreaseIndex(s) {
-    console.log(s);
     if (this.index > 0)
       this.index--;
     if (this.index == 0 || _UI_shopui__WEBPACK_IMPORTED_MODULE_3__.ShopUI.used == 7) {
