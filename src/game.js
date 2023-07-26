@@ -107,6 +107,23 @@ export class Game{
         }          
         this.uiManager = new UIManager();
         this.app.stage.addChild(this.uiManager.stUI);
+
+        // sound.add("ballSound",
+        // "coinSound",
+        // "firing",
+        // "gunSound",
+        // "load",
+        // "SUII",
+        // "theme0",
+        // "theme1",
+        // "theme2",
+        // "theme3",
+        // "theme4",
+        // "theme5",
+        // "theme6",
+        // "theme7",
+        // "theme8",
+        // "theme9",);
     }
     static async loadGame(){
         await Assets.init({manifest: manifest});
