@@ -35,8 +35,8 @@ export class Game{
         this.loadGame().then(() => {
             this.app.stage.removeChild(this.loaderBar);
             this.createPool().then(() => {
-                sound.play("AmoredCore",{
-                    volume: 0.5,
+                sound.play("theme" + ShopUI.used,{
+                    volume: 0.3,
                     loop: true
                 });
                 this.ticker();

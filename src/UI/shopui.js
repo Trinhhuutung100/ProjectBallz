@@ -168,6 +168,16 @@ export class ShopUI extends Container {
             ball.init();
             ball.addChild(ball.ball);
         })
+        Game.squarePool.forEach(square => {
+            square.removeChild(square.square);
+            square.square = square.squareSkin[ShopUI.used];
+            square.init(square.squareTexts[ShopUI.used]);
+        })
+        sound.stopAll();
+        sound.play("theme" + ShopUI.used,{
+            volume: 0.3,
+            loop: true
+        });
     }
 }
 

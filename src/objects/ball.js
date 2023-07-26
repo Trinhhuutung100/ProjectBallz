@@ -125,7 +125,9 @@ export class Ball extends Container{
         if(!this.isMove){
             this.isMove = true;
             if(Game.music){
-                sound.play("load", () => {
+                sound.play("load",{
+                    volume: 2
+                }, () => {
                 if(i == Game.balls.length - 1) {
                     sound.play("gunSound");
                 }

@@ -31,10 +31,10 @@ export class CollisionHandler{
     }
     playSquareMusic(){
         if(Game.music) {
-            if( ShopUI.used == 7) {
-                sound.play("Siu");
-                return;
-            }
+            // if( ShopUI.used == 7) {
+            //     sound.play("Siu");
+            //     return;
+            // }
             sound.play("gunSound", {
                 volume: 2,
             });
