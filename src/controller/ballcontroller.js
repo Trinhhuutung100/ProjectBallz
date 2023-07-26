@@ -75,7 +75,7 @@ export class BallController extends Container{
             //     loop: true
             // });
             for(var i = 0; i< this.balls.length; i++){
-                if(this.balls[i].distance>i*GameConstants.distanceBetweenBalls*dt) this.balls[i].readyGo=true;
+                if(this.balls[i].distance>=i*GameConstants.distanceBetweenBalls*dt) this.balls[i].readyGo=true;
                 else this.balls[i].distance +=dt;
                 if(this.balls[i].readyGo){
                     this.balls[i].move(dt, i);
