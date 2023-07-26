@@ -7027,14 +7027,13 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     if (!this.isMove) {
       this.isMove = true;
       if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("load", {
-          volume: 4
-        }, () => {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("load", () => {
           if (i == _game__WEBPACK_IMPORTED_MODULE_2__.Game.balls.length - 1) {
             _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound", {
               volume: 2
             });
           }
+          _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.find("load").volume = 4;
         });
       }
     }
