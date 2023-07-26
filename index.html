@@ -4654,6 +4654,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+/* harmony import */ var _shopui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shopui */ "./src/UI/shopui.js");
+
 
 
 
@@ -4672,10 +4674,10 @@ class MusicButton extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite {
       _game__WEBPACK_IMPORTED_MODULE_1__.Game.music = !_game__WEBPACK_IMPORTED_MODULE_1__.Game.music;
       console.log("Music " + _game__WEBPACK_IMPORTED_MODULE_1__.Game.music);
       if (_game__WEBPACK_IMPORTED_MODULE_1__.Game.music) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("AmoredCore").volume = 0.5;
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 1;
         this.tmp.tint = 16777215;
       } else {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("AmoredCore").volume = 0;
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 0;
         this.tmp.tint = 4473924;
       }
     });
@@ -5001,6 +5003,16 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       ball.init();
       ball.addChild(ball.ball);
     });
+    _game__WEBPACK_IMPORTED_MODULE_2__.Game.squarePool.forEach((square) => {
+      square.removeChild(square.square);
+      square.square = square.squareSkin[_ShopUI.used];
+      square.init(square.squareTexts[_ShopUI.used]);
+    });
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.stopAll();
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("theme" + _ShopUI.used, {
+      volume: 0.3,
+      loop: true
+    });
   }
 };
 let ShopUI = _ShopUI;
@@ -5181,10 +5193,6 @@ class CollisionHandler {
   }
   playSquareMusic() {
     if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
-      if (_UI_shopui__WEBPACK_IMPORTED_MODULE_10__.ShopUI.used == 7) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("Siu");
-        return;
-      }
       _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound", {
         volume: 2
       });
@@ -6002,8 +6010,8 @@ class Game {
     this.loadGame().then(() => {
       this.app.stage.removeChild(this.loaderBar);
       this.createPool().then(() => {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_17__.sound.play("AmoredCore", {
-          volume: 0.5,
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_17__.sound.play("theme" + _UI_shopui__WEBPACK_IMPORTED_MODULE_16__.ShopUI.used, {
+          volume: 0.3,
           loop: true
         });
         this.ticker();
@@ -6687,6 +6695,60 @@ const manifest = {
       }
     },
     {
+      name: "square1",
+      assets: {
+        square1: "assets/images/square1.png"
+      }
+    },
+    {
+      name: "square2",
+      assets: {
+        square2: "assets/images/square2.png"
+      }
+    },
+    {
+      name: "square3",
+      assets: {
+        square3: "assets/images/square3.png"
+      }
+    },
+    {
+      name: "square4",
+      assets: {
+        square4: "assets/images/square4.png"
+      }
+    },
+    {
+      name: "square5",
+      assets: {
+        square5: "assets/images/square5.png"
+      }
+    },
+    {
+      name: "square6",
+      assets: {
+        square6: "assets/images/square6.png"
+      }
+    },
+    {
+      name: "square7",
+      assets: {
+        square7: "assets/images/square7.png"
+      }
+    },
+    {
+      name: "square8",
+      assets: {
+        square8: "assets/images/square8.png"
+      }
+    },
+    {
+      name: "square9",
+      assets: {
+        square9: "assets/images/square9.png"
+      }
+    },
+    {
       name: "ballSound",
       assets: {
         ballSound: "assets/sounds/ballSound.wav"
@@ -6704,12 +6766,12 @@ const manifest = {
         Siu: "assets/sounds/SUIII.mp3"
       }
     },
-    {
-      name: "AmoredCore",
-      assets: {
-        AmoredCore: "assets/sounds/AmoredCore.mp3"
-      }
-    },
+    // {
+    //     name : "AmoredCore",
+    //     assets : {
+    //         AmoredCore : "assets/sounds/AmoredCore.mp3",
+    //     }
+    // },
     {
       name: "gunSound",
       assets: {
@@ -6732,6 +6794,66 @@ const manifest = {
       name: "aimCircle",
       assets: {
         aimCircle: "assets/images/aimCircle.png"
+      }
+    },
+    {
+      name: "theme0",
+      assets: {
+        theme0: "assets/sounds/theme0.mp3"
+      }
+    },
+    {
+      name: "theme1",
+      assets: {
+        theme1: "assets/sounds/theme1.mp3"
+      }
+    },
+    {
+      name: "theme2",
+      assets: {
+        theme2: "assets/sounds/theme2.mp3"
+      }
+    },
+    {
+      name: "theme3",
+      assets: {
+        theme3: "assets/sounds/theme3.mp3"
+      }
+    },
+    {
+      name: "theme4",
+      assets: {
+        theme4: "assets/sounds/theme4.mp3"
+      }
+    },
+    {
+      name: "theme5",
+      assets: {
+        theme5: "assets/sounds/theme5.mp3"
+      }
+    },
+    {
+      name: "theme6",
+      assets: {
+        theme6: "assets/sounds/theme6.mp3"
+      }
+    },
+    {
+      name: "theme7",
+      assets: {
+        theme7: "assets/sounds/theme7.mp3"
+      }
+    },
+    {
+      name: "theme8",
+      assets: {
+        theme8: "assets/sounds/theme8.mp3"
+      }
+    },
+    {
+      name: "theme9",
+      assets: {
+        theme9: "assets/sounds/theme9.mp3"
       }
     }
   ]
@@ -6903,7 +7025,9 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     if (!this.isMove) {
       this.isMove = true;
       if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("load", () => {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("load", {
+          volume: 2
+        }, () => {
           if (i == _game__WEBPACK_IMPORTED_MODULE_2__.Game.balls.length - 1) {
             _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound");
           }
@@ -7040,6 +7164,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameconstants/gameconstants */ "./src/gameconstants/gameconstants.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _UI_shopui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UI/shopui */ "./src/UI/shopui.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+
 
 
 
@@ -7048,7 +7174,26 @@ const edge = _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConst
 class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(x, y, index) {
     super();
-    this.square = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square"));
+    this.squareTexts = [];
+    var squareText0 = { size: _gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize, fill: "black", stroke: "black", thickness: 0 };
+    var squareText1 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.7), fill: "white", stroke: "black", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.2) };
+    var squareText2 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 1), fill: "white", stroke: "green", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.2) };
+    var squareText3 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.8), fill: "white", stroke: "black", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.2) };
+    var squareText4 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 1), fill: "white", stroke: "orange", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.3) };
+    var squareText5 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.7), fill: "red", stroke: "white", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.2) };
+    var squareText6 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.8), fill: "yellow", stroke: "green", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.2) };
+    var squareText7 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.7), fill: "red", stroke: "yellow", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.2) };
+    var squareText8 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 1), fill: "white", stroke: "blue", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.3) };
+    var squareText9 = { size: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.7), fill: "blue", stroke: "yellow", thickness: Math.round(_gameconstants_gameconstants__WEBPACK_IMPORTED_MODULE_1__.GameConstants.fontSize * 0.3) };
+    this.squareTexts.push(squareText0, squareText1, squareText2, squareText3, squareText4, squareText5, squareText6, squareText7, squareText8, squareText9);
+    this.squareSkin = [];
+    var square0 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square"));
+    this.squareSkin.push(square0);
+    for (var i = 1; i < 10; i++) {
+      var square = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("square" + i));
+      this.squareSkin.push(square);
+    }
+    this.square = this.squareSkin[0];
     this.color = this.changeColor(index);
     this.square.tint = this.color;
     this.square.anchor.set(0.5, 0.5);
@@ -7066,14 +7211,29 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
     this.setText();
   }
+  init(squareText) {
+    this.square.anchor.set(0.5, 0.5);
+    this.square.width = 2 * edge;
+    this.square.height = 2 * edge;
+    this.addChild(this.square);
+    this.text.style.fill = squareText.fill;
+    this.text.style.stroke = squareText.stroke;
+    this.text.style.strokeThickness = squareText.thickness;
+    this.text.style.fontSize = squareText.size;
+    this.addChild(this.text);
+  }
   decreaseIndex(s) {
     if (this.index > 0)
       this.index--;
-    if (this.index == 0 || _UI_shopui__WEBPACK_IMPORTED_MODULE_3__.ShopUI.used == 7) {
+    if (this.index <= 0) {
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.emitSquareParticale(this);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.map.squarePool.push(this);
       this.parent.removeChild(this);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares.splice(s, 1);
+      if (_UI_shopui__WEBPACK_IMPORTED_MODULE_3__.ShopUI.used == 7) {
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("Siu");
+        return;
+      }
     }
     this.color = this.changeColor(this.index);
     this.setText();
