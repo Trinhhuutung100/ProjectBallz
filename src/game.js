@@ -36,7 +36,7 @@ export class Game{
             this.app.stage.removeChild(this.loaderBar);
             this.createPool().then(() => {
                 sound.play("theme" + ShopUI.used,{
-                    volume: 1,
+                    volume: 2,
                     loop: true
                 });
                 this.ticker();
