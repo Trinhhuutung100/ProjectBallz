@@ -18,7 +18,7 @@ export class MusicButton extends Sprite{
             Game.music = !Game.music;
             console.log("Music " + Game.music);
             if(Game.music) {
-                sound.find("theme" + ShopUI.used).volume = 1;
+                sound.find("theme" + ShopUI.used).volume = 0.2;
                 this.tmp.tint = 0xffffff;
             } else {
                 sound.find("theme" + ShopUI.used).volume = 0;

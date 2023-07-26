@@ -175,7 +175,7 @@ export class ShopUI extends Container {
         })
         sound.stopAll();
         sound.play("theme" + ShopUI.used,{
-            volume: 0.3,
+            volume: 0.2,
             loop: true
         });
     }

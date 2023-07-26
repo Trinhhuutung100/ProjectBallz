@@ -42,7 +42,9 @@ export class CollisionHandler{
     }
     playCoinMusic(){
         // if (Game.music) this.coinSound.play();
-        if(Game.music) sound.play("coinSound");
+        if(Game.music) sound.play("coinSound",{
+            volume:2
+        });
     }
     squareCollision(dt){
         for(var b = 0; b< this.balls.length; b++){
