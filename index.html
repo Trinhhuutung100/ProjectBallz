@@ -4674,7 +4674,7 @@ class MusicButton extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite {
       _game__WEBPACK_IMPORTED_MODULE_1__.Game.music = !_game__WEBPACK_IMPORTED_MODULE_1__.Game.music;
       console.log("Music " + _game__WEBPACK_IMPORTED_MODULE_1__.Game.music);
       if (_game__WEBPACK_IMPORTED_MODULE_1__.Game.music) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 0.2;
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 1;
         this.tmp.tint = 16777215;
       } else {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 0;
@@ -5010,7 +5010,7 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
     _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.stopAll();
     _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("theme" + _ShopUI.used, {
-      volume: 0.2,
+      volume: 1,
       loop: true
     });
   }
@@ -5194,14 +5194,14 @@ class CollisionHandler {
   playSquareMusic() {
     if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
       _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound", {
-        volume: 2
+        volume: 10
       });
     }
   }
   playCoinMusic() {
     if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music)
       _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("coinSound", {
-        volume: 2
+        volume: 10
       });
   }
   squareCollision(dt) {
@@ -6013,7 +6013,7 @@ class Game {
       this.app.stage.removeChild(this.loaderBar);
       this.createPool().then(() => {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_17__.sound.play("theme" + _UI_shopui__WEBPACK_IMPORTED_MODULE_16__.ShopUI.used, {
-          volume: 0.2,
+          volume: 1,
           loop: true
         });
         this.ticker();
@@ -7030,10 +7030,10 @@ class Ball extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("load", () => {
           if (i == _game__WEBPACK_IMPORTED_MODULE_2__.Game.balls.length - 1) {
             _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound", {
-              volume: 2
+              volume: 10
             });
           }
-          _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.find("load").volume = 4;
+          _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.find("load").volume = 20;
         });
       }
     }
