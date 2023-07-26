@@ -4674,7 +4674,7 @@ class MusicButton extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite {
       _game__WEBPACK_IMPORTED_MODULE_1__.Game.music = !_game__WEBPACK_IMPORTED_MODULE_1__.Game.music;
       console.log("Music " + _game__WEBPACK_IMPORTED_MODULE_1__.Game.music);
       if (_game__WEBPACK_IMPORTED_MODULE_1__.Game.music) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 1;
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 2;
         this.tmp.tint = 16777215;
       } else {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.find("theme" + _shopui__WEBPACK_IMPORTED_MODULE_4__.ShopUI.used).volume = 0;
@@ -5010,7 +5010,7 @@ const _ShopUI = class extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
     _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.stopAll();
     _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("theme" + _ShopUI.used, {
-      volume: 1,
+      volume: 2,
       loop: true
     });
   }
@@ -6013,7 +6013,7 @@ class Game {
       this.app.stage.removeChild(this.loaderBar);
       this.createPool().then(() => {
         _pixi_sound__WEBPACK_IMPORTED_MODULE_17__.sound.play("theme" + _UI_shopui__WEBPACK_IMPORTED_MODULE_16__.ShopUI.used, {
-          volume: 1,
+          volume: 2,
           loop: true
         });
         this.ticker();
