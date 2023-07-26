@@ -36,14 +36,14 @@ export class CollisionHandler{
             //     return;
             // }
             sound.play("gunSound", {
-                volume: 2,
+                volume: 10,
             });
         }
     }
     playCoinMusic(){
         // if (Game.music) this.coinSound.play();
         if(Game.music) sound.play("coinSound",{
-            volume:2
+            volume:10
         });
     }
     squareCollision(dt){

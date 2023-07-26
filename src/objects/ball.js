@@ -128,10 +128,10 @@ export class Ball extends Container{
                 sound.play("load",() => {
                 if(i == Game.balls.length - 1) {
                     sound.play("gunSound", {
-                        volume: 2
+                        volume: 10
                     });
                 }
-                sound.find("load").volume = 4;
+                sound.find("load").volume = 20;
             });
         }
         }
