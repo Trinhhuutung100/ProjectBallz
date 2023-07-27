@@ -67,7 +67,9 @@ export class Square extends Container{
             this.parent.removeChild(this);
             Game.collision.squares.splice(s, 1);
             if( ShopUI.used == 7) {
-                sound.play("Siu");
+                sound.play("Siu", {
+                    volume: 4
+                });
                 return;
             }
         }
