@@ -5193,7 +5193,7 @@ class CollisionHandler {
   }
   playSquareMusic() {
     if (_game__WEBPACK_IMPORTED_MODULE_2__.Game.music) {
-      _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("gunSound", {
+      _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("ballSound", {
         volume: 10
       });
     }
@@ -7234,7 +7234,9 @@ class Square extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.parent.removeChild(this);
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.collision.squares.splice(s, 1);
       if (_UI_shopui__WEBPACK_IMPORTED_MODULE_3__.ShopUI.used == 7) {
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("Siu");
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("Siu", {
+          volume: 4
+        });
         return;
       }
     }
